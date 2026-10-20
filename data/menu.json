@@ -17,6 +17,12 @@
       "nameGe": "მთავარი კერძები",
       "nameEn": "main dishes",
       "order": 2
+    },
+    {
+      "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
+      "nameGe": "სალათები",
+      "nameEn": "salads",
+      "order": 3
     }
   ],
   "dishes": [
@@ -51,6 +57,9 @@
       "showImages": true
     },
     "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f": {
+      "showImages": true
+    },
+    "category-bd9d8af6-63a2-4fa6-91fa-67be77864991": {
       "showImages": true
     }
   }
