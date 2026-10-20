@@ -11,12 +11,12 @@
     {
       "id": "dish-ac881bb7-d687-4a5c-b6a7-ded808707061",
       "nameGe": "კუბდარი",
-      "nameEn": "",
-      "descriptionGe": "",
-      "descriptionEn": "",
+      "nameEn": "Kubdari",
+      "descriptionGe": "ხორცით",
+      "descriptionEn": "Meat Pastry",
       "price": 122,
       "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
-      "image": "",
+      "image": "images/uploads/718b0fd3-6306-4fb4-843d-dd1d2f6839af.jpg",
       "order": 0
     }
   ],
