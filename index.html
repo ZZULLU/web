@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Restaurant Menu</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+<body>
+
+
+<header class="hero">
+
+    <a
+        href="admin/index.html"
+        class="admin-button"
+        id="adminButton"
+    >
+        Admin
+    </a>
+
+
+    <div class="top-controls">
+
+        <div class="language-switch">
+
+            <button
+                type="button"
+                id="languageGe"
+                class="top-control-button"
+            >
+                ქართული
+            </button>
+
+            <button
+                type="button"
+                id="languageEn"
+                class="top-control-button"
+            >
+                English
+            </button>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="themeToggle"
+            class="top-control-button theme-button"
+            aria-label="Change theme"
+        >
+            🌙
+        </button>
+
+    </div>
+
+
+    <div class="hero-content">
+
+        <h1>
+            Georgian House
+        </h1>
+
+        <p id="heroSubtitle">
+            Traditional Georgian Cuisine
+        </p>
+
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <section class="menu-header">
+
+        <h2 id="menuHeading">
+            Our Menu
+        </h2>
+
+
+        <div class="menu-tools">
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search dishes..."
+            >
+
+
+            <select id="sortSelect">
+
+                <option value="default">
+                    Restaurant Order
+                </option>
+
+                <option value="priceAsc">
+                    Price: Low to High
+                </option>
+
+                <option value="priceDesc">
+                    Price: High to Low
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+        <div class="display-controls">
+
+
+            <div class="control-group">
+
+                <span
+                    class="control-label"
+                    id="viewLabel"
+                >
+                    View
+                </span>
+
+
+                <button
+                    type="button"
+                    id="cardViewButton"
+                    class="display-button active"
+                >
+                    ▦ Cards
+                </button>
+
+
+                <button
+                    type="button"
+                    id="listViewButton"
+                    class="display-button"
+                >
+                    ☰ List
+                </button>
+
+            </div>
+
+
+            <div class="control-group">
+
+                <span
+                    class="control-label"
+                    id="sizeLabel"
+                >
+                    Size
+                </span>
+
+
+                <button
+                    type="button"
+                    class="size-button"
+                    data-size="small"
+                    id="smallSizeButton"
+                >
+                    Small
+                </button>
+
+
+                <button
+                    type="button"
+                    class="size-button active"
+                    data-size="medium"
+                    id="mediumSizeButton"
+                >
+                    Medium
+                </button>
+
+
+                <button
+                    type="button"
+                    class="size-button"
+                    data-size="large"
+                    id="largeSizeButton"
+                >
+                    Large
+                </button>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <section
+        id="categoryButtons"
+        class="categories"
+    ></section>
+
+
+    <section
+        id="menuContainer"
+        class="menu-sections"
+    ></section>
+
+
+</main>
+
+
+<footer>
+
+    <h3>
+        Georgian House
+    </h3>
+
+    <p id="footerHours">
+        Open every day: 10:00 - 23:00
+    </p>
+
+    <p>
+        +995 555 123 456
+    </p>
+
+    <p>
+        Tbilisi, Georgia
+    </p>
+
+</footer>
+
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>

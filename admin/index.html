@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Admin</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Public admin page, but actual editing requires a backend session. -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-panel">
+            <h1 id="loginTitle">Restaurant Admin Login</h1>
+            <p id="loginSubtitle">Sign in to manage the online menu.</p>
+            <form id="loginForm">
+                <label for="adminPassword" id="passwordLabel">Admin password</label>
+                <input type="password" id="adminPassword" autocomplete="current-password" required>
+                <button type="submit" id="loginButton">Sign In</button>
+            </form>
+            <p id="loginError" class="login-error" role="alert" aria-live="polite"></p>
+            <a href="../index.html" id="loginBackLink">← Back to menu</a>
+        </div>
+    </div>
+
+    <div class="admin-container" id="adminContainer" hidden>
+        <header class="admin-header">
+            <div>
+                <h1 id="adminTitle">Menu Admin</h1>
+                <p id="adminSubtitle">Manage your restaurant menu</p>
+            </div>
+            <div class="admin-top-actions">
+                <div class="language-switch">
+                    <button type="button" id="languageGe" class="top-control-button">ქართული</button>
+                    <button type="button" id="languageEn" class="top-control-button">English</button>
+                </div>
+                <button type="button" id="themeToggle" class="top-control-button theme-button" aria-label="Change theme">🌙</button>
+                <button type="button" id="logoutButton" class="top-control-button">Log Out</button>
+                <a href="../index.html" class="view-menu-button" id="viewMenuButton">← View Menu</a>
+            </div>
+        </header>
+
+        <p class="info-message" id="saveInfo" role="status" aria-live="polite"></p>
+
+        <details class="admin-section" open>
+            <summary><span id="categoriesSectionTitle">Edit Categories</span><span class="section-arrow">▼</span></summary>
+            <div class="section-content">
+                <p class="section-description" id="categoriesDescription">Add, edit, delete and reorder categories. You can also choose whether dishes in each category show images.</p>
+                <input type="hidden" id="editCategoryId">
+                <div class="category-add">
+                    <input type="text" id="newCategoryGe" placeholder="Category — Georgian version">
+                    <input type="text" id="newCategoryEn" placeholder="Category — English version">
+                    <button type="button" id="addCategoryButton">+ Add Category</button>
+                    <button type="button" id="cancelCategoryEditButton" class="cancel-button hidden">Cancel Edit</button>
+                </div>
+                <p class="field-note" id="categoryFieldNote">At least one category name is required. Either language field may contain any text.</p>
+                <div id="categoryList" class="category-list"></div>
+            </div>
+        </details>
+
+        <details class="admin-section" open>
+            <summary><span id="dishSectionTitle">Add / Edit Dish</span><span class="section-arrow">▼</span></summary>
+            <div class="section-content">
+                <form id="dishForm">
+                    <input type="hidden" id="editId">
+                    <div class="language-fields">
+                        <div>
+                            <label for="dishNameGe" id="dishNameGeLabel">Dish Name — Georgian version</label>
+                            <input type="text" id="dishNameGe" placeholder="მაგ: ხინკალი or Khinkali">
+                        </div>
+                        <div>
+                            <label for="dishNameEn" id="dishNameEnLabel">Dish Name — English version</label>
+                            <input type="text" id="dishNameEn" placeholder="Example: Khinkali">
+                        </div>
+                    </div>
+                    <p class="field-note" id="dishNameNote">At least one dish name is required.</p>
+                    <div class="language-fields">
+                        <div>
+                            <label for="dishDescriptionGe" id="descriptionGeLabel">Description — Georgian version</label>
+                            <textarea id="dishDescriptionGe" placeholder="Georgian display text"></textarea>
+                        </div>
+                        <div>
+                            <label for="dishDescriptionEn" id="descriptionEnLabel">Description — English version</label>
+                            <textarea id="dishDescriptionEn" placeholder="English display text"></textarea>
+                        </div>
+                    </div>
+                    <label for="dishPrice" id="priceLabel">Price (GEL)</label>
+                    <input type="number" id="dishPrice" step="0.01" min="0" placeholder="2.50" required>
+                    <label for="dishCategory" id="categoryLabel">Category</label>
+                    <select id="dishCategory" required></select>
+                    <label for="dishImage" id="dishImageLabel">Dish Image</label>
+                    <input type="file" id="dishImage" accept="image/jpeg,image/png,image/webp,image/*">
+                    <p class="field-note" id="uploadNote">JPG, PNG and WebP will be resized and compressed to JPEG. HEIC support depends on browser.</p>
+                    <div id="previewContainer" class="preview-container">
+                        <p id="imagePreviewLabel">Image preview</p>
+                        <img id="imagePreview" alt="Dish preview">
+                    </div>
+                    <div class="form-buttons">
+                        <button type="submit" id="saveButton">Add Dish</button>
+                        <button type="button" id="cancelEditButton" class="cancel-button hidden">Cancel Edit</button>
+                    </div>
+                </form>
+            </div>
+        </details>
+
+        <details class="admin-section" open>
+            <summary><span id="currentMenuTitle">Current Menu</span><span class="section-arrow">▼</span></summary>
+            <div class="section-content">
+                <p class="section-description" id="currentMenuDescription">Drag dishes using the handle on the left to change their order.</p>
+                <div id="dishList"></div>
+            </div>
+        </details>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

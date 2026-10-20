@@ -1,0 +1,990 @@
+* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+
+    width: 100%;
+    min-height: 100%;
+}
+
+
+:root {
+    --page-background: #f7f7f7;
+    --card-background: #ffffff;
+    --text-main: #222222;
+    --text-secondary: #666666;
+    --border-color: #dddddd;
+    --soft-background: #e5e5e5;
+    --button-main: #222222;
+    --button-text: #ffffff;
+    --footer-background: #222222;
+    --footer-text: #ffffff;
+}
+
+
+body.dark-mode {
+    --page-background: #111315;
+    --card-background: #1b1e21;
+    --text-main: #f3f3f3;
+    --text-secondary: #b7b7b7;
+    --border-color: #373b40;
+    --soft-background: #292d31;
+    --button-main: #f1f1f1;
+    --button-text: #111111;
+    --footer-background: #090a0b;
+    --footer-text: #f2f2f2;
+}
+
+
+body {
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    background:
+        var(--page-background);
+
+    color:
+        var(--text-main);
+
+    transition:
+        background 0.2s,
+        color 0.2s;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    position: relative;
+
+    width: 100%;
+
+    min-height: 300px;
+
+    background:
+        linear-gradient(
+            rgba(0, 0, 0, 0.45),
+            rgba(0, 0, 0, 0.45)
+        ),
+        url("images/khachapuri.jpg");
+
+    background-size: cover;
+
+    background-position: center;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    color: white;
+
+    flex-shrink: 0;
+}
+
+
+.hero h1 {
+    margin: 0;
+
+    font-size: 50px;
+}
+
+
+.hero p {
+    font-size: 20px;
+}
+
+
+/* =========================
+   ADMIN BUTTON
+========================= */
+
+.admin-button {
+    position: absolute;
+
+    top: 20px;
+
+    left: 20px;
+
+    background: rgba(
+        255,
+        255,
+        255,
+        0.95
+    );
+
+    color: #222;
+
+    padding: 11px 20px;
+
+    border-radius: 10px;
+
+    text-decoration: none;
+
+    font-weight: bold;
+
+    z-index: 10;
+}
+
+
+/* =========================
+   TOP CONTROLS
+========================= */
+
+.top-controls {
+    position: absolute;
+
+    top: 20px;
+
+    right: 20px;
+
+    z-index: 10;
+
+    display: flex;
+
+    gap: 8px;
+
+    align-items: center;
+}
+
+
+.language-switch {
+    display: flex;
+
+    gap: 5px;
+}
+
+
+.top-control-button {
+    border: 1px solid
+        rgba(
+            255,
+            255,
+            255,
+            0.5
+        );
+
+    background:
+        rgba(
+            20,
+            20,
+            20,
+            0.6
+        );
+
+    color: white;
+
+    padding:
+        9px
+        12px;
+
+    border-radius: 9px;
+
+    cursor: pointer;
+
+    backdrop-filter:
+        blur(6px);
+}
+
+
+.top-control-button.active {
+    background: white;
+
+    color: #222;
+}
+
+
+.theme-button {
+    min-width: 42px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+main {
+    width: 100%;
+
+    max-width: 1280px;
+
+    margin: 0 auto;
+
+    padding:
+        40px
+        20px;
+
+    flex: 1 0 auto;
+}
+
+
+.menu-header {
+    text-align: center;
+
+    margin-bottom: 25px;
+}
+
+
+.menu-header h2 {
+    font-size: 36px;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================
+   SEARCH + SORT
+========================= */
+
+.menu-tools {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+#searchInput,
+#sortSelect {
+    padding: 14px;
+
+    font-size: 16px;
+
+    border:
+        1px solid
+        var(--border-color);
+
+    border-radius: 10px;
+
+    background:
+        var(--card-background);
+
+    color:
+        var(--text-main);
+}
+
+
+#searchInput {
+    width: 100%;
+
+    max-width: 500px;
+}
+
+
+#sortSelect {
+    min-width: 220px;
+}
+
+
+/* =========================
+   DISPLAY CONTROLS
+========================= */
+
+.display-controls {
+    margin-top: 18px;
+
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 15px;
+}
+
+
+.control-group {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+}
+
+
+.control-label {
+    margin-right: 3px;
+
+    font-size: 14px;
+
+    color:
+        var(--text-secondary);
+
+    font-weight: bold;
+}
+
+
+.display-button,
+.size-button {
+    border:
+        1px solid
+        var(--border-color);
+
+    background:
+        var(--card-background);
+
+    color:
+        var(--text-main);
+
+    padding:
+        8px
+        12px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+}
+
+
+.display-button.active,
+.size-button.active {
+    background:
+        var(--button-main);
+
+    color:
+        var(--button-text);
+
+    border-color:
+        var(--button-main);
+}
+
+
+/* =========================
+   CATEGORY BUTTONS
+========================= */
+
+.categories {
+    display: flex;
+
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-bottom: 35px;
+}
+
+
+.category-btn {
+    border: none;
+
+    padding:
+        10px
+        18px;
+
+    border-radius: 20px;
+
+    background:
+        var(--soft-background);
+
+    color:
+        var(--text-main);
+
+    cursor: pointer;
+
+    font-size: 15px;
+}
+
+
+.category-btn.active {
+    background:
+        var(--button-main);
+
+    color:
+        var(--button-text);
+}
+
+
+/* =========================
+   CATEGORY SECTIONS
+========================= */
+
+.menu-category-section {
+    width: 100%;
+
+    margin-bottom: 50px;
+}
+
+
+.menu-category-title {
+    font-size: 30px;
+
+    margin:
+        0
+        0
+        20px;
+
+    padding-bottom: 10px;
+
+    border-bottom:
+        2px solid
+        var(--text-main);
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.menu-grid {
+    display: grid;
+
+    justify-content: start;
+
+    align-items: stretch;
+
+    gap: 25px;
+
+    width: 100%;
+}
+
+
+/* =========================
+   FOOD CARD
+========================= */
+
+.food-card {
+    width: 100%;
+
+    min-width: 0;
+
+    background:
+        var(--card-background);
+
+    border-radius: 15px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0
+        4px
+        15px
+        rgba(
+            0,
+            0,
+            0,
+            0.08
+        );
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.food-card img {
+    width: 100%;
+
+    aspect-ratio:
+        4 / 3;
+
+    object-fit: cover;
+
+    display: block;
+}
+
+
+.food-info {
+    padding: 18px;
+
+    flex: 1;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.food-title {
+    display: flex;
+
+    justify-content:
+        space-between;
+
+    gap: 15px;
+
+    align-items:
+        flex-start;
+}
+
+
+.food-title h3 {
+    margin: 0;
+
+    min-width: 0;
+}
+
+
+.price {
+    white-space: nowrap;
+
+    font-weight: bold;
+}
+
+
+.food-info p {
+    color:
+        var(--text-secondary);
+
+    line-height: 1.5;
+
+    margin-bottom: 0;
+}
+
+
+/* =========================
+   NO IMAGE
+========================= */
+
+.food-card.no-image {
+    min-height: 0;
+}
+
+
+.food-card.no-image
+.food-info {
+    width: 100%;
+}
+
+
+/* =========================
+   SMALL SIZE
+========================= */
+
+body.menu-size-small
+.menu-grid {
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(
+                170px,
+                220px
+            )
+        );
+
+    gap: 14px;
+}
+
+
+body.menu-size-small
+.food-info {
+    padding: 12px;
+}
+
+
+body.menu-size-small
+.food-title h3 {
+    font-size: 16px;
+}
+
+
+body.menu-size-small
+.food-info p {
+    font-size: 13px;
+}
+
+
+body.menu-size-small
+.price {
+    font-size: 14px;
+}
+
+
+/* =========================
+   MEDIUM SIZE
+========================= */
+
+body.menu-size-medium
+.menu-grid {
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(
+                240px,
+                280px
+            )
+        );
+
+    gap: 22px;
+}
+
+
+body.menu-size-medium
+.food-title h3 {
+    font-size: 20px;
+}
+
+
+/* =========================
+   LARGE SIZE
+========================= */
+
+body.menu-size-large
+.menu-grid {
+    grid-template-columns:
+        repeat(
+            auto-fill,
+            minmax(
+                320px,
+                380px
+            )
+        );
+
+    gap: 30px;
+}
+
+
+body.menu-size-large
+.food-info {
+    padding: 24px;
+}
+
+
+body.menu-size-large
+.food-title h3 {
+    font-size: 24px;
+}
+
+
+body.menu-size-large
+.food-info p {
+    font-size: 17px;
+}
+
+
+/* =========================
+   LIST VIEW
+========================= */
+
+body.list-view
+.menu-grid {
+    display: block;
+}
+
+
+body.list-view
+.food-card {
+    width: 100%;
+
+    max-width: none;
+
+    border-radius: 0;
+
+    box-shadow: none;
+
+    border-bottom:
+        1px solid
+        var(--border-color);
+
+    display: block;
+
+    min-height: 0;
+}
+
+
+body.list-view
+.food-card img {
+    display: none;
+}
+
+
+body.list-view
+.food-info {
+    padding:
+        16px
+        5px;
+}
+
+
+body.list-view
+.food-info p {
+    margin:
+        7px
+        0
+        0;
+}
+
+
+body.list-view.menu-size-small
+.food-info {
+    padding:
+        8px
+        4px;
+}
+
+
+body.list-view.menu-size-large
+.food-info {
+    padding:
+        22px
+        5px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    width: 100%;
+
+    flex-shrink: 0;
+
+    background:
+        var(--footer-background);
+
+    color:
+        var(--footer-text);
+
+    text-align: center;
+
+    padding:
+        40px
+        20px;
+
+    margin-top: auto;
+}
+
+
+footer h3 {
+    margin:
+        0
+        0
+        15px;
+}
+
+
+footer p {
+    margin:
+        7px
+        0;
+
+    line-height: 1.5;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (
+    max-width: 900px
+) {
+
+    main {
+        padding:
+            35px
+            16px;
+    }
+
+
+    body.menu-size-small
+    .menu-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(
+                    160px,
+                    1fr
+                )
+            );
+    }
+
+
+    body.menu-size-medium
+    .menu-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(
+                    220px,
+                    1fr
+                )
+            );
+    }
+
+
+    body.menu-size-large
+    .menu-grid {
+        grid-template-columns:
+            repeat(
+                auto-fill,
+                minmax(
+                    280px,
+                    1fr
+                )
+            );
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (
+    max-width: 600px
+) {
+
+    .hero {
+        min-height: 250px;
+    }
+
+
+    .hero h1 {
+        font-size: 36px;
+    }
+
+
+    .admin-button {
+        top: 12px;
+
+        left: 12px;
+
+        padding:
+            8px
+            12px;
+
+        font-size: 13px;
+    }
+
+
+    .top-controls {
+        top: 12px;
+
+        right: 12px;
+    }
+
+
+    .top-control-button {
+        padding:
+            7px
+            8px;
+
+        font-size: 12px;
+    }
+
+
+    main {
+        padding:
+            30px
+            12px;
+    }
+
+
+    #sortSelect {
+        width: 100%;
+    }
+
+
+    .display-controls {
+        align-items: stretch;
+
+        flex-direction: column;
+    }
+
+
+    .control-group {
+        justify-content: center;
+    }
+
+
+    body.menu-size-small
+    .menu-grid {
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(
+                    0,
+                    1fr
+                )
+            );
+
+        gap: 10px;
+    }
+
+
+    body.menu-size-medium
+    .menu-grid,
+    body.menu-size-large
+    .menu-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    body.menu-size-small
+    .food-title {
+        gap: 6px;
+
+        flex-direction:
+            column;
+    }
+
+
+    body.menu-size-small
+    .price {
+        white-space: normal;
+    }
+
+
+    footer {
+        padding:
+            30px
+            15px;
+    }
+}
+
+
+/* =========================
+   VERY SMALL PHONES
+========================= */
+
+@media (
+    max-width: 360px
+) {
+
+    body.menu-size-small
+    .menu-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .menu-category-title {
+        font-size: 25px;
+    }
+
+
+    .hero h1 {
+        font-size: 31px;
+    }
+
+
+    .language-switch {
+        flex-direction: column;
+    }
+}
