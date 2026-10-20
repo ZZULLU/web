@@ -1,6 +1,16 @@
-
 {
-  "categories": [],
-  "categorySettings": {},
-  "dishes": []
+  "categories": [
+    {
+      "id": "category-8e1c3ec9-818c-496f-84bd-977fd5d19088",
+      "nameGe": "bdjkcawd",
+      "nameEn": "",
+      "order": 0
+    }
+  ],
+  "dishes": [],
+  "categorySettings": {
+    "category-8e1c3ec9-818c-496f-84bd-977fd5d19088": {
+      "showImages": true
+    }
+  }
 }
