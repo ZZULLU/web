@@ -75,6 +75,17 @@
       "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
       "image": "images/uploads/f2a97023-078a-450f-ad4b-659bf7afb15b.jpg",
       "order": 3
+    },
+    {
+      "id": "dish-2d0bb7bc-a33d-4f55-987f-0881de9b139a",
+      "nameGe": "კიტრი პომიდვრის სალათი",
+      "nameEn": "cucumber tomato salad",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 15,
+      "categoryId": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
+      "image": "images/uploads/56feeecc-f247-4e53-b406-1b7191f13e3a.jpg",
+      "order": 4
     }
   ],
   "categorySettings": {
