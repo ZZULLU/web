@@ -7,7 +7,19 @@
       "order": 0
     }
   ],
-  "dishes": [],
+  "dishes": [
+    {
+      "id": "dish-121ceed6-5448-423b-9f83-270186834d6f",
+      "nameGe": "dcsdcfewd",
+      "nameEn": "csdcs",
+      "descriptionGe": "edfwe",
+      "descriptionEn": "fewfc",
+      "price": 22.97,
+      "categoryId": "category-8e1c3ec9-818c-496f-84bd-977fd5d19088",
+      "image": "",
+      "order": 0
+    }
+  ],
   "categorySettings": {
     "category-8e1c3ec9-818c-496f-84bd-977fd5d19088": {
       "showImages": true
