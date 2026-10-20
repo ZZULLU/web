@@ -11,6 +11,12 @@
       "nameGe": "ცხელი კერძი",
       "nameEn": "Hot Dish",
       "order": 1
+    },
+    {
+      "id": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
+      "nameGe": "მთავარი კერძები",
+      "nameEn": "main dishes",
+      "order": 2
     }
   ],
   "dishes": [
@@ -42,6 +48,9 @@
       "showImages": true
     },
     "category-f5188c66-5f02-4018-9856-452f2ff89914": {
+      "showImages": true
+    },
+    "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f": {
       "showImages": true
     }
   }
