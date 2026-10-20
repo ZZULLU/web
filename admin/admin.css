@@ -132,3 +132,10 @@ form { display: flex; flex-direction: column; gap: 11px; }
   .login-panel { padding: 27px 22px; }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; } }
+
+/* Password visibility button: purely a presentation enhancement */
+.password-field { position: relative; width: 100%; }
+.password-field #adminPassword { width: 100%; padding-right: 57px; }
+.password-eye-button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; border-radius: 10px; background: transparent; color: var(--text-secondary); width: 44px; height: 42px; display: grid; place-items: center; padding: 9px; }
+.password-eye-button:hover { color: var(--text-main); background: var(--soft-background); }
+.password-eye-button svg { display: block; width: 22px; height: 22px; }
