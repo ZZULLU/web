@@ -4,7 +4,7 @@
    No GitHub tokens or admin passwords belong in this file.
 ============================================================ */
 
-const API_BASE_URL = "restaurant-menu-api.orivardisferivardi.workers.dev";
+const API_BASE_URL = "https://restaurant-menu-api.orivardisferivardi.workers.dev";
 const LANGUAGE_KEY = "restaurantLanguage";
 const THEME_KEY = "restaurantTheme";
 const TOKEN_KEY = "restaurantAdminSessionToken";
