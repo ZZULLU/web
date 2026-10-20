@@ -139,3 +139,23 @@ form { display: flex; flex-direction: column; gap: 11px; }
 .password-eye-button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; border-radius: 10px; background: transparent; color: var(--text-secondary); width: 44px; height: 42px; display: grid; place-items: center; padding: 9px; }
 .password-eye-button:hover { color: var(--text-main); background: var(--soft-background); }
 .password-eye-button svg { display: block; width: 22px; height: 22px; }
+
+/* Keep eye control inside the password input, without button-wide hover rules */
+.login-panel .password-field { position: relative; width: 100%; }
+.login-panel .password-field #adminPassword {
+  display: block; width: 100%; padding-right: 62px;
+}
+.login-panel .password-field .password-eye-button {
+  position: absolute; top: 50%; right: 7px; transform: translateY(-50%);
+  display: grid; place-items: center; width: 42px; height: 42px;
+  min-width: 42px; padding: 9px; margin: 0;
+  border: none; border-radius: 11px; background: transparent;
+  color: var(--text-secondary); box-shadow: none;
+  cursor: pointer; transition: color .2s, background .2s;
+}
+.login-panel .password-field .password-eye-button:hover {
+  transform: translateY(-50%); background: var(--soft-background); color: var(--text-main);
+}
+.login-panel .password-field .password-eye-button svg {
+  width: 22px; height: 22px; stroke: currentColor;
+}

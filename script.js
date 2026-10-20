@@ -7,7 +7,7 @@ const THEME_KEY = 'restaurantTheme';
 const translations = {
   en: {
     menu: 'Our Menu', search: 'Search dishes...', categories: 'Categories', all: 'All',
-    restaurantOrder: 'Restaurant order', priceAscending: 'Price: low to high',
+    restaurantOrder: 'Default order', priceAscending: 'Price: low to high',
     priceDescending: 'Price: high to low', cards: 'Card view', list: 'List view',
     small: 'Small items', medium: 'Medium items', large: 'Large items',
     admin: 'Admin', heroSubtitle: 'Traditional Georgian Cuisine',
@@ -17,7 +17,7 @@ const translations = {
   },
   ge: {
     menu: 'მენიუ', search: 'მოძებნე კერძი...', categories: 'კატეგორიები', all: 'ყველა',
-    restaurantOrder: 'რესტორნის განლაგება', priceAscending: 'ფასი: დაბლიდან მაღლა',
+    restaurantOrder: 'საწყისი განლაგება', priceAscending: 'ფასი: დაბლიდან მაღლა',
     priceDescending: 'ფასი: მაღლიდან დაბლა', cards: 'ბარათებით ნახვა', list: 'სიის სახით ნახვა',
     small: 'პატარა ზომა', medium: 'საშუალო ზომა', large: 'დიდი ზომა',
     admin: 'ადმინი', heroSubtitle: 'ტრადიციული ქართული სამზარეულო',
@@ -38,8 +38,7 @@ const cardViewButton = $('cardViewButton');
 const listViewButton = $('listViewButton');
 const sizeButtons = document.querySelectorAll('.size-button');
 const sortButtons = document.querySelectorAll('.sort-button');
-const languageGe = $('languageGe');
-const languageEn = $('languageEn');
+const languageToggle = $('languageToggle');
 const themeToggle = $('themeToggle');
 
 let categories = [];
@@ -49,6 +48,7 @@ let menuLoading = true;
 let menuLoadFailed = false;
 let selectedCategoryId = 'all';
 let selectedSort = 'default';
+const categoryOpenStates = new Map();
 
 function readPreference(key, fallback) {
   try {
@@ -132,7 +132,6 @@ function updateStaticLanguage() {
   $('menuHeading').textContent = t.menu;
   searchInput.placeholder = t.search;
   $('searchLabel').textContent = t.search;
-  $('categoryDropdownTitle').firstChild.textContent = t.categories + ' ';
   $('adminButton').textContent = t.admin;
   $('heroSubtitle').textContent = t.heroSubtitle;
   $('footerHours').textContent = t.hours;
@@ -146,8 +145,10 @@ function updateStaticLanguage() {
   setAccessibleTitle($('smallSizeButton'), t.small);
   setAccessibleTitle($('mediumSizeButton'), t.medium);
   setAccessibleTitle($('largeSizeButton'), t.large);
-  languageGe.classList.toggle('active', currentLanguage === 'ge');
-  languageEn.classList.toggle('active', currentLanguage === 'en');
+  languageToggle.textContent = currentLanguage === 'ge' ? 'English' : 'ქართული';
+  const nextLanguageLabel = currentLanguage === 'ge' ? 'Switch to English' : 'ქართულზე გადართვა';
+  languageToggle.setAttribute('aria-label', nextLanguageLabel);
+  languageToggle.title = nextLanguageLabel;
 }
 function changeLanguage(lang) {
   currentLanguage = lang;
@@ -156,18 +157,24 @@ function changeLanguage(lang) {
   createCategories();
   filterMenu();
 }
-languageGe.addEventListener('click', () => changeLanguage('ge'));
-languageEn.addEventListener('click', () => changeLanguage('en'));
+languageToggle.addEventListener('click', () => changeLanguage(currentLanguage === 'ge' ? 'en' : 'ge'));
 
 function toggleSearch(open) {
   headerSearchPanel.hidden = !open;
+  document.querySelector('.hero').classList.toggle('search-open', open);
   searchToggle.setAttribute('aria-expanded', String(open));
   if (open) searchInput.focus();
   else searchToggle.focus();
 }
-searchToggle.addEventListener('click', () => toggleSearch(headerSearchPanel.hidden));
-closeSearch.addEventListener('click', () => toggleSearch(false));
-searchInput.addEventListener('keydown', e => { if (e.key === 'Escape') toggleSearch(false); });
+searchToggle.addEventListener('click', () => toggleSearch(true));
+closeSearch.addEventListener('click', () => {
+  filterMenu();
+  toggleSearch(false);
+});
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') toggleSearch(false);
+  if (e.key === 'Enter') { filterMenu(); toggleSearch(false); }
+});
 
 function applyCustomerView() {
   document.body.classList.remove('list-view', 'menu-size-small', 'menu-size-medium', 'menu-size-large');
@@ -242,12 +249,29 @@ function createDishCard(dish) {
   card.appendChild(info); return card;
 }
 function createMenuSection(category, items) {
-  const section = document.createElement('section'); section.className = 'menu-category-section';
-  const title = document.createElement('h2'); title.className = 'menu-category-title';
-  title.textContent = getCategoryName(category);
+  const section = document.createElement('details');
+  section.className = 'menu-category-section';
+  section.dataset.categoryId = category.id;
+  section.open = categoryOpenStates.get(category.id) !== false;
+  const title = document.createElement('summary');
+  title.className = 'menu-category-title';
+  const name = document.createElement('span');
+  name.textContent = getCategoryName(category);
+  const count = document.createElement('span');
+  count.className = 'category-item-count';
+  count.textContent = String(items.length);
+  const arrow = document.createElement('span');
+  arrow.className = 'section-chevron';
+  arrow.setAttribute('aria-hidden', 'true');
+  arrow.textContent = '⌄';
+  title.append(name, count, arrow);
   const grid = document.createElement('div'); grid.className = 'menu-grid';
   items.forEach(d => grid.appendChild(createDishCard(d)));
-  section.append(title, grid); return section;
+  section.append(title, grid);
+  section.addEventListener('toggle', () => {
+    categoryOpenStates.set(category.id, section.open);
+  });
+  return section;
 }
 function displayMenu(items) {
   menuContainer.replaceChildren();
