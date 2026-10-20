@@ -7,7 +7,19 @@
       "order": 0
     }
   ],
-  "dishes": [],
+  "dishes": [
+    {
+      "id": "dish-ac881bb7-d687-4a5c-b6a7-ded808707061",
+      "nameGe": "კუბდარი",
+      "nameEn": "",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 122,
+      "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
+      "image": "",
+      "order": 0
+    }
+  ],
   "categorySettings": {
     "category-006bd1ab-0e4d-42ad-9574-589686d91a08": {
       "showImages": true
