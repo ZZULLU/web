@@ -86,6 +86,17 @@
       "categoryId": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
       "image": "images/uploads/56feeecc-f247-4e53-b406-1b7191f13e3a.jpg",
       "order": 4
+    },
+    {
+      "id": "dish-536da40a-d18a-4b28-8d75-c421fc8ad91c",
+      "nameGe": "ფანტა",
+      "nameEn": "fanta",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3,
+      "categoryId": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
+      "image": "images/uploads/50101e25-fd22-4212-8143-a9636540ef5f.jpg",
+      "order": 5
     }
   ],
   "categorySettings": {
