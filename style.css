@@ -316,3 +316,92 @@ footer p { margin: 7px 0; color: var(--footer-text); opacity: .84; }
   .menu-category-section > .menu-grid { padding: 12px; }
   .language-toggle { min-width: 82px; }
 }
+
+/* ================================================
+   RESPONSIVE TOOLBAR + TRUE 3 / 2 / 1 MOBILE CARDS
+   Overrides earlier mobile rules without changing
+   the desktop restaurant design or dark-mode colors.
+================================================ */
+.menu-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  margin: 0 0 30px;
+}
+.menu-toolbar .categories {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scroll-snap-type: x proximity;
+  padding: 5px 2px 7px;
+}
+.menu-toolbar .category-btn { white-space: nowrap; flex-shrink: 0; scroll-snap-align: start; }
+.menu-toolbar .display-controls {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+.menu-toolbar .control-group { flex: 0 0 auto; flex-wrap: nowrap; }
+.menu-grid { min-width: 0; }
+.food-card { min-width: 0; }
+.food-card img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+.food-title, .food-info { min-width: 0; }
+.food-title h3 { overflow-wrap: anywhere; }
+.menu-category-section > .menu-grid { min-width: 0; }
+@media (max-width: 900px) {
+  .menu-toolbar { gap: 8px; }
+  .menu-toolbar .display-controls { gap: 3px; }
+  .menu-toolbar .control-group { gap: 1px; padding: 3px; }
+  .menu-toolbar .icon-control { width: 32px; height: 34px; min-height: 34px; padding: 5px; }
+  .menu-toolbar .icon-control svg { width: 19px; height: 19px; }
+  .menu-toolbar .category-btn { padding: 8px 10px; font-size: .76rem; }
+}
+@media (max-width: 600px) {
+  main { padding-left: 8px; padding-right: 8px; }
+  .menu-header { margin-bottom: 12px; }
+  .menu-toolbar { width: 100%; gap: 4px; margin-bottom: 18px; }
+  .menu-toolbar .categories { gap: 4px; }
+  .menu-toolbar .category-btn { padding: 7px 8px; font-size: .72rem; }
+  .menu-toolbar .display-controls { flex-direction: row; gap: 2px; }
+  .menu-toolbar .control-group { padding: 2px; gap: 0; border-radius: 12px; }
+  .menu-toolbar .display-button,
+  .menu-toolbar .size-button,
+  .menu-toolbar .sort-button { width: 27px; min-width: 27px; height: 32px; min-height: 32px; padding: 4px; border-radius: 7px; }
+  .menu-toolbar .icon-control svg { width: 17px; height: 17px; }
+  .menu-category-section > .menu-grid { padding: 8px; }
+  body:not(.list-view).menu-size-small .menu-category-section > .menu-grid,
+  body:not(.list-view).menu-size-small .menu-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  body:not(.list-view).menu-size-medium .menu-category-section > .menu-grid,
+  body:not(.list-view).menu-size-medium .menu-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+  body:not(.list-view).menu-size-large .menu-category-section > .menu-grid,
+  body:not(.list-view).menu-size-large .menu-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  body:not(.list-view).menu-size-small .food-info { padding: 6px 5px; }
+  body:not(.list-view).menu-size-small .food-title { flex-direction: column; gap: 3px; }
+  body:not(.list-view).menu-size-small .food-title h3 { font-size: .72rem; line-height: 1.3; }
+  body:not(.list-view).menu-size-small .price { font-size: .68rem; white-space: normal; }
+  body:not(.list-view).menu-size-small .food-info p { font-size: .64rem; line-height: 1.3; }
+  body:not(.list-view).menu-size-small .food-card img { aspect-ratio: 1 / 1; }
+  body:not(.list-view).menu-size-medium .food-card img { aspect-ratio: 4 / 3; }
+  body:not(.list-view).menu-size-large .food-card img { aspect-ratio: 4 / 3; }
+  body:not(.list-view).menu-size-medium .food-info { padding: 11px; }
+  body:not(.list-view).menu-size-medium .food-title { flex-direction: column; gap: 4px; }
+  body:not(.list-view).menu-size-medium .food-title h3 { font-size: .95rem; }
+  body:not(.list-view).menu-size-medium .price { font-size: .85rem; }
+  /* List mode remains a full-width text-only menu, regardless of size. */
+  body.list-view .menu-category-section > .menu-grid { display: block; }
+}
+@media (max-width: 360px) {
+  body:not(.list-view).menu-size-small .menu-category-section > .menu-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .menu-toolbar .category-btn { padding-inline: 6px; }
+  .menu-toolbar .display-button, .menu-toolbar .size-button, .menu-toolbar .sort-button { width: 25px; min-width: 25px; }
+}

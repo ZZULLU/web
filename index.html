@@ -33,6 +33,10 @@
   <main>
     <section class="menu-header">
       <h2 id="menuHeading">Our Menu</h2>
+    </section>
+
+    <div class="menu-toolbar" aria-label="Menu categories and display options">
+      <nav id="categoryButtons" class="categories" aria-label="Menu categories"></nav>
       <div class="display-controls">
         <div class="control-group" role="group" aria-label="Sort menu">
           <button type="button" id="sortDefault" class="sort-button icon-control active" data-sort="default" aria-label="Restaurant order" title="Restaurant order" aria-pressed="true">
@@ -65,9 +69,7 @@
           </button>
         </div>
       </div>
-    </section>
-
-    <nav id="categoryButtons" class="categories" aria-label="Menu categories"></nav>
+    </div>
 
     <section id="menuContainer" class="menu-sections" aria-live="polite"></section>
   </main>
@@ -79,6 +81,6 @@
     <p>Tbilisi, Georgia</p>
     <a href="admin/index.html" class="footer-admin-link" id="adminButton">Admin</a>
   </footer>
-  <script src="script.js"></script>
+  <script src="script.js?v=20261020-mobile-fix"></script>
 </body>
 </html>

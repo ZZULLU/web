@@ -1,5 +1,5 @@
 /* Customer menu — reads shared online JSON, never stores restaurant menu in this browser. */
-const MENU_URL = 'data/menu.json';
+const MENU_URL = new URL('data/menu.json', document.baseURI).href;
 const CUSTOMER_VIEW_KEY = 'restaurantCustomerView';
 const LANGUAGE_KEY = 'restaurantLanguage';
 const THEME_KEY = 'restaurantTheme';
@@ -82,10 +82,10 @@ async function loadMenu() {
   menuLoadFailed = false;
   menuContainer.textContent = translations[currentLanguage].loading;
   try {
-    const response = await fetch(MENU_URL, { cache: 'no-store' });
+    const response = await fetch(MENU_URL, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
     if (!response.ok) throw new Error(`Menu request failed: ${response.status}`);
     const data = await response.json();
-    if (!data || !Array.isArray(data.categories) || !Array.isArray(data.dishes)) throw new Error('Invalid menu.json structure');
+    if (!data || !Array.isArray(data.categories) || !Array.isArray(data.dishes)) throw new Error('Invalid menu.json structure; ensure you have published data/menu.json');
     categories = data.categories.filter(c => c && c.id != null).map((c, i) => ({
       ...c, id: String(c.id), order: Number.isFinite(Number(c.order)) ? Number(c.order) : i
     }));
@@ -104,6 +104,7 @@ async function loadMenu() {
     dishes = [];
     categorySettings = {};
     menuLoadFailed = true;
+    menuContainer.title = `Menu URL: ${MENU_URL} — ${error.message}`;
   } finally {
     menuLoading = false;
     createCategories();
@@ -269,7 +270,7 @@ function createMenuSection(category, items) {
   items.forEach(d => grid.appendChild(createDishCard(d)));
   section.append(title, grid);
   section.addEventListener('toggle', () => {
-    categoryOpenStates.set(category.id, section.open);
+    if (section.isConnected) categoryOpenStates.set(category.id, section.open);
   });
   return section;
 }

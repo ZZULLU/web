@@ -111,12 +111,19 @@
             <summary><span id="currentMenuTitle">Current Menu</span><span class="section-arrow">▼</span></summary>
             <div class="section-content">
                 <p class="section-description" id="currentMenuDescription">Drag dishes using the handle on the left to change their order.</p>
+                <div class="admin-dish-search-wrap">
+                    <label for="adminDishSearch" id="adminDishSearchLabel">Search dishes</label>
+                    <input type="search" id="adminDishSearch" placeholder="Search dishes in Georgian or English..." autocomplete="off">
+                    <span id="adminDishSearchCount" class="admin-search-count" role="status" aria-live="polite"></span>
+                </div>
+                <p class="admin-order-tip" id="adminOrderTip">Use ↑ and ↓ beside a dish to move it one position, including on mobile. Dragging still works on desktop.</p>
                 <div id="dishList"></div>
             </div>
         </details>
     </div>
 
     <script src="admin.js"></script>
+    <script src="admin-enhancements.js"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {

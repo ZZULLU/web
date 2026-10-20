@@ -159,3 +159,24 @@ form { display: flex; flex-direction: column; gap: 11px; }
 .login-panel .password-field .password-eye-button svg {
   width: 22px; height: 22px; stroke: currentColor;
 }
+
+/* Admin dish search and accessible one-step ordering */
+.admin-dish-search-wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 9px 12px; margin: 16px 0 10px; }
+.admin-dish-search-wrap label { margin: 0; font-weight: 700; }
+#adminDishSearch { width: 100%; flex: 1 1 260px; min-width: 0; }
+.admin-search-count, .admin-order-tip { color: var(--text-secondary); font-size: .84rem; }
+.admin-order-tip { margin: 0 0 16px; }
+.dish-row.admin-filtered-out { display: none !important; }
+.dish-order-actions { display: flex; align-items: center; gap: 5px; grid-column: 1 / 2; }
+.dish-order-actions button { display: inline-grid; place-items: center; width: 33px; min-width: 33px; height: 35px; padding: 0; border: 1px solid var(--border-color); border-radius: 9px; background: var(--soft-background); color: var(--text-main); font-size: 1rem; }
+.dish-order-actions button:disabled { opacity: .28; cursor: not-allowed; }
+/* Keep the original thumbnail, details, edit and delete columns intact. */
+.dish-row { grid-template-columns: 94px 120px minmax(0, 1fr) auto; }
+.dish-row .drag-handle { display: none; }
+@media (max-width: 700px) {
+  .dish-row { grid-template-columns: 78px minmax(0, 1fr); }
+  .dish-order-actions { grid-column: 1; grid-row: 1; flex-wrap: wrap; }
+  .dish-row img { grid-column: 2; }
+  .dish-row .dish-info, .dish-row .actions { grid-column: 2; }
+  .dish-order-actions button { width: 32px; min-width: 32px; }
+}
