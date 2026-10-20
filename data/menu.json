@@ -53,6 +53,17 @@
       "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
       "image": "images/uploads/718b0fd3-6306-4fb4-843d-dd1d2f6839af.jpg",
       "order": 1
+    },
+    {
+      "id": "dish-ff0bfe53-f1da-484f-a112-0b5a59531c71",
+      "nameGe": "ხინკალი",
+      "nameEn": "khinkali",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 2,
+      "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
+      "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
+      "order": 2
     }
   ],
   "categorySettings": {
