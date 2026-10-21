@@ -66,9 +66,21 @@ function savePreference(key, value) {
 let customerView = readPreference(CUSTOMER_VIEW_KEY, { view: 'cards', size: 'medium' });
 if (!customerView || !['cards', 'list'].includes(customerView.view)) customerView = { view: 'cards', size: 'medium' };
 if (!['small', 'medium', 'large'].includes(customerView.size)) customerView.size = 'medium';
-let currentLanguage = localStorage.getItem(LANGUAGE_KEY) || 'en';
-let currentTheme = localStorage.getItem(THEME_KEY) || 'light';
-if (!translations[currentLanguage]) currentLanguage = 'en';
+// Older releases stored language as a bare string; newer ones JSON-encode it.
+// Support both formats and default first-time visitors to Georgian.
+function readStringPreference(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw === null) return fallback;
+    try {
+      const parsed = JSON.parse(raw);
+      return typeof parsed === 'string' ? parsed : fallback;
+    } catch { return raw; }
+  } catch { return fallback; }
+}
+let currentLanguage = readStringPreference(LANGUAGE_KEY, 'ge');
+let currentTheme = readStringPreference(THEME_KEY, 'light');
+if (!translations[currentLanguage]) currentLanguage = 'ge';
 if (!['dark', 'light'].includes(currentTheme)) currentTheme = 'light';
 
 function getTranslatedValue(ge, en) {
@@ -364,7 +376,7 @@ function createDishCard(dish) {
     const desc = document.createElement('p'); desc.textContent = descriptionText;
     info.appendChild(desc);
   }
-  if (personalListEnabled) {
+  if (isPersonalListAvailable()) {
     const add = document.createElement('button');
     add.type = 'button';
     add.className = 'personal-add-button';
@@ -439,6 +451,7 @@ function filterMenu() {
       .filter(Boolean).join(' ').toLowerCase();
     return belongs && searchable.includes(q);
   });
+  // The setting is already loaded at this point; cards read it directly.
   displayMenu(filtered);
 }
 searchInput.addEventListener('input', () => {
@@ -480,10 +493,13 @@ personalPanel.setAttribute('aria-label', 'My list');
 personalPanel.hidden = true;
 document.body.appendChild(personalPanel);
 
+function isPersonalListAvailable() {
+  return categories.some(c => categorySettings[c.id]?.personalListEnabled === true);
+}
 function syncPersonalListFeature() {
   // The same flag is copied into category settings, which the existing Worker
   // already validates and saves. No Cloudflare backend modification is needed.
-  personalListEnabled = categories.some(c => categorySettings[c.id]?.personalListEnabled === true);
+  personalListEnabled = isPersonalListAvailable();
   personalFloat.hidden = !personalListEnabled;
   if (!personalListEnabled) { personalPanelOpen = false; personalPanel.hidden = true; }
   if (personalListEnabled) positionFloatingButton();
