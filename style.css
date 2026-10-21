@@ -658,3 +658,39 @@ footer p { margin: 7px 0; color: var(--footer-text); opacity: .84; }
   #searchSuggestions .search-suggestion-detail strong { font-size: .76rem; }
   #searchSuggestions > .search-suggestion-item > .search-suggestion-price { font-size: .72rem; }
 }
+
+/* =====================================================
+   Optional customer dish-planning list
+===================================================== */
+.personal-add-button { align-self: flex-end; display: grid; place-items: center; margin-top: 12px; width: 38px; height: 38px; border: 0; border-radius: 50%; background: var(--button-main); color: var(--button-text); font-size: 27px; font-weight: 600; line-height: 1; box-shadow: 0 3px 12px rgba(0,0,0,.12); }
+.personal-add-button:hover { transform: scale(1.08); }
+.personal-list-float { position: fixed; z-index: 1200; display: grid; place-items: center; width: 62px; height: 62px; padding: 14px; border: 2px solid var(--card-background); border-radius: 50%; color: var(--button-text); background: var(--button-main); box-shadow: 0 9px 26px rgba(0,0,0,.28); touch-action: none; user-select: none; cursor: grab; }
+.personal-list-float:active { cursor: grabbing; }
+.personal-list-float svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.personal-list-badge { position: absolute; right: -5px; top: -7px; min-width: 23px; height: 23px; padding: 2px 5px; border-radius: 13px; background: var(--accent-2); color: var(--page-background); font: 800 12px/19px var(--body-font); text-align: center; }
+.personal-pulse { animation: personalPulse .25s ease-out; }
+@keyframes personalPulse { 50% { transform: scale(1.12); } }
+.personal-list-panel { position: fixed; z-index: 1201; width: min(360px, calc(100vw - 24px)); max-height: min(560px, calc(100dvh - 24px)); overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--border-color); border-radius: 20px; background: var(--card-background); color: var(--text-main); box-shadow: 0 18px 50px rgba(0,0,0,.28); }
+.personal-panel-header { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 15px 17px; background: var(--soft-background); }
+.personal-panel-header h2 { margin: 0; font: 700 1.35rem/1.3 var(--heading-font); }
+.personal-panel-close { width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: var(--card-background); color: var(--text-main); font-size: 23px; }
+.personal-panel-items { min-height: 60px; overflow-y: auto; overscroll-behavior: contain; padding: 5px 15px; }
+.personal-empty { text-align: center; color: var(--text-secondary); }
+.personal-panel-item { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--border-color); padding: 11px 0; }
+.personal-item-detail { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.personal-item-detail strong { font-size: .89rem; overflow-wrap: anywhere; }
+.personal-item-detail span { font-size: .8rem; color: var(--accent-2); font-weight: 700; white-space: nowrap; }
+.personal-quantity-controls { display: flex; align-items: center; gap: 3px; flex-shrink: 0; }
+.personal-quantity-btn, .personal-remove-btn { width: 29px; height: 31px; display: grid; place-items: center; border: 1px solid var(--border-color); border-radius: 8px; padding: 0; background: var(--soft-background); color: var(--text-main); font-weight: 700; }
+.personal-remove-btn { margin-left: 5px; color: #c15d57; }
+.personal-quantity-value { min-width: 20px; text-align: center; font-size: .9rem; font-weight: 700; }
+.personal-panel-footer { padding: 13px 17px 16px; border-top: 1px solid var(--border-color); }
+.personal-panel-total { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-weight: 700; }
+.personal-panel-total strong { color: var(--accent-2); font-size: 1.15rem; }
+.personal-panel-footer p { margin: 9px 0 12px; color: var(--text-secondary); font-size: .77rem; }
+.personal-clear-btn { width: 100%; padding: 9px; border: 1px solid var(--border-color); border-radius: 10px; color: var(--text-main); background: var(--soft-background); }
+.personal-clear-btn:disabled { opacity: .45; cursor: default; }
+/* Keep both the + button and prices legible in 3-column phone view. */
+@media (max-width: 600px) { .personal-add-button { width: 31px; height: 31px; margin-top: 6px; font-size: 23px; } .personal-panel-item { gap: 6px; } }
+/* hidden must override our display rules */
+.personal-list-float[hidden], .personal-list-panel[hidden] { display: none !important; }

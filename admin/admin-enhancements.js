@@ -90,3 +90,88 @@
   observeList(dishList, 'dish');
   observeList(categoryList, 'category');
 })();
+
+/* =========================================================
+   Restaurant-wide personal list switch (online via GitHub).
+   Uses the existing authenticated commitChange() in admin.js.
+   The existing Worker accepts extra category setting fields.
+   We copy the on/off flag to every current category so it
+   survives deletion/reordering without changing the Worker.
+========================================================= */
+(() => {
+  const adminContainer = document.getElementById('adminContainer');
+  const categorySection = document.getElementById('categoryList')?.closest('.admin-section');
+  if (!adminContainer || !categorySection) return;
+
+  const section = document.createElement('section');
+  section.className = 'admin-personal-feature';
+  section.innerHTML = `
+    <div class="admin-personal-feature-text">
+      <h2 id="personalFeatureTitle">Customer personal lists</h2>
+      <p id="personalFeatureDescription">Let customers save dishes and quantities in their own browser before speaking to the waiter. No orders are sent.</p>
+    </div>
+    <label class="admin-personal-switch">
+      <input id="enablePersonalLists" type="checkbox" disabled>
+      <span class="admin-personal-switch-track" aria-hidden="true"></span>
+      <span id="personalFeatureStatus">Off</span>
+    </label>
+    <p class="admin-personal-hint" id="personalFeatureHint" role="status" aria-live="polite"></p>
+  `;
+  adminContainer.insertBefore(section, categorySection);
+  const checkbox = section.querySelector('#enablePersonalLists');
+  const status = section.querySelector('#personalFeatureStatus');
+  const hint = section.querySelector('#personalFeatureHint');
+  let busy = false;
+
+  function update() {
+    const ge = localStorage.getItem('restaurantLanguage') === 'ge';
+    section.querySelector('#personalFeatureTitle').textContent = ge ? 'მომხმარებლის პირადი სია' : 'Customer personal lists';
+    section.querySelector('#personalFeatureDescription').textContent = ge
+      ? 'მომხმარებლებს შეუძლიათ კერძებისა და რაოდენობების შენახვა საკუთარ ბრაუზერში მიმტანთან საუბრამდე. შეკვეთა არ იგზავნება.'
+      : 'Let customers save dishes and quantities in their own browser before speaking to the waiter. No orders are sent.';
+    const ready = typeof menuReady !== 'undefined' && menuReady;
+    const hasCategories = typeof categories !== 'undefined' && categories.length > 0;
+    const enabled = ready && categories.some(c => categorySettings[c.id]?.personalListEnabled === true);
+    checkbox.checked = enabled;
+    checkbox.disabled = busy || !ready || !hasCategories;
+    status.textContent = ge ? (enabled ? 'ჩართულია' : 'გამორთულია') : (enabled ? 'On' : 'Off');
+    if (!busy) hint.textContent = hasCategories
+      ? ''
+      : (ge ? 'ჯერ დაამატეთ მინიმუმ ერთი კატეგორია.' : 'Add at least one category before enabling lists.');
+  }
+
+  checkbox.addEventListener('change', async () => {
+    if (busy || typeof commitChange !== 'function') return;
+    const next = checkbox.checked;
+    busy = true;
+    checkbox.disabled = true;
+    hint.textContent = localStorage.getItem('restaurantLanguage') === 'ge' ? 'ინახება...' : 'Saving to GitHub...';
+    try {
+      const saved = await commitChange(() => {
+        // Preserve showImages and any other per-category settings.
+        for (const cat of categories) {
+          categorySettings[cat.id] = {
+            ...categorySettings[cat.id],
+            showImages: categorySettings[cat.id]?.showImages !== false,
+            personalListEnabled: next
+          };
+        }
+      });
+      hint.textContent = saved
+        ? (localStorage.getItem('restaurantLanguage') === 'ge'
+          ? 'შენახულია. საიტზე გამოჩენას შესაძლოა რამდენიმე წუთი დასჭირდეს.'
+          : 'Saved. GitHub Pages may take a minute to publish the change.')
+        : (localStorage.getItem('restaurantLanguage') === 'ge' ? 'შენახვა ვერ მოხერხდა.' : 'Could not save the setting.');
+    } finally {
+      busy = false;
+      update();
+    }
+  });
+
+  document.getElementById('languageGe')?.addEventListener('click', update);
+  document.getElementById('languageEn')?.addEventListener('click', update);
+  const categoryList = document.getElementById('categoryList');
+  const observer = new MutationObserver(update);
+  if (categoryList) observer.observe(categoryList, { childList: true });
+  update();
+})();

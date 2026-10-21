@@ -3,6 +3,8 @@ const MENU_URL = new URL('data/menu.json', document.baseURI).href;
 const CUSTOMER_VIEW_KEY = 'restaurantCustomerView';
 const LANGUAGE_KEY = 'restaurantLanguage';
 const THEME_KEY = 'restaurantTheme';
+const PERSONAL_LIST_KEY = 'restaurantPersonalListV1';
+const FLOAT_POSITION_KEY = 'restaurantPersonalListPositionV1';
 
 const translations = {
   en: {
@@ -111,6 +113,7 @@ async function loadMenu() {
     createCategories();
     filterMenu();
     updateSearchSuggestions();
+    syncPersonalListFeature();
   }
 }
 
@@ -161,6 +164,7 @@ function changeLanguage(lang) {
   createCategories();
   filterMenu();
   updateSearchSuggestions();
+  renderPersonalList();
 }
 languageToggle.addEventListener('click', () => changeLanguage(currentLanguage === 'ge' ? 'en' : 'ge'));
 
@@ -358,6 +362,16 @@ function createDishCard(dish) {
     const desc = document.createElement('p'); desc.textContent = descriptionText;
     info.appendChild(desc);
   }
+  if (personalListEnabled) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'personal-add-button';
+    add.textContent = '+';
+    add.setAttribute('aria-label', currentLanguage === 'ge' ? `სიაში დამატება: ${getDishName(dish)}` : `Add ${getDishName(dish)} to my list`);
+    add.title = add.getAttribute('aria-label');
+    add.addEventListener('click', () => addPersonalDish(dish.id));
+    info.appendChild(add);
+  }
   card.appendChild(info); return card;
 }
 function createMenuSection(category, items) {
@@ -429,6 +443,190 @@ searchInput.addEventListener('input', () => {
   filterMenu();
   updateSearchSuggestions();
 });
+
+/* =======================================================
+   PRIVATE CUSTOMER PLANNING LIST
+   Only quantities / floating position live in this browser.
+   The restaurant enables it through shared menu.json settings.
+======================================================= */
+const personalWords = {
+  en: { title: 'My list', empty: 'Your list is empty', total: 'Estimated total', clear: 'Clear list', remove: 'Remove', close: 'Close list', open: 'Open my list', note: 'Show this list to your waiter. This does not place an order.', count: 'items', drag: 'Drag to move' },
+  ge: { title: 'ჩემი სია', empty: 'სია ცარიელია', total: 'სავარაუდო ჯამი', clear: 'სიის გასუფთავება', remove: 'წაშლა', close: 'სიის დახურვა', open: 'ჩემი სიის გახსნა', note: 'აჩვენეთ სია მიმტანს. ეს შეკვეთას არ აგზავნის.', count: 'ცალი', drag: 'გადაადგილება' }
+};
+let personalListEnabled = false;
+let personalQuantities = readPreference(PERSONAL_LIST_KEY, {});
+if (!personalQuantities || typeof personalQuantities !== 'object' || Array.isArray(personalQuantities)) personalQuantities = {};
+let floatingPosition = readPreference(FLOAT_POSITION_KEY, null);
+let personalPanelOpen = false;
+let draggedRecently = false;
+
+const personalFloat = document.createElement('button');
+personalFloat.type = 'button';
+personalFloat.id = 'personalListFloat';
+personalFloat.className = 'personal-list-float';
+personalFloat.setAttribute('aria-label', 'Open my list');
+personalFloat.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 11h16M4 17h11"/><path d="M18 16v6M15 19h6"/></svg><span id="personalListBadge" class="personal-list-badge">0</span>';
+personalFloat.hidden = true;
+document.body.appendChild(personalFloat);
+
+const personalPanel = document.createElement('section');
+personalPanel.id = 'personalListPanel';
+personalPanel.className = 'personal-list-panel';
+personalPanel.setAttribute('role', 'dialog');
+personalPanel.setAttribute('aria-modal', 'false');
+personalPanel.setAttribute('aria-label', 'My list');
+personalPanel.hidden = true;
+document.body.appendChild(personalPanel);
+
+function syncPersonalListFeature() {
+  // The same flag is copied into category settings, which the existing Worker
+  // already validates and saves. No Cloudflare backend modification is needed.
+  personalListEnabled = categories.some(c => categorySettings[c.id]?.personalListEnabled === true);
+  personalFloat.hidden = !personalListEnabled;
+  if (!personalListEnabled) { personalPanelOpen = false; personalPanel.hidden = true; }
+  if (personalListEnabled) positionFloatingButton();
+  renderPersonalList();
+}
+function cleanPersonalQuantities() {
+  for (const key of Object.keys(personalQuantities)) {
+    if (!Number.isSafeInteger(personalQuantities[key]) || personalQuantities[key] < 1 || personalQuantities[key] > 999) delete personalQuantities[key];
+  }
+}
+function savePersonalQuantities() {
+  cleanPersonalQuantities();
+  savePreference(PERSONAL_LIST_KEY, personalQuantities);
+  renderPersonalList();
+}
+function addPersonalDish(id) {
+  if (!personalListEnabled) return;
+  const dish = dishes.find(d => d.id === String(id));
+  if (!dish) return;
+  personalQuantities[id] = Math.min(999, (personalQuantities[id] || 0) + 1);
+  savePersonalQuantities();
+  personalFloat.classList.remove('personal-pulse');
+  void personalFloat.offsetWidth;
+  personalFloat.classList.add('personal-pulse');
+}
+function changePersonalQuantity(id, amount) {
+  const qty = (personalQuantities[id] || 0) + amount;
+  if (qty < 1) delete personalQuantities[id];
+  else personalQuantities[id] = Math.min(999, qty);
+  savePersonalQuantities();
+}
+function makePersonalButton(text, label, callback, className) {
+  const button = document.createElement('button');
+  button.type = 'button';
+  button.className = className;
+  button.textContent = text;
+  button.setAttribute('aria-label', label);
+  button.addEventListener('click', callback);
+  return button;
+}
+function renderPersonalList() {
+  const w = personalWords[currentLanguage];
+  const active = Object.entries(personalQuantities)
+    .map(([id, qty]) => ({ dish: dishes.find(d => d.id === id), qty }))
+    .filter(x => x.dish && Number.isSafeInteger(x.qty) && x.qty > 0);
+  const count = active.reduce((sum, x) => sum + x.qty, 0);
+  $('personalListBadge').textContent = String(count);
+  personalFloat.setAttribute('aria-label', `${w.open} (${count})`);
+  personalPanel.replaceChildren();
+  if (!personalListEnabled || !personalPanelOpen) return;
+  const header = document.createElement('div');
+  header.className = 'personal-panel-header';
+  const title = document.createElement('h2');
+  title.textContent = `${w.title} · ${count}`;
+  const close = makePersonalButton('×', w.close, closePersonalPanel, 'personal-panel-close');
+  header.append(title, close);
+  personalPanel.append(header);
+  const content = document.createElement('div');
+  content.className = 'personal-panel-items';
+  if (!active.length) {
+    const empty = document.createElement('p'); empty.className = 'personal-empty'; empty.textContent = w.empty; content.append(empty);
+  }
+  for (const { dish, qty } of active) {
+    const row = document.createElement('div'); row.className = 'personal-panel-item';
+    const detail = document.createElement('div'); detail.className = 'personal-item-detail';
+    const name = document.createElement('strong'); name.textContent = getDishName(dish);
+    const subtotal = document.createElement('span'); subtotal.textContent = `${(Number(dish.price) * qty).toFixed(2)} GEL`;
+    detail.append(name, subtotal);
+    const controls = document.createElement('div'); controls.className = 'personal-quantity-controls';
+    controls.append(
+      makePersonalButton('−', `Remove one ${getDishName(dish)}`, () => changePersonalQuantity(dish.id, -1), 'personal-quantity-btn'),
+      Object.assign(document.createElement('span'), { textContent: String(qty), className: 'personal-quantity-value' }),
+      makePersonalButton('+', `Add one ${getDishName(dish)}`, () => changePersonalQuantity(dish.id, 1), 'personal-quantity-btn'),
+      makePersonalButton('×', `${w.remove}: ${getDishName(dish)}`, () => { delete personalQuantities[dish.id]; savePersonalQuantities(); }, 'personal-remove-btn')
+    );
+    row.append(detail, controls); content.append(row);
+  }
+  personalPanel.append(content);
+  const footer = document.createElement('div'); footer.className = 'personal-panel-footer';
+  const total = document.createElement('div'); total.className = 'personal-panel-total';
+  total.append(Object.assign(document.createElement('span'), { textContent: w.total }),
+    Object.assign(document.createElement('strong'), { textContent: active.reduce((sum, x) => sum + Number(x.dish.price) * x.qty, 0).toFixed(2) + ' GEL' }));
+  const note = document.createElement('p'); note.textContent = w.note;
+  const clear = makePersonalButton(w.clear, w.clear, () => { personalQuantities = {}; savePersonalQuantities(); }, 'personal-clear-btn');
+  clear.disabled = count === 0;
+  footer.append(total, note, clear); personalPanel.append(footer);
+  positionPersonalPanel();
+}
+function closePersonalPanel() { personalPanelOpen = false; personalPanel.hidden = true; personalFloat.setAttribute('aria-expanded', 'false'); }
+function positionFloatingButton() {
+  const size = 62, edge = 12;
+  const x = floatingPosition && Number.isFinite(floatingPosition.x) ? floatingPosition.x : window.innerWidth - size - 20;
+  const y = floatingPosition && Number.isFinite(floatingPosition.y) ? floatingPosition.y : window.innerHeight - size - 92;
+  const left = Math.max(edge, Math.min(window.innerWidth - size - edge, x));
+  const top = Math.max(edge, Math.min(window.innerHeight - size - edge, y));
+  personalFloat.style.left = left + 'px';
+  personalFloat.style.top = top + 'px';
+  floatingPosition = { x: left, y: top };
+  if (personalPanelOpen) positionPersonalPanel();
+}
+function positionPersonalPanel() {
+  if (!personalPanelOpen) return;
+  const margin = 12;
+  const width = personalPanel.offsetWidth || 340;
+  const height = personalPanel.offsetHeight || 350;
+  const bx = personalFloat.getBoundingClientRect();
+  let left = bx.right - width;
+  let top = bx.top - height - 10;
+  if (top < margin) top = bx.bottom + 10;
+  left = Math.max(margin, Math.min(window.innerWidth - width - margin, left));
+  top = Math.max(margin, Math.min(window.innerHeight - height - margin, top));
+  personalPanel.style.left = left + 'px'; personalPanel.style.top = top + 'px';
+}
+let dragState = null;
+personalFloat.addEventListener('pointerdown', e => {
+  if (e.button !== 0) return;
+  const rect = personalFloat.getBoundingClientRect();
+  dragState = { id: e.pointerId, dx: e.clientX - rect.left, dy: e.clientY - rect.top, sx: e.clientX, sy: e.clientY, moved: false };
+  personalFloat.setPointerCapture(e.pointerId);
+});
+personalFloat.addEventListener('pointermove', e => {
+  if (!dragState || e.pointerId !== dragState.id) return;
+  if (Math.hypot(e.clientX - dragState.sx, e.clientY - dragState.sy) > 6) dragState.moved = true;
+  if (!dragState.moved) return;
+  floatingPosition = { x: e.clientX - dragState.dx, y: e.clientY - dragState.dy };
+  positionFloatingButton();
+});
+personalFloat.addEventListener('pointerup', e => {
+  if (!dragState || dragState.id !== e.pointerId) return;
+  draggedRecently = dragState.moved;
+  if (dragState.moved) savePreference(FLOAT_POSITION_KEY, floatingPosition);
+  dragState = null;
+});
+personalFloat.addEventListener('pointercancel', () => { dragState = null; });
+personalFloat.addEventListener('click', () => {
+  if (draggedRecently) { draggedRecently = false; return; }
+  if (!personalListEnabled) return;
+  personalPanelOpen = !personalPanelOpen;
+  personalPanel.hidden = !personalPanelOpen;
+  personalFloat.setAttribute('aria-expanded', String(personalPanelOpen));
+  renderPersonalList();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && personalPanelOpen) closePersonalPanel(); });
+window.addEventListener('resize', positionFloatingButton);
+
 applyTheme();
 applyCustomerView();
 updateStaticLanguage();

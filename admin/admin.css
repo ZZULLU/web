@@ -228,3 +228,20 @@ form { display: flex; flex-direction: column; gap: 11px; }
   .category-actions { grid-column: 2; }
   .dish-row img, .dish-row .dish-info, .dish-row .actions { grid-column: 2; }
 }
+
+/* ======================================
+   CUSTOMER PERSONAL LIST — ADMIN SWITCH
+====================================== */
+.admin-personal-feature { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 0 0 18px; padding: 22px 25px; background: var(--panel-background); border: 1px solid var(--border-color); border-radius: 15px; box-shadow: 0 3px 12px rgba(0,0,0,.06); }
+.admin-personal-feature-text { flex: 1 1 230px; }
+.admin-personal-feature h2 { margin: 0 0 6px; font-size: 1.25rem; }
+.admin-personal-feature p { color: var(--text-secondary); margin: 0; line-height: 1.5; font-size: .92rem; }
+.admin-personal-switch { display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 700; white-space: nowrap; }
+.admin-personal-switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.admin-personal-switch-track { position: relative; display: inline-block; width: 53px; height: 29px; background: var(--border-color); border-radius: 20px; transition: background .2s; }
+.admin-personal-switch-track::before { content: ''; position: absolute; width: 23px; height: 23px; top: 3px; left: 3px; background: #fff; border-radius: 50%; box-shadow: 0 2px 5px rgba(0,0,0,.15); transition: transform .2s; }
+.admin-personal-switch input:checked + .admin-personal-switch-track { background: var(--button-main); }
+.admin-personal-switch input:checked + .admin-personal-switch-track::before { transform: translateX(24px); }
+.admin-personal-switch input:focus-visible + .admin-personal-switch-track { outline: 3px solid var(--text-main); outline-offset: 3px; }
+.admin-personal-switch input:disabled + .admin-personal-switch-track { opacity: .45; }
+.admin-personal-feature .admin-personal-hint { width: 100%; font-size: .82rem; }
