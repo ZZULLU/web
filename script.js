@@ -111,9 +111,11 @@ async function loadMenu() {
   } finally {
     menuLoading = false;
     createCategories();
+    // Set the admin-controlled feature flag BEFORE rendering dish cards.
+    // Otherwise the floating button appears, but the initial cards lack "+".
+    syncPersonalListFeature();
     filterMenu();
     updateSearchSuggestions();
-    syncPersonalListFeature();
   }
 }
 
