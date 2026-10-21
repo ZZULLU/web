@@ -7,15 +7,15 @@
       "order": 0
     },
     {
-      "id": "category-f5188c66-5f02-4018-9856-452f2ff89914",
-      "nameGe": "ცხელი კერძი",
-      "nameEn": "Hot Dish",
-      "order": 1
-    },
-    {
       "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
       "nameGe": "სალათები",
       "nameEn": "salads",
+      "order": 1
+    },
+    {
+      "id": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "nameGe": "ცხელი კერძი",
+      "nameEn": "Hot Dish",
       "order": 2
     },
     {
