@@ -405,3 +405,102 @@ footer p { margin: 7px 0; color: var(--footer-text); opacity: .84; }
   .menu-toolbar .category-btn { padding-inline: 6px; }
   .menu-toolbar .display-button, .menu-toolbar .size-button, .menu-toolbar .sort-button { width: 25px; min-width: 25px; }
 }
+
+
+/* ========================================================
+   LAYOUT UPDATE — ALL CATEGORY BUTTONS + SINGLE ICON ROW
+   Keep the existing card and dark-mode design unchanged.
+======================================================== */
+.menu-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.menu-toolbar .category-filter-row { width: 100%; min-width: 0; }
+.menu-toolbar .categories {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  max-width: 100%;
+  overflow: visible;
+  padding: 4px;
+  margin: 0;
+  scrollbar-width: auto;
+  scroll-snap-type: none;
+}
+.menu-toolbar .category-btn { white-space: normal; overflow-wrap: anywhere; text-align: center; }
+.menu-toolbar .display-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 10px;
+  width: 100%;
+  margin: 0;
+}
+.menu-toolbar .control-group { display: flex; flex: 0 0 auto; flex-wrap: nowrap; gap: 5px; }
+/* The category expand icon uses drawn lines, not a font glyph. */
+.menu-category-section > summary { min-height: 72px; }
+.menu-category-section .category-item-count { margin-left: auto; }
+.menu-category-section .section-chevron {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 38px;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  margin: 0;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background: var(--card-background);
+  color: transparent;
+  font-size: 0;
+  line-height: 0;
+  transform: none !important;
+  transition: background-color .2s ease, border-color .2s ease;
+}
+.menu-category-section .section-chevron::before {
+  content: '';
+  display: block;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid var(--text-main);
+  border-bottom: 2px solid var(--text-main);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .2s ease;
+}
+.menu-category-section[open] .section-chevron::before {
+  transform: translateY(3px) rotate(225deg);
+}
+.menu-category-section > summary:hover .section-chevron { background: var(--page-background); }
+@media (max-width: 600px) {
+  .menu-toolbar { gap: 11px; margin-bottom: 20px; }
+  .menu-toolbar .categories { gap: 6px; padding: 2px; }
+  .menu-toolbar .category-btn { font-size: .82rem; padding: 8px 11px; }
+  .menu-toolbar .display-controls { flex-direction: row; flex-wrap: nowrap; gap: 4px; }
+  .menu-toolbar .control-group { gap: 2px; padding: 3px; border-radius: 12px; }
+  .menu-toolbar .display-button,
+  .menu-toolbar .size-button,
+  .menu-toolbar .sort-button {
+    width: 34px; min-width: 34px; height: 38px; min-height: 38px;
+    padding: 6px; border-radius: 9px;
+  }
+  .menu-toolbar .icon-control svg { width: 19px; height: 19px; }
+  .menu-category-section > summary { min-height: 64px; padding: 12px 13px; }
+  .menu-category-section .section-chevron { flex-basis: 34px; width: 34px; height: 34px; }
+}
+@media (max-width: 370px) {
+  .menu-toolbar .display-controls { gap: 2px; }
+  .menu-toolbar .control-group { gap: 1px; padding: 2px; }
+  .menu-toolbar .display-button,
+  .menu-toolbar .size-button,
+  .menu-toolbar .sort-button { width: 31px; min-width: 31px; height: 35px; min-height: 35px; padding: 5px; }
+  .menu-toolbar .icon-control svg { width: 18px; height: 18px; }
+}

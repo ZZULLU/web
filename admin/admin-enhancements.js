@@ -1,82 +1,92 @@
 /*
- * UI-only enhancements for the existing authenticated Admin dashboard.
- * DO NOT replace admin.js: it contains your actual Worker URL and login flow.
- * This file reuses the existing reorderDishes(), which persists changes online.
+ * UI enhancements for the existing Admin page.
+ * Online persistence and authentication remain in admin.js.
+ * This uses the existing reorderDishes() and reorderCategories().
  */
 (() => {
   const search = document.getElementById('adminDishSearch');
   const count = document.getElementById('adminDishSearchCount');
-  const list = document.getElementById('dishList');
-  if (!search || !count || !list) return;
+  const dishList = document.getElementById('dishList');
+  const categoryList = document.getElementById('categoryList');
+  if (!search || !count || !dishList || !categoryList) return;
 
-  const currentLanguage = () => localStorage.getItem('restaurantLanguage') === 'ge' ? 'ge' : 'en';
-  const allRows = () => Array.from(list.querySelectorAll('.dish-row'));
+  const isGeorgian = () => localStorage.getItem('restaurantLanguage') === 'ge';
+  const rowsOf = list => Array.from(list.children).filter(row =>
+    row.classList.contains('dish-row') || row.classList.contains('category-row')
+  );
+  let orderSaving = false;
 
-  function applyFilter() {
+  function applyDishSearch() {
     const q = search.value.trim().toLocaleLowerCase();
-    const rows = allRows();
-    let visible = 0;
+    const rows = rowsOf(dishList);
+    let shown = 0;
     for (const row of rows) {
       const info = row.querySelector('.dish-info');
-      const matches = !q || (info && info.textContent.toLocaleLowerCase().includes(q));
-      row.classList.toggle('admin-filtered-out', !matches);
-      if (matches) visible++;
+      const match = !q || Boolean(info && info.textContent.toLocaleLowerCase().includes(q));
+      row.classList.toggle('admin-filtered-out', !match);
+      if (match) shown++;
     }
-    count.textContent = currentLanguage() === 'ge'
-      ? `${visible} / ${rows.length} კერძი`
-      : `${visible} / ${rows.length} dishes`;
+    count.textContent = isGeorgian()
+      ? `${shown} / ${rows.length} კერძი`
+      : `${shown} / ${rows.length} dishes`;
   }
 
-  function decorateRows() {
-    const rows = allRows();
+  function makeOrderButtons(list, type) {
+    const rows = rowsOf(list);
+    const selector = type === 'dish' ? '.dish-order-actions' : '.category-order-actions';
     rows.forEach((row, index) => {
-      if (row.querySelector('.dish-order-actions')) return;
+      if (row.querySelector(selector)) return;
       const controls = document.createElement('div');
-      controls.className = 'dish-order-actions';
+      controls.className = type === 'dish' ? 'dish-order-actions' : 'category-order-actions';
       controls.setAttribute('role', 'group');
-      controls.setAttribute('aria-label', 'Reorder dish');
-      const up = document.createElement('button');
-      up.type = 'button';
-      up.textContent = '↑';
-      up.title = 'Move dish up';
-      up.setAttribute('aria-label', 'Move dish up');
-      up.disabled = index === 0;
-      const down = document.createElement('button');
-      down.type = 'button';
-      down.textContent = '↓';
-      down.title = 'Move dish down';
-      down.setAttribute('aria-label', 'Move dish down');
-      down.disabled = index === rows.length - 1;
-      up.addEventListener('click', async () => {
-        const previous = allRows()[index - 1];
-        if (previous && typeof reorderDishes === 'function') {
-          up.disabled = true;
-          await reorderDishes(row.dataset.id, previous.dataset.id);
-        }
-      });
-      down.addEventListener('click', async () => {
-        const next = allRows()[index + 1];
-        if (next && typeof reorderDishes === 'function') {
-          down.disabled = true;
-          await reorderDishes(row.dataset.id, next.dataset.id);
-        }
-      });
-      controls.append(up, down);
+      controls.setAttribute('aria-label', type === 'dish' ? 'Dish order' : 'Category order');
+
+      const makeButton = (direction, targetIndex) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.textContent = direction === 'up' ? '↑' : '↓';
+        button.title = `Move ${type} ${direction}`;
+        button.setAttribute('aria-label', button.title);
+        button.disabled = targetIndex < 0 || targetIndex >= rows.length;
+        button.addEventListener('click', async () => {
+          if (orderSaving) return;
+          const liveRows = rowsOf(list);
+          const currentIndex = liveRows.findIndex(r => r.dataset.id === row.dataset.id);
+          const nextIndex = currentIndex + (direction === 'up' ? -1 : 1);
+          if (currentIndex < 0 || nextIndex < 0 || nextIndex >= liveRows.length) return;
+          const functionName = type === 'dish' ? 'reorderDishes' : 'reorderCategories';
+          const reorder = type === 'dish'
+            ? (typeof reorderDishes === 'function' ? reorderDishes : null)
+            : (typeof reorderCategories === 'function' ? reorderCategories : null);
+          if (!reorder) { console.error(`${functionName} is unavailable`); return; }
+          orderSaving = true;
+          try {
+            await reorder(row.dataset.id, liveRows[nextIndex].dataset.id);
+          } finally {
+            orderSaving = false;
+          }
+        });
+        return button;
+      };
+      controls.append(makeButton('up', index - 1), makeButton('down', index + 1));
       row.insertBefore(controls, row.firstChild);
     });
-    applyFilter();
+    if (type === 'dish') applyDishSearch();
   }
 
-  /* The existing admin code completely redraws the dish rows after a save.
-     Watch only direct child changes so adding controls doesn't cause a loop. */
-  const observer = new MutationObserver(mutations => {
-    if (mutations.some(m => m.type === 'childList' && m.target === list)) {
-      decorateRows();
-    }
-  });
-  observer.observe(list, { childList: true });
-  search.addEventListener('input', applyFilter);
-  document.getElementById('languageGe')?.addEventListener('click', applyFilter);
-  document.getElementById('languageEn')?.addEventListener('click', applyFilter);
-  decorateRows();
+  const observeList = (list, type) => {
+    const refresh = () => makeOrderButtons(list, type);
+    const observer = new MutationObserver(mutations => {
+      // Only react when the original Admin renderer replaces the list's rows.
+      if (mutations.some(m => m.target === list && m.type === 'childList')) refresh();
+    });
+    observer.observe(list, { childList: true });
+    refresh();
+  };
+
+  search.addEventListener('input', applyDishSearch);
+  document.getElementById('languageGe')?.addEventListener('click', applyDishSearch);
+  document.getElementById('languageEn')?.addEventListener('click', applyDishSearch);
+  observeList(dishList, 'dish');
+  observeList(categoryList, 'category');
 })();
