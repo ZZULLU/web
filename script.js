@@ -49,6 +49,11 @@ let dishes = [];
 let categorySettings = {};
 let menuLoading = true;
 let menuLoadFailed = false;
+let menuRequestSerial = 0;
+let lastMenuCheck = 0;
+let lastAppliedMenuJson = null;
+const MENU_REFRESH_INTERVAL_MS = 60_000; // Only while the page is visible
+
 let selectedCategoryId = 'all';
 let selectedSort = 'default';
 const categoryOpenStates = new Map();
@@ -92,15 +97,39 @@ function getCategoryName(c) { return getTranslatedValue(c.nameGe, c.nameEn); }
 function getDishName(d) { return getTranslatedValue(d.nameGe, d.nameEn); }
 function getDishDescription(d) { return getTranslatedValue(d.descriptionGe, d.descriptionEn); }
 
-async function loadMenu() {
-  menuLoading = true;
-  menuLoadFailed = false;
-  menuContainer.textContent = translations[currentLanguage].loading;
+async function loadMenu({ background = false } = {}) {
+  // GitHub Pages and mobile browsers can hold older menu.json responses.
+  // A unique request URL plus no-store asks for the current published version.
+  // The menu is also rechecked when a suspended mobile tab resumes.
+  const requestId = ++menuRequestSerial;
+  lastMenuCheck = Date.now();
+  const hadMenu = lastAppliedMenuJson !== null;
+  if (!background || !hadMenu) {
+    menuLoading = true;
+    menuLoadFailed = false;
+    if (!hadMenu) menuContainer.textContent = translations[currentLanguage].loading;
+  }
   try {
-    const response = await fetch(MENU_URL, { cache: 'no-store', headers: { 'Accept': 'application/json' } });
+    const freshUrl = new URL(MENU_URL);
+    freshUrl.searchParams.set('_menu_refresh', String(Date.now()));
+    const response = await fetch(freshUrl.href, {
+      cache: 'no-store',
+      headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' }
+    });
     if (!response.ok) throw new Error(`Menu request failed: ${response.status}`);
     const data = await response.json();
-    if (!data || !Array.isArray(data.categories) || !Array.isArray(data.dishes)) throw new Error('Invalid menu.json structure; ensure you have published data/menu.json');
+    if (!data || !Array.isArray(data.categories) || !Array.isArray(data.dishes)) {
+      throw new Error('Invalid menu.json structure; ensure you have published data/menu.json');
+    }
+    if (requestId !== menuRequestSerial) return;
+    // Don't unnecessarily recreate the cards, disturb scrolling, or collapse
+    // categories when the fetched menu is identical to the displayed version.
+    const serialized = JSON.stringify(data);
+    if (hadMenu && serialized === lastAppliedMenuJson) {
+      menuLoading = false;
+      menuLoadFailed = false;
+      return;
+    }
     categories = data.categories.filter(c => c && c.id != null).map((c, i) => ({
       ...c, id: String(c.id), order: Number.isFinite(Number(c.order)) ? Number(c.order) : i
     }));
@@ -113,23 +142,55 @@ async function loadMenu() {
       if (!categorySettings[c.id]) categorySettings[c.id] = { showImages: c.showImages !== false };
     });
     if (selectedCategoryId !== 'all' && !categories.some(c => c.id === selectedCategoryId)) selectedCategoryId = 'all';
-  } catch (error) {
-    console.error('Menu loading error:', error);
-    categories = [];
-    dishes = [];
-    categorySettings = {};
-    menuLoadFailed = true;
-    menuContainer.title = `Menu URL: ${MENU_URL} — ${error.message}`;
-  } finally {
+    lastAppliedMenuJson = serialized;
+    menuLoadFailed = false;
     menuLoading = false;
     createCategories();
-    // Set the admin-controlled feature flag BEFORE rendering dish cards.
-    // Otherwise the floating button appears, but the initial cards lack "+".
     syncPersonalListFeature();
     filterMenu();
     updateSearchSuggestions();
+  } catch (error) {
+    if (requestId !== menuRequestSerial) return;
+    console.error('Menu loading error:', error);
+    // A transient mobile network issue must not erase the last good menu.
+    if (!hadMenu) {
+      menuLoadFailed = true;
+      categories = [];
+      dishes = [];
+      categorySettings = {};
+      menuContainer.title = `Menu URL: ${MENU_URL} — ${error.message}`;
+      menuLoading = false;
+      createCategories();
+      syncPersonalListFeature();
+      filterMenu();
+    } else {
+      menuLoading = false;
+      console.warn('Keeping the previously loaded menu while connection recovers.');
+    }
   }
 }
+
+function refreshMenuIfNeeded(force = false) {
+  if (document.visibilityState === 'hidden') return;
+  if (!force && Date.now() - lastMenuCheck < 5000) return;
+  void loadMenu({ background: lastAppliedMenuJson !== null });
+}
+
+// Mobile Safari/Chrome may restore a suspended or back-forward-cached page
+// without executing the original load code again.
+window.addEventListener('pageshow', event => {
+  if (event.persisted) refreshMenuIfNeeded(true);
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') refreshMenuIfNeeded();
+});
+window.addEventListener('focus', () => refreshMenuIfNeeded());
+window.addEventListener('online', () => refreshMenuIfNeeded(true));
+setInterval(() => {
+  if (document.visibilityState === 'visible' && Date.now() - lastMenuCheck >= MENU_REFRESH_INTERVAL_MS) {
+    refreshMenuIfNeeded();
+  }
+}, MENU_REFRESH_INTERVAL_MS);
 
 function applyTheme() {
   document.body.classList.toggle('dark-mode', currentTheme === 'dark');
