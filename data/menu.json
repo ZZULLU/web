@@ -13,15 +13,15 @@
       "order": 1
     },
     {
-      "id": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
-      "nameGe": "ცომეული",
-      "nameEn": "pastry",
-      "order": 2
-    },
-    {
       "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
       "nameGe": "სალათები",
       "nameEn": "salads",
+      "order": 2
+    },
+    {
+      "id": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
+      "nameGe": "ცომეული",
+      "nameEn": "pastry",
       "order": 3
     },
     {
