@@ -13,15 +13,15 @@
       "order": 1
     },
     {
-      "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
-      "nameGe": "სალათები",
-      "nameEn": "salads",
-      "order": 2
-    },
-    {
       "id": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
       "nameGe": "წვენები",
       "nameEn": "drinks",
+      "order": 2
+    },
+    {
+      "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
+      "nameGe": "სალათები",
+      "nameEn": "salads",
       "order": 3
     },
     {
