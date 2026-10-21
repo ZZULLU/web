@@ -1,21 +1,21 @@
 {
   "categories": [
     {
-      "id": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
-      "nameGe": "ცომეული",
-      "nameEn": "pastry",
-      "order": 0
-    },
-    {
       "id": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "nameGe": "ცხელი კერძი",
       "nameEn": "Hot Dish",
-      "order": 1
+      "order": 0
     },
     {
       "id": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "nameGe": "მთავარი კერძები",
       "nameEn": "main dishes",
+      "order": 1
+    },
+    {
+      "id": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
+      "nameGe": "ცომეული",
+      "nameEn": "pastry",
       "order": 2
     },
     {
