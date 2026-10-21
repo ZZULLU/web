@@ -176,7 +176,7 @@ function matchingDishes(query) {
       const bName = [b.nameGe, b.nameEn].some(value => String(value || '').toLocaleLowerCase().startsWith(normalized));
       return Number(bName) - Number(aName) || a.order - b.order;
     })
-    .slice(0, 8);
+    .slice(0, 15);
 }
 function hideSearchSuggestions() {
   searchSuggestions.hidden = true;
