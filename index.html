@@ -18,10 +18,11 @@
 
     <div class="header-search-panel" id="headerSearchPanel" hidden>
       <label class="visually-hidden" for="searchInput" id="searchLabel">Search dishes</label>
-      <input type="search" id="searchInput" placeholder="Search dishes..." autocomplete="off">
+      <input type="search" id="searchInput" placeholder="Search dishes..." autocomplete="off" aria-controls="searchSuggestions" aria-expanded="false" aria-autocomplete="list">
       <button type="button" id="closeSearch" class="header-search-submit icon-control" aria-label="Apply search and close" title="Apply search and close">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 4.8 4.8"/></svg>
       </button>
+      <div id="searchSuggestions" class="search-suggestions" role="listbox" aria-label="Matching dishes" hidden></div>
     </div>
 
     <div class="hero-content">
@@ -81,6 +82,6 @@
     <p>Tbilisi, Georgia</p>
     <a href="admin/index.html" class="footer-admin-link" id="adminButton">Admin</a>
   </footer>
-  <script src="script.js?v=20261021-layout"></script>
+  <script src="script.js?v=20261021-suggestions"></script>
 </body>
 </html>

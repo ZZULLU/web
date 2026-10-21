@@ -504,3 +504,67 @@ footer p { margin: 7px 0; color: var(--footer-text); opacity: .84; }
   .menu-toolbar .sort-button { width: 31px; min-width: 31px; height: 35px; min-height: 35px; padding: 5px; }
   .menu-toolbar .icon-control svg { width: 18px; height: 18px; }
 }
+
+
+/* ===== Search suggestions below the expanded header search ===== */
+.header-search-panel { overflow: visible; }
+.search-suggestions {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  z-index: 50;
+  overflow-y: auto;
+  max-height: min(420px, 55vh);
+  padding: 7px;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--card-background);
+  color: var(--text-main);
+  box-shadow: 0 18px 48px rgba(20, 15, 12, .26);
+  scrollbar-width: thin;
+}
+.search-suggestions[hidden] { display: none !important; }
+.search-suggestion-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.search-suggestion-item:hover,
+.search-suggestion-item:focus-visible { background: var(--soft-background); }
+.search-suggestion-item img {
+  width: 56px;
+  height: 50px;
+  flex: 0 0 56px;
+  border-radius: 9px;
+  object-fit: cover;
+}
+.search-suggestion-detail { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 2px; }
+.search-suggestion-detail strong { font-size: .98rem; line-height: 1.35; overflow-wrap: anywhere; }
+.search-suggestion-detail small { color: var(--text-secondary); font-size: .79rem; overflow-wrap: anywhere; }
+.search-suggestion-price { flex: 0 0 auto; white-space: nowrap; color: var(--accent-2); font-weight: 800; font-size: .9rem; }
+.search-suggestion-empty { padding: 15px; color: var(--text-secondary); text-align: center; }
+@keyframes search-result-pulse {
+  0%, 100% { outline-color: transparent; }
+  25%, 75% { outline-color: var(--accent-2); }
+}
+.food-card.search-result-highlight { outline: 3px solid transparent; outline-offset: 3px; animation: search-result-pulse 1.8s ease; }
+@media (max-width: 600px) {
+  .search-suggestions { top: calc(100% + 7px); padding: 4px; border-radius: 15px; max-height: 50vh; }
+  .search-suggestion-item { gap: 8px; padding: 9px; }
+  .search-suggestion-item img { width: 44px; height: 44px; flex-basis: 44px; }
+  .search-suggestion-price { font-size: .78rem; }
+  .search-suggestion-detail strong { font-size: .88rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .food-card.search-result-highlight { animation: none; outline-color: var(--accent-2); }
+}

@@ -13,7 +13,7 @@ const translations = {
     admin: 'Admin', heroSubtitle: 'Traditional Georgian Cuisine',
     hours: 'Open every day: 10:00 - 23:00', noDishes: 'No dishes found.',
     loading: 'Loading menu...', loadError: 'Could not load the menu. Please try again.',
-    openSearch: 'Open search', closeSearch: 'Close search'
+    openSearch: 'Open search', closeSearch: 'Close search', noMatches: 'No matching dishes', suggestions: 'Matching dishes'
   },
   ge: {
     menu: 'მენიუ', search: 'მოძებნე კერძი...', categories: 'კატეგორიები', all: 'ყველა',
@@ -23,7 +23,7 @@ const translations = {
     admin: 'ადმინი', heroSubtitle: 'ტრადიციული ქართული სამზარეულო',
     hours: 'ღიაა ყოველდღე: 10:00 - 23:00', noDishes: 'კერძები ვერ მოიძებნა.',
     loading: 'მენიუ იტვირთება...', loadError: 'მენიუ ვერ ჩაიტვირთა. სცადეთ ხელახლა.',
-    openSearch: 'ძიების გახსნა', closeSearch: 'ძიების დახურვა'
+    openSearch: 'ძიების გახსნა', closeSearch: 'ძიების დახურვა', noMatches: 'კერძები ვერ მოიძებნა', suggestions: 'ნაპოვნი კერძები'
   }
 };
 
@@ -34,6 +34,7 @@ const searchInput = $('searchInput');
 const searchToggle = $('searchToggle');
 const headerSearchPanel = $('headerSearchPanel');
 const closeSearch = $('closeSearch');
+const searchSuggestions = $('searchSuggestions');
 const cardViewButton = $('cardViewButton');
 const listViewButton = $('listViewButton');
 const sizeButtons = document.querySelectorAll('.size-button');
@@ -109,6 +110,7 @@ async function loadMenu() {
     menuLoading = false;
     createCategories();
     filterMenu();
+    updateSearchSuggestions();
   }
 }
 
@@ -138,6 +140,7 @@ function updateStaticLanguage() {
   $('footerHours').textContent = t.hours;
   setAccessibleTitle(searchToggle, t.openSearch);
   setAccessibleTitle(closeSearch, t.closeSearch);
+  searchSuggestions.setAttribute('aria-label', t.suggestions);
   setAccessibleTitle($('sortDefault'), t.restaurantOrder);
   setAccessibleTitle($('sortAsc'), t.priceAscending);
   setAccessibleTitle($('sortDesc'), t.priceDescending);
@@ -157,26 +160,133 @@ function changeLanguage(lang) {
   updateStaticLanguage();
   createCategories();
   filterMenu();
+  updateSearchSuggestions();
 }
 languageToggle.addEventListener('click', () => changeLanguage(currentLanguage === 'ge' ? 'en' : 'ge'));
 
+/* Search suggestions are built from menu.json, never from browser-stored dishes. */
+function matchingDishes(query) {
+  const normalized = query.trim().toLocaleLowerCase();
+  if (!normalized) return [];
+  return dishes.filter(dish => [
+    dish.nameGe, dish.nameEn, dish.descriptionGe, dish.descriptionEn
+  ].filter(Boolean).some(value => String(value).toLocaleLowerCase().includes(normalized)))
+    .sort((a, b) => {
+      const aName = [a.nameGe, a.nameEn].some(value => String(value || '').toLocaleLowerCase().startsWith(normalized));
+      const bName = [b.nameGe, b.nameEn].some(value => String(value || '').toLocaleLowerCase().startsWith(normalized));
+      return Number(bName) - Number(aName) || a.order - b.order;
+    })
+    .slice(0, 8);
+}
+function hideSearchSuggestions() {
+  searchSuggestions.hidden = true;
+  searchSuggestions.replaceChildren();
+  searchInput.setAttribute('aria-expanded', 'false');
+}
+function updateSearchSuggestions() {
+  const query = searchInput.value.trim();
+  if (headerSearchPanel.hidden || !query || menuLoading || menuLoadFailed) {
+    hideSearchSuggestions();
+    return;
+  }
+  searchSuggestions.replaceChildren();
+  const matches = matchingDishes(query);
+  if (!matches.length) {
+    const empty = document.createElement('div');
+    empty.className = 'search-suggestion-empty';
+    empty.textContent = translations[currentLanguage].noMatches;
+    searchSuggestions.append(empty);
+  }
+  for (const dish of matches) {
+    const result = document.createElement('button');
+    result.type = 'button';
+    result.className = 'search-suggestion-item';
+    result.setAttribute('role', 'option');
+    result.setAttribute('aria-label', `${getDishName(dish)}, ${Number(dish.price).toFixed(2)} GEL`);
+    if (dish.image) {
+      const thumbnail = document.createElement('img');
+      thumbnail.src = dish.image;
+      thumbnail.alt = '';
+      thumbnail.loading = 'lazy';
+      thumbnail.addEventListener('error', () => thumbnail.remove());
+      result.append(thumbnail);
+    }
+    const detail = document.createElement('span');
+    detail.className = 'search-suggestion-detail';
+    const name = document.createElement('strong');
+    name.textContent = getDishName(dish);
+    const category = categories.find(c => c.id === dish.categoryId);
+    const subtitle = document.createElement('small');
+    subtitle.textContent = category ? getCategoryName(category) : '';
+    detail.append(name, subtitle);
+    const price = document.createElement('span');
+    price.className = 'search-suggestion-price';
+    price.textContent = Number(dish.price).toFixed(2) + ' GEL';
+    result.append(detail, price);
+    result.addEventListener('click', () => openDishFromSearch(dish));
+    searchSuggestions.append(result);
+  }
+  searchSuggestions.hidden = false;
+  searchInput.setAttribute('aria-expanded', 'true');
+}
+function openDishFromSearch(dish) {
+  // Clear the search so the full category can be browsed after selection.
+  searchInput.value = '';
+  selectedCategoryId = dish.categoryId;
+  categoryOpenStates.set(dish.categoryId, true);
+  createCategories();
+  filterMenu();
+  toggleSearch(false);
+  const card = [...menuContainer.querySelectorAll('.food-card')]
+    .find(element => element.dataset.dishId === String(dish.id));
+  if (card) {
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.classList.add('search-result-highlight');
+    card.addEventListener('animationend', () => card.classList.remove('search-result-highlight'), { once: true });
+  }
+}
 function toggleSearch(open) {
   headerSearchPanel.hidden = !open;
   document.querySelector('.hero').classList.toggle('search-open', open);
   searchToggle.setAttribute('aria-expanded', String(open));
-  if (open) searchInput.focus();
-  else searchToggle.focus();
+  if (open) {
+    searchInput.focus();
+    updateSearchSuggestions();
+  } else {
+    hideSearchSuggestions();
+    searchToggle.focus();
+  }
 }
 searchToggle.addEventListener('click', () => toggleSearch(true));
 closeSearch.addEventListener('click', () => {
   filterMenu();
   toggleSearch(false);
 });
-searchInput.addEventListener('keydown', e => {
-  if (e.key === 'Escape') toggleSearch(false);
-  if (e.key === 'Enter') { filterMenu(); toggleSearch(false); }
+searchInput.addEventListener('keydown', event => {
+  if (event.key === 'Escape') { toggleSearch(false); return; }
+  if (event.key === 'ArrowDown' && !searchSuggestions.hidden) {
+    const first = searchSuggestions.querySelector('.search-suggestion-item');
+    if (first) { event.preventDefault(); first.focus(); }
+    return;
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    const [first] = matchingDishes(searchInput.value);
+    if (first) openDishFromSearch(first);
+    else { filterMenu(); toggleSearch(false); }
+  }
 });
-
+searchSuggestions.addEventListener('keydown', event => {
+  const options = [...searchSuggestions.querySelectorAll('.search-suggestion-item')];
+  const index = options.indexOf(document.activeElement);
+  if (event.key === 'ArrowDown' && index !== -1) {
+    event.preventDefault(); options[Math.min(index + 1, options.length - 1)].focus();
+  } else if (event.key === 'ArrowUp' && index !== -1) {
+    event.preventDefault(); if (index === 0) searchInput.focus(); else options[index - 1].focus();
+  } else if (event.key === 'Escape') {
+    toggleSearch(false);
+  }
+});
 function applyCustomerView() {
   document.body.classList.remove('list-view', 'menu-size-small', 'menu-size-medium', 'menu-size-large');
   if (customerView.view === 'list') document.body.classList.add('list-view');
@@ -226,6 +336,7 @@ function getSortedItems(items) {
 function createDishCard(dish) {
   const card = document.createElement('div');
   card.className = 'food-card';
+  card.dataset.dishId = String(dish.id);
   const showImage = categoryShowsImages(dish.categoryId);
   if (!showImage) card.classList.add('no-image');
   if (showImage && dish.image) {
@@ -314,7 +425,10 @@ function filterMenu() {
   });
   displayMenu(filtered);
 }
-searchInput.addEventListener('input', filterMenu);
+searchInput.addEventListener('input', () => {
+  filterMenu();
+  updateSearchSuggestions();
+});
 applyTheme();
 applyCustomerView();
 updateStaticLanguage();
