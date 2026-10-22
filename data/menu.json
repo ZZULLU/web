@@ -69,7 +69,7 @@
       "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
       "order": 2,
       "tag": "sale",
-      "visible": false
+      "visible": true
     },
     {
       "id": "dish-536da40a-d18a-4b28-8d75-c421fc8ad91c",
