@@ -56,7 +56,7 @@
       "image": "images/uploads/68333c97-29e8-44a6-83a7-385c09306f1f.jpg",
       "order": 1,
       "tag": "popular",
-      "visible": false
+      "visible": true
     },
     {
       "id": "dish-ff0bfe53-f1da-484f-a112-0b5a59531c71",
