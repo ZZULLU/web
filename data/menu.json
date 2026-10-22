@@ -68,7 +68,8 @@
       "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
       "order": 2,
-      "tag": "sale"
+      "tag": "sale",
+      "visible": false
     },
     {
       "id": "dish-536da40a-d18a-4b28-8d75-c421fc8ad91c",
