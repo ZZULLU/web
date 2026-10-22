@@ -125,25 +125,31 @@
     "category-006bd1ab-0e4d-42ad-9574-589686d91a08": {
       "showImages": true,
       "personalListEnabled": true,
-      "showPopularCategory": false
+      "showPopularCategory": true,
+      "popularCategoryPosition": 0
     },
     "category-f5188c66-5f02-4018-9856-452f2ff89914": {
       "showImages": true,
       "personalListEnabled": true,
-      "showPopularCategory": false
+      "showPopularCategory": true,
+      "popularCategoryPosition": 0
     },
     "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f": {
       "showImages": true,
       "personalListEnabled": true,
-      "showPopularCategory": false
+      "showPopularCategory": true,
+      "popularCategoryPosition": 0
     },
     "category-bd9d8af6-63a2-4fa6-91fa-67be77864991": {
       "showImages": true,
       "personalListEnabled": true,
-      "showPopularCategory": false
+      "showPopularCategory": true,
+      "popularCategoryPosition": 0
     },
     "category-257fc02e-b702-48b8-a33f-56e588ac0be5": {
-      "showImages": false
+      "showImages": false,
+      "showPopularCategory": true,
+      "popularCategoryPosition": 0
     }
   }
 }
