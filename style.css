@@ -766,3 +766,12 @@ body.list-view .food-card.dish-in-personal-list { background:rgba(31,153,92,.09)
 .menu-category-section .section-chevron svg {display:block;width:20px;height:20px;fill:none;stroke:var(--text-main);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s ease;}
 .menu-category-section[open] .section-chevron svg {transform:rotate(180deg);}
 @media(max-width:600px){.menu-category-section .section-chevron{width:34px;height:34px;min-width:34px;flex-basis:34px}}
+
+/* Accessible click feedback from the enlarged dish detail dialog. */
+.dish-detail-add.personal-added-bounce {
+  animation: personalButtonBounce .55s cubic-bezier(.2,.7,.3,1) both;
+  box-shadow: 0 0 0 4px rgba(44,171,104,.24),0 5px 17px rgba(31,153,92,.22);
+}
+@media (prefers-reduced-motion: reduce) { .dish-detail-add.personal-added-bounce { animation: none; } }
+/* Ensure the drop-down content animates without repositioning the chevron. */
+.menu-category-section > .menu-grid { transform-origin: top center; will-change: transform, opacity; }

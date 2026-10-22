@@ -554,6 +554,33 @@ function createMenuSection(category, items) {
   const grid = document.createElement('div'); grid.className = 'menu-grid';
   items.forEach(d => grid.appendChild(createDishCard(d)));
   section.append(title, grid);
+  // Intercept the summary interaction so details stay open until the
+  // closing animation finishes. Native details would otherwise hide instantly.
+  let moving = false;
+  title.addEventListener('click', event => {
+    if (moving) {event.preventDefault(); return;}
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !grid.animate) return;
+    event.preventDefault();
+    moving = true;
+    const duration = 300;
+    if (section.open) {
+      const animation = grid.animate([
+        {opacity:1, transform:'translateY(0)'},
+        {opacity:0, transform:'translateY(-12px)'}
+      ], {duration, easing:'ease-in-out'});
+      animation.finished.catch(()=>{}).then(() => {
+        section.open = false;
+        moving = false;
+      });
+    } else {
+      section.open = true;
+      const animation = grid.animate([
+        {opacity:0, transform:'translateY(-12px)'},
+        {opacity:1, transform:'translateY(0)'}
+      ], {duration, easing:'ease-out'});
+      animation.finished.catch(()=>{}).then(() => {moving = false;});
+    }
+  });
   section.addEventListener('toggle', () => {
     if (section.isConnected) categoryOpenStates.set(category.id, section.open);
   });
@@ -584,8 +611,8 @@ function displayMenu(items) {
 // Popular is a virtual category: its toggle and position belong to its own
 // shared settings record. Read the older replicated flag for compatibility.
 function popularSettings() {
-  const entry = categorySettings.__popular__;
-  if (entry && typeof entry === 'object') return entry;
+  const owner = categories.find(c => typeof c.popularCategoryEnabled === 'boolean');
+  if (owner) return {enabled: owner.popularCategoryEnabled, position: Number(owner.popularCategoryPosition) || 0};
   return { enabled: categories.some(c => categorySettings[c.id]?.showPopularCategory === true), position: 0 };
 }
 function popularCategoryEnabled() {
@@ -708,6 +735,18 @@ function addPersonalDish(id) {
   personalFloat.classList.remove('personal-pulse');
   void personalFloat.offsetWidth;
   personalFloat.classList.add('personal-pulse');
+  // Detail-dialog additions have no directly visible card to animate.
+  // Always acknowledge success near the tapped button and list bubble.
+  const detailButton = dishDetailDialog?.open ? dishDetailDialog.querySelector('.dish-detail-add') : null;
+  if (detailButton) {
+    detailButton.classList.remove('personal-added-bounce');
+    void detailButton.offsetWidth;
+    detailButton.classList.add('personal-added-bounce');
+    const original = currentLanguage === 'ge' ? '+ ჩემს სიაში' : '+ Add to my list';
+    detailButton.textContent = currentLanguage === 'ge' ? '✓ დამატებულია' : '✓ Added!';
+    clearTimeout(detailButton._feedbackTimeout);
+    detailButton._feedbackTimeout = setTimeout(() => { if (detailButton.isConnected) detailButton.textContent = original; }, 1100);
+  }
 }
 function changePersonalQuantity(id, amount) {
   const qty = (personalQuantities[id] || 0) + amount;

@@ -331,11 +331,13 @@
   const getGe = () => ['ge', '"ge"'].includes(localStorage.getItem('restaurantLanguage'));
   const text = (ge, en) => getGe() ? ge : en;
   function settings() {
-    const own = categorySettings?.__popular__;
-    if (own && typeof own === 'object') return own;
+    // The Worker validates categorySettings keys against real category IDs.
+    // Store virtual Popular metadata on real category records, not under
+    // the invalid __popular__ key. Existing category records allow extra fields.
+    const owner = categories.find(c => typeof c.popularCategoryEnabled === 'boolean');
     return {
-      enabled: categories.some(c => categorySettings[c.id]?.showPopularCategory === true),
-      position: 0
+      enabled: owner ? owner.popularCategoryEnabled : categories.some(c => categorySettings[c.id]?.showPopularCategory === true),
+      position: owner ? (Number(owner.popularCategoryPosition) || 0) : 0
     };
   }
   function update() {
@@ -381,7 +383,15 @@
     busy = true; update();
     try {
       await commitChange(() => {
-        categorySettings.__popular__ = { ...settings(), ...patch };
+        const next = { ...settings(), ...patch };
+        // Mirror onto every real category so it survives category deletion
+        // and remains independent from image-toggle updates.
+        for (const cat of categories) {
+          cat.popularCategoryEnabled = next.enabled === true;
+          cat.popularCategoryPosition = Math.max(0, Math.min(categories.length, Number(next.position) || 0));
+        }
+        // Clear the invalid setting left in local state by older versions.
+        delete categorySettings.__popular__;
       });
     } finally { busy = false; update(); }
   }
