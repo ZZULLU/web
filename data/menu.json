@@ -80,7 +80,8 @@
       "price": 3,
       "categoryId": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
       "image": "images/uploads/50101e25-fd22-4212-8143-a9636540ef5f.jpg",
-      "order": 3
+      "order": 3,
+      "visible": true
     },
     {
       "id": "dish-d374dbda-21a2-42e9-958e-95e8f5bd2ffc",
@@ -91,7 +92,8 @@
       "price": 10,
       "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "image": "images/uploads/f2a97023-078a-450f-ad4b-659bf7afb15b.jpg",
-      "order": 4
+      "order": 4,
+      "visible": true
     },
     {
       "id": "dish-2d0bb7bc-a33d-4f55-987f-0881de9b139a",
@@ -102,7 +104,9 @@
       "price": 15,
       "categoryId": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
       "image": "images/uploads/56feeecc-f247-4e53-b406-1b7191f13e3a.jpg",
-      "order": 5
+      "order": 5,
+      "tag": "popular",
+      "visible": true
     },
     {
       "id": "dish-e9472dc0-76a4-48c4-a75e-37726a815f74",
@@ -114,7 +118,7 @@
       "categoryId": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
       "image": "images/uploads/3507e2f6-a516-4b2c-97a9-368d46204a06.jpg",
       "order": 6,
-      "visible": false
+      "visible": true
     }
   ],
   "categorySettings": {
@@ -139,9 +143,7 @@
       "showPopularCategory": false
     },
     "category-257fc02e-b702-48b8-a33f-56e588ac0be5": {
-      "showImages": true,
-      "personalListEnabled": true,
-      "showPopularCategory": false
+      "showImages": false
     }
   }
 }
