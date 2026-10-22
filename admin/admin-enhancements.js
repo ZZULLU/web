@@ -321,30 +321,83 @@
   document.getElementById('languageEn')?.addEventListener('click', () => setTimeout(applyControls, 0));
 })();
 
-/* Optional "Popular" filter chip — saved online with categorySettings. */
+/* Popular lives in the same Admin category list as ordinary categories.
+   Saves into categorySettings.__popular__; never inserts a fake category into
+   categories[] (which would corrupt existing dish category IDs). */
 (() => {
-  const anchor=document.getElementById('dishList')?.closest('.admin-section');
-  if(!anchor)return;
-  const section=document.createElement('section');section.className='admin-popular-setting';
-  section.innerHTML='<label class="admin-popular-label"><input type="checkbox" id="adminPopularCategoryToggle"><span id="adminPopularCategoryText">Show Popular category in customer menu</span></label><p id="adminPopularCategoryNote">Only appears when at least one visible dish is labeled Popular.</p>';
-  anchor.querySelector('.section-content')?.prepend(section);
-  const input=section.querySelector('input');const title=section.querySelector('#adminPopularCategoryText');const note=section.querySelector('#adminPopularCategoryNote');
-  let busy=false;
-  const update=()=>{
-    if(typeof categories==='undefined'||typeof categorySettings==='undefined')return;
-    const raw=localStorage.getItem('restaurantLanguage');const ge=raw==='ge'||raw==='"ge"';
-    title.textContent=ge?'პოპულარული კატეგორიის ჩვენება მენიუში':'Show Popular category in menu';
-    note.textContent=ge?'ჩნდება მხოლოდ მაშინ, თუ მენიუში პოპულარული მონიშნული კერძი არსებობს.':'Appears only when at least one visible dish has the Popular label.';
-    input.checked=categories.some(c=>categorySettings[c.id]?.showPopularCategory===true);
-    input.disabled=busy||!categories.length;
-  };
-  input.addEventListener('change',async()=>{
-    if(busy||typeof commitChange!=='function')return;
-    busy=true;const enabled=input.checked;input.disabled=true;
-    try{await commitChange(()=>{categories.forEach(c=>{categorySettings[c.id]={...categorySettings[c.id],showPopularCategory:enabled};});});}
-    finally{busy=false;update();}
-  });
-  new MutationObserver(()=>update()).observe(document.getElementById('categoryList'),{childList:true});
+  const list = document.getElementById('categoryList');
+  if (!list) return;
+  let busy = false;
+  const getGe = () => ['ge', '"ge"'].includes(localStorage.getItem('restaurantLanguage'));
+  const text = (ge, en) => getGe() ? ge : en;
+  function settings() {
+    const own = categorySettings?.__popular__;
+    if (own && typeof own === 'object') return own;
+    return {
+      enabled: categories.some(c => categorySettings[c.id]?.showPopularCategory === true),
+      position: 0
+    };
+  }
+  function update() {
+    if (typeof categories === 'undefined' || typeof categorySettings === 'undefined') return;
+    const real = [...list.children].filter(el => el.classList.contains('category-row'));
+    const old = list.querySelector('.admin-popular-category-row');
+    if (!real.length && !old) return; // Admin menu has not finished loading.
+    const state = settings();
+    const position = Math.max(0, Math.min(real.length, Number(state.position) || 0));
+    const row = old || document.createElement('div');
+    row.className = 'admin-popular-category-row';
+    row.dataset.virtualCategory = 'popular';
+    if (!old) {
+      row.innerHTML = `
+        <div class="popular-order-actions">
+          <button type="button" class="popular-move-up" aria-label="Move Popular up">↑</button>
+          <button type="button" class="popular-move-down" aria-label="Move Popular down">↓</button>
+        </div>
+        <div class="popular-category-main">
+          <div class="popular-category-names"><strong class="popular-name-ge">GE: პოპულარული</strong><strong class="popular-name-en">EN: Popular</strong></div>
+          <small class="popular-hint"></small>
+        </div>
+        <label class="popular-category-switch"><span class="popular-switch-text"></span><input type="checkbox" class="popular-enabled" aria-label="Show Popular category on customer menu"></label>`;
+      row.querySelector('.popular-move-up').addEventListener('click', () => move(-1));
+      row.querySelector('.popular-move-down').addEventListener('click', () => move(1));
+      row.querySelector('.popular-enabled').addEventListener('change', async e => {
+        if (busy) return;
+        await saveSettings({ enabled: e.target.checked });
+      });
+    }
+    row.querySelector('.popular-hint').textContent = text('ჩნდება მხოლოდ მაშინ, როცა პოპულარული კერძი არსებობს','Appears if at least one visible dish is labeled Popular');
+    row.querySelector('.popular-switch-text').textContent = text('მენიუში გამოჩენა','Show on menu');
+    row.querySelector('.popular-enabled').checked = state.enabled === true;
+    row.querySelector('.popular-enabled').disabled = busy;
+    row.querySelector('.popular-move-up').disabled = busy || !state.enabled || position === 0;
+    row.querySelector('.popular-move-down').disabled = busy || !state.enabled || position === real.length;
+    row.classList.toggle('popular-category-disabled', state.enabled !== true);
+    const next = real[position] || null;
+    if (row.parentElement !== list || row.nextElementSibling !== next) list.insertBefore(row, next);
+  }
+  async function saveSettings(patch) {
+    if (busy || typeof commitChange !== 'function') return;
+    busy = true; update();
+    try {
+      await commitChange(() => {
+        categorySettings.__popular__ = { ...settings(), ...patch };
+      });
+    } finally { busy = false; update(); }
+  }
+  async function move(delta) {
+    if (busy || !settings().enabled) return;
+    const length = categories.length;
+    const position = Math.max(0, Math.min(length, Number(settings().position) || 0));
+    const next = Math.max(0, Math.min(length, position + delta));
+    if (next !== position) await saveSettings({ position: next });
+  }
+  // Observe *direct* child replacement by original admin.js, not our own
+  // button / label updates. Avoid mutating the list if nothing changed.
+  new MutationObserver(records => {
+    if (records.some(r => [...r.addedNodes].some(n => n.nodeType===1 && n.classList.contains('category-row')) ||
+      [...r.removedNodes].some(n => n.nodeType===1 && n.classList.contains('category-row')))) update();
+  }).observe(list, {childList:true});
   document.getElementById('languageGe')?.addEventListener('click',update);
   document.getElementById('languageEn')?.addEventListener('click',update);
   update();

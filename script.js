@@ -141,7 +141,8 @@ async function loadMenu({ background = false } = {}) {
     categories.forEach(c => {
       if (!categorySettings[c.id]) categorySettings[c.id] = { showImages: c.showImages !== false };
     });
-    if (selectedCategoryId !== 'all' && !categories.some(c => c.id === selectedCategoryId)) selectedCategoryId = 'all';
+    if (selectedCategoryId !== 'all' && selectedCategoryId !== 'popular' && !categories.some(c => c.id === selectedCategoryId)) selectedCategoryId = 'all';
+    if (selectedCategoryId === 'popular' && !popularCategoryEnabled()) selectedCategoryId = 'all';
     lastAppliedMenuJson = serialized;
     menuLoadFailed = false;
     menuLoading = false;
@@ -473,6 +474,7 @@ function createDishCard(dish) {
   const card = document.createElement('div');
   card.className = 'food-card';
   card.dataset.dishId = String(dish.id);
+  if ((personalQuantities[String(dish.id)] || 0) > 0 && isPersonalListAvailable()) card.classList.add('dish-in-personal-list');
   const showImage = categoryShowsImages(dish.categoryId);
   if (!showImage) card.classList.add('no-image');
   if (showImage && dish.image) {
@@ -546,7 +548,8 @@ function createMenuSection(category, items) {
   const arrow = document.createElement('span');
   arrow.className = 'section-chevron';
   arrow.setAttribute('aria-hidden', 'true');
-  arrow.textContent = '⌄';
+  // SVG keeps the chevron geometrically centered across Georgian/Latin fonts.
+  arrow.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="m6 9 6 6 6-6"/></svg>';
   title.append(name, count, arrow);
   const grid = document.createElement('div'); grid.className = 'menu-grid';
   items.forEach(d => grid.appendChild(createDishCard(d)));
@@ -562,6 +565,14 @@ function displayMenu(items) {
   if (menuLoadFailed) { menuContainer.textContent = translations[currentLanguage].loadError; return; }
   if (!items.length) { menuContainer.textContent = translations[currentLanguage].noDishes; return; }
   const sorted = getSortedItems(items);
+  if (selectedCategoryId === 'popular') {
+    if (popularCategoryEnabled()) {
+      const popularItems = sorted.filter(d => d.tag === 'popular');
+      if (popularItems.length) menuContainer.appendChild(createMenuSection({id:'popular',nameGe:'პოპულარული',nameEn:'Popular'}, popularItems));
+    }
+    if (!menuContainer.children.length) menuContainer.textContent = translations[currentLanguage].noDishes;
+    return;
+  }
   const orderedCategories = [...categories].sort((a, b) => a.order - b.order);
   for (const category of orderedCategories) {
     if (selectedCategoryId !== 'all' && selectedCategoryId !== category.id) continue;
@@ -570,6 +581,18 @@ function displayMenu(items) {
   }
   if (!menuContainer.children.length) menuContainer.textContent = translations[currentLanguage].noDishes;
 }
+// Popular is a virtual category: its toggle and position belong to its own
+// shared settings record. Read the older replicated flag for compatibility.
+function popularSettings() {
+  const entry = categorySettings.__popular__;
+  if (entry && typeof entry === 'object') return entry;
+  return { enabled: categories.some(c => categorySettings[c.id]?.showPopularCategory === true), position: 0 };
+}
+function popularCategoryEnabled() {
+  return popularSettings().enabled === true &&
+    dishes.some(d => d.visible !== false && d.tag === 'popular');
+}
+function popularCategoryTitle() { return currentLanguage === 'ge' ? 'პოპულარული' : 'Popular'; }
 function createCategories() {
   categoryButtons.replaceChildren();
   function appendCategory(id, label) {
@@ -583,14 +606,19 @@ function createCategories() {
     categoryButtons.appendChild(button);
   }
   appendCategory('all', translations[currentLanguage].all);
-  [...categories].sort((a, b) => a.order - b.order)
-    .forEach(c => appendCategory(c.id, getCategoryName(c)));
+  const sortedCategories = [...categories].sort((a, b) => a.order - b.order);
+  const popularPosition = Math.max(0, Math.min(sortedCategories.length,
+    Number.isFinite(Number(popularSettings().position)) ? Number(popularSettings().position) : 0));
+  for (let i = 0; i <= sortedCategories.length; i++) {
+    if (i === popularPosition && popularCategoryEnabled()) appendCategory('popular', popularCategoryTitle());
+    if (i < sortedCategories.length) appendCategory(sortedCategories[i].id, getCategoryName(sortedCategories[i]));
+  }
 }
 function filterMenu() {
   const q = searchInput.value.trim().toLowerCase();
   const filtered = dishes.filter(d => {
     if (d.visible === false) return false;
-    const belongs = selectedCategoryId === 'all' || d.categoryId === selectedCategoryId;
+    const belongs = selectedCategoryId === 'all' || (selectedCategoryId === 'popular' ? (popularCategoryEnabled() && d.tag === 'popular') : d.categoryId === selectedCategoryId);
     const searchable = [d.nameGe, d.nameEn, d.descriptionGe, d.descriptionEn]
       .filter(Boolean).join(' ').toLowerCase();
     return belongs && searchable.includes(q);
@@ -657,6 +685,9 @@ function cleanPersonalQuantities() {
 function savePersonalQuantities() {
   cleanPersonalQuantities();
   savePreference(PERSONAL_LIST_KEY, personalQuantities);
+  document.querySelectorAll('.food-card[data-dish-id]').forEach(card => {
+    card.classList.toggle('dish-in-personal-list', (personalQuantities[card.dataset.dishId] || 0) > 0 && isPersonalListAvailable());
+  });
   renderPersonalList();
 }
 function addPersonalDish(id) {
@@ -665,6 +696,15 @@ function addPersonalDish(id) {
   if (!dish) return;
   personalQuantities[id] = Math.min(999, (personalQuantities[id] || 0) + 1);
   savePersonalQuantities();
+  document.querySelectorAll('.food-card[data-dish-id]').forEach(card => {
+    if (card.dataset.dishId !== String(id)) return;
+    card.classList.remove('dish-just-added');
+    void card.offsetWidth;
+    card.classList.add('dish-just-added');
+    const button = card.querySelector('.personal-add-button');
+    if (button) { button.classList.remove('personal-added-bounce'); void button.offsetWidth; button.classList.add('personal-added-bounce'); }
+    setTimeout(() => {card.classList.remove('dish-just-added'); button?.classList.remove('personal-added-bounce');}, 1350);
+  });
   personalFloat.classList.remove('personal-pulse');
   void personalFloat.offsetWidth;
   personalFloat.classList.add('personal-pulse');

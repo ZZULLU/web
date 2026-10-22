@@ -754,3 +754,15 @@ body { overflow-x: clip; }
 /* A subtle persistent indication that this dish is already in My List. */
 .food-card.dish-in-personal-list { box-shadow:0 0 0 2px rgba(31,153,92,.45),0 5px 17px rgba(31,153,92,.13); }
 body.list-view .food-card.dish-in-personal-list { background:rgba(31,153,92,.09); border-radius:8px; }
+
+/* Centered category chevron: same simple line icon as the Admin category groups. */
+.menu-category-section .section-chevron {
+  display:flex !important;align-items:center !important;justify-content:center !important;
+  width:38px;height:38px;min-width:38px;flex:0 0 38px;
+  border:1px solid var(--border-color);border-radius:50%;
+  padding:0!important;margin:0!important;line-height:0;transform:none!important;
+}
+.menu-category-section .section-chevron::before {content:none!important;display:none!important;}
+.menu-category-section .section-chevron svg {display:block;width:20px;height:20px;fill:none;stroke:var(--text-main);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;transition:transform .22s ease;}
+.menu-category-section[open] .section-chevron svg {transform:rotate(180deg);}
+@media(max-width:600px){.menu-category-section .section-chevron{width:34px;height:34px;min-width:34px;flex-basis:34px}}
