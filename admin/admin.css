@@ -245,3 +245,12 @@ form { display: flex; flex-direction: column; gap: 11px; }
 .admin-personal-switch input:focus-visible + .admin-personal-switch-track { outline: 3px solid var(--text-main); outline-offset: 3px; }
 .admin-personal-switch input:disabled + .admin-personal-switch-track { opacity: .45; }
 .admin-personal-feature .admin-personal-hint { width: 100%; font-size: .82rem; }
+
+/* Editable per-dish visibility and corner label */
+.dish-availability-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 15px; padding: 9px 10px; border-radius: 12px; background: rgba(120,120,120,.07); flex: 1 1 100%; }
+.dish-visibility-label, .dish-tag-label { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: .88rem; cursor: pointer; }
+.dish-visibility-label input { width: 19px; height: 19px; accent-color: #277d69; cursor: pointer; }
+.dish-tag-label select { min-width: 125px; max-width: 180px; padding: 7px 11px; border: 1px solid #aaa8; border-radius: 9px; background: var(--input-bg, transparent); color: inherit; font: inherit; }
+.dish-is-hidden { opacity: .75; }
+.dish-is-hidden .dish-info h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
+@media (max-width:600px) { .dish-availability-controls { width: 100%; gap: 12px; } }

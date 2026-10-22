@@ -149,6 +149,10 @@ async function loadMenu({ background = false } = {}) {
     syncPersonalListFeature();
     filterMenu();
     updateSearchSuggestions();
+    if (openedDetailDishId && dishDetailDialog?.open) {
+      const activeDetail = dishes.find(d => d.id === openedDetailDishId && d.visible !== false);
+      if (activeDetail) openDishDetail(openedDetailDishId); else dishDetailDialog.close();
+    }
   } catch (error) {
     if (requestId !== menuRequestSerial) return;
     console.error('Menu loading error:', error);
@@ -240,6 +244,7 @@ function changeLanguage(lang) {
   filterMenu();
   updateSearchSuggestions();
   renderPersonalList();
+  if (openedDetailDishId && dishDetailDialog?.open) openDishDetail(openedDetailDishId);
 }
 languageToggle.addEventListener('click', () => changeLanguage(currentLanguage === 'ge' ? 'en' : 'ge'));
 
@@ -247,7 +252,7 @@ languageToggle.addEventListener('click', () => changeLanguage(currentLanguage ==
 function matchingDishes(query) {
   const normalized = query.trim().toLocaleLowerCase();
   if (!normalized) return [];
-  return dishes.filter(dish => [
+  return dishes.filter(dish => dish.visible !== false).filter(dish => [
     dish.nameGe, dish.nameEn, dish.descriptionGe, dish.descriptionEn
   ].filter(Boolean).some(value => String(value).toLocaleLowerCase().includes(normalized)))
     .sort((a, b) => {
@@ -412,6 +417,58 @@ function getSortedItems(items) {
   else sorted.sort((a, b) => a.order - b.order);
   return sorted;
 }
+
+/* Accessible, scrollable dish detail dialog. Card size is unchanged. */
+const dishTagWords = {
+  ge: { popular: 'პოპულარული', new: 'ახალი', sale: 'ფასდაკლება' },
+  en: { popular: 'Popular', new: 'New', sale: 'Sale' }
+};
+const dishDetailDialog = document.getElementById('dishDetailDialog');
+const dishDetailBody = document.getElementById('dishDetailBody');
+let openedDetailDishId = null;
+function openDishDetail(id) {
+  const dish = dishes.find(d => d.id === String(id) && d.visible !== false);
+  if (!dish || !dishDetailDialog || !dishDetailBody) return;
+  openedDetailDishId = dish.id;
+  dishDetailBody.replaceChildren();
+  if (dish.image) {
+    const photo = document.createElement('img');
+    photo.className = 'dish-detail-photo';
+    photo.src = dish.image;
+    photo.alt = getDishName(dish);
+    photo.addEventListener('error', () => photo.remove());
+    dishDetailBody.append(photo);
+  }
+  const content = document.createElement('div'); content.className = 'dish-detail-content';
+  if (['popular', 'new', 'sale'].includes(dish.tag)) {
+    const tag = document.createElement('span'); tag.className = 'dish-detail-tag dish-tag-' + dish.tag;
+    tag.textContent = dishTagWords[currentLanguage][dish.tag]; content.append(tag);
+  }
+  const heading = document.createElement('h2'); heading.id = 'dishDetailName'; heading.textContent = getDishName(dish);
+  const price = document.createElement('strong'); price.className = 'dish-detail-price';
+  price.textContent = Number(dish.price).toFixed(2) + ' GEL';
+  content.append(heading, price);
+  const description = getDishDescription(dish);
+  if (description) {
+    const paragraph = document.createElement('p'); paragraph.className = 'dish-detail-description';
+    paragraph.textContent = description; content.append(paragraph);
+  }
+  if (isPersonalListAvailable()) {
+    const add = document.createElement('button'); add.type = 'button'; add.className = 'dish-detail-add';
+    add.textContent = currentLanguage === 'ge' ? '+ ჩემს სიაში' : '+ Add to my list';
+    add.addEventListener('click', () => addPersonalDish(dish.id)); content.append(add);
+  }
+  dishDetailBody.append(content);
+  if (!dishDetailDialog.open) dishDetailDialog.showModal();
+}
+if (dishDetailDialog) {
+  dishDetailDialog.querySelector('.dish-detail-close').addEventListener('click', () => dishDetailDialog.close());
+  dishDetailDialog.addEventListener('click', event => {
+    if (event.target === dishDetailDialog) dishDetailDialog.close();
+  });
+  dishDetailDialog.addEventListener('close', () => { openedDetailDishId = null; });
+}
+
 function createDishCard(dish) {
   const card = document.createElement('div');
   card.className = 'food-card';
@@ -419,13 +476,25 @@ function createDishCard(dish) {
   const showImage = categoryShowsImages(dish.categoryId);
   if (!showImage) card.classList.add('no-image');
   if (showImage && dish.image) {
+    const imageFrame = document.createElement('div');
+    imageFrame.className = 'dish-image-frame';
     const img = document.createElement('img');
     img.src = dish.image;
     img.alt = getDishName(dish);
     img.loading = 'lazy';
-    img.addEventListener('error', () => { img.remove(); card.classList.add('no-image'); });
-    card.appendChild(img);
+    img.addEventListener('error', () => { imageFrame.remove(); card.classList.add('no-image'); });
+    imageFrame.append(img);
+    card.appendChild(imageFrame);
   } else if (!dish.image) card.classList.add('no-image');
+  if (['popular', 'new', 'sale'].includes(dish.tag)) {
+    const badge = document.createElement('span');
+    badge.className = 'dish-tag dish-tag-' + dish.tag;
+    badge.textContent = dishTagWords[currentLanguage][dish.tag];
+    // On card view, overlay on the photograph. On list view, show beside the title.
+    const frame = card.querySelector('.dish-image-frame');
+    if (frame) frame.append(badge);
+    else card.append(badge);
+  }
   const info = document.createElement('div'); info.className = 'food-info';
   const title = document.createElement('div'); title.className = 'food-title';
   const name = document.createElement('h3'); name.textContent = getDishName(dish);
@@ -433,7 +502,7 @@ function createDishCard(dish) {
   price.textContent = Number(dish.price).toFixed(2) + ' GEL';
   title.append(name, price); info.appendChild(title);
   const descriptionText = getDishDescription(dish);
-  if (descriptionText) {
+  if (descriptionText && customerView.view !== 'list') {
     const desc = document.createElement('p'); desc.textContent = descriptionText;
     info.appendChild(desc);
   }
@@ -447,7 +516,20 @@ function createDishCard(dish) {
     add.addEventListener('click', () => addPersonalDish(dish.id));
     info.appendChild(add);
   }
-  card.appendChild(info); return card;
+  card.appendChild(info);
+  card.classList.add('dish-clickable');
+  card.setAttribute('role', 'button');
+  card.tabIndex = 0;
+  card.setAttribute('aria-label', (currentLanguage === 'ge' ? 'კერძის დეტალები: ' : 'View dish: ') + getDishName(dish));
+  card.addEventListener('click', event => {
+    if (event.target.closest('button, a')) return;
+    openDishDetail(dish.id);
+  });
+  card.addEventListener('keydown', event => {
+    if (event.target !== card) return;
+    if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); openDishDetail(dish.id); }
+  });
+  return card;
 }
 function createMenuSection(category, items) {
   const section = document.createElement('details');
@@ -507,6 +589,7 @@ function createCategories() {
 function filterMenu() {
   const q = searchInput.value.trim().toLowerCase();
   const filtered = dishes.filter(d => {
+    if (d.visible === false) return false;
     const belongs = selectedCategoryId === 'all' || d.categoryId === selectedCategoryId;
     const searchable = [d.nameGe, d.nameEn, d.descriptionGe, d.descriptionEn]
       .filter(Boolean).join(' ').toLowerCase();
@@ -605,7 +688,7 @@ function renderPersonalList() {
   const w = personalWords[currentLanguage];
   const active = Object.entries(personalQuantities)
     .map(([id, qty]) => ({ dish: dishes.find(d => d.id === id), qty }))
-    .filter(x => x.dish && Number.isSafeInteger(x.qty) && x.qty > 0);
+    .filter(x => x.dish && x.dish.visible !== false && Number.isSafeInteger(x.qty) && x.qty > 0);
   const count = active.reduce((sum, x) => sum + x.qty, 0);
   $('personalListBadge').textContent = String(count);
   personalFloat.setAttribute('aria-label', `${w.open} (${count})`);

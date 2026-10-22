@@ -175,3 +175,78 @@
   if (categoryList) observer.observe(categoryList, { childList: true });
   update();
 })();
+
+/* Dish availability and corner tags: saved with the existing authenticated
+   commitChange() / GitHub Worker. No changes to admin.js or Worker. */
+(() => {
+  const list = document.getElementById('dishList');
+  if (!list) return;
+  const text = {
+    ge: { show: 'ჩანს მენიუში', hide: 'დამალულია', tag: 'ნიშანი', none: 'ნიშნის გარეშე', popular: 'პოპულარული', new: 'ახალი', sale: 'ფასდაკლება', save: 'ინახება…', error: 'შენახვა ვერ მოხერხდა' },
+    en: { show: 'Visible', hide: 'Hidden', tag: 'Label', none: 'No label', popular: 'Popular', new: 'New', sale: 'Sale', save: 'Saving…', error: 'Could not save' }
+  };
+  const lang = () => {
+    try { return JSON.parse(localStorage.getItem('restaurantLanguage')) === 'ge' ? 'ge' : 'en'; }
+    catch { return localStorage.getItem('restaurantLanguage') === 'ge' ? 'ge' : 'en'; }
+  };
+  let busy = false;
+  const setDishField = async (id, field, value) => {
+    if (busy || typeof commitChange !== 'function') return false;
+    busy = true;
+    try {
+      return await commitChange(() => {
+        const dish = dishes.find(d => d.id === id);
+        if (!dish) throw new Error('Dish not found');
+        dish[field] = value;
+      });
+    } finally { busy = false; }
+  };
+  function applyControls() {
+    if (typeof dishes === 'undefined') return;
+    const w = text[lang()];
+    list.querySelectorAll('.dish-row').forEach(row => {
+      if (row.querySelector('.dish-availability-controls')) return;
+      const dish = dishes.find(d => d.id === row.dataset.id);
+      if (!dish) return;
+      const controls = document.createElement('div');
+      controls.className = 'dish-availability-controls';
+      const visibility = document.createElement('label');
+      visibility.className = 'dish-visibility-label';
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox'; checkbox.checked = dish.visible !== false;
+      checkbox.setAttribute('aria-label', w.show);
+      const label = document.createElement('span');
+      label.textContent = checkbox.checked ? w.show : w.hide;
+      visibility.append(checkbox, label);
+      row.classList.toggle('dish-is-hidden', !checkbox.checked);
+      checkbox.addEventListener('change', async () => {
+        const result = await setDishField(dish.id, 'visible', checkbox.checked);
+        if (!result) { checkbox.checked = !checkbox.checked; label.textContent = w.error; }
+      });
+      const tagLabel = document.createElement('label');
+      tagLabel.className = 'dish-tag-label';
+      tagLabel.append(document.createTextNode(w.tag + ': '));
+      const select = document.createElement('select');
+      for (const [key, caption] of [['', w.none], ['popular', w.popular], ['new', w.new], ['sale', w.sale]]) {
+        const option = document.createElement('option'); option.value = key; option.textContent = caption; select.append(option);
+      }
+      select.value = ['popular', 'new', 'sale'].includes(dish.tag) ? dish.tag : '';
+      select.setAttribute('aria-label', w.tag);
+      select.addEventListener('change', async () => {
+        const previous = dish.tag || '';
+        const result = await setDishField(dish.id, 'tag', select.value);
+        if (!result) { select.value = previous; }
+      });
+      tagLabel.append(select);
+      controls.append(visibility, tagLabel);
+      row.append(controls);
+    });
+  }
+  const observer = new MutationObserver(mutations => {
+    if (mutations.some(m => m.type === 'childList' && m.target === list)) applyControls();
+  });
+  observer.observe(list, { childList: true });
+  applyControls();
+  document.getElementById('languageGe')?.addEventListener('click', () => setTimeout(applyControls, 0));
+  document.getElementById('languageEn')?.addEventListener('click', () => setTimeout(applyControls, 0));
+})();
