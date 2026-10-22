@@ -140,9 +140,7 @@
       "showPopularCategory": false
     },
     "category-257fc02e-b702-48b8-a33f-56e588ac0be5": {
-      "showImages": true,
-      "personalListEnabled": true,
-      "showPopularCategory": false
+      "showImages": false
     }
   }
 }
