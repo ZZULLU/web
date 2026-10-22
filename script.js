@@ -590,35 +590,41 @@ function displayMenu(items) {
   menuContainer.replaceChildren();
   if (menuLoading) { menuContainer.textContent = translations[currentLanguage].loading; return; }
   if (menuLoadFailed) { menuContainer.textContent = translations[currentLanguage].loadError; return; }
-  if (!items.length) { menuContainer.textContent = translations[currentLanguage].noDishes; return; }
   const sorted = getSortedItems(items);
   if (selectedCategoryId === 'popular') {
     if (popularCategoryEnabled()) {
       const popularItems = sorted.filter(d => d.tag === 'popular');
-      if (popularItems.length) menuContainer.appendChild(createMenuSection({id:'popular',nameGe:'პოპულარული',nameEn:'Popular'}, popularItems));
+      if (popularItems.length) menuContainer.appendChild(createMenuSection({id:'popular', nameGe:'პოპულარული', nameEn:'Popular'}, popularItems));
     }
     if (!menuContainer.children.length) menuContainer.textContent = translations[currentLanguage].noDishes;
     return;
   }
-  const orderedCategories = [...categories].sort((a, b) => a.order - b.order);
-  for (const category of orderedCategories) {
+  const orderedCategories = [...categories].sort((a,b) => a.order-b.order);
+  const position = Math.max(0, Math.min(orderedCategories.length, popularSettings().position));
+  for (let i=0; i<=orderedCategories.length; i++) {
+    // Popular is a computed view, so dishes are not duplicated in menu.json.
+    if (selectedCategoryId === 'all' && i === position && popularCategoryEnabled()) {
+      const popularItems = sorted.filter(d => d.tag === 'popular');
+      if (popularItems.length) menuContainer.appendChild(createMenuSection({id:'popular', nameGe:'პოპულარული', nameEn:'Popular'}, popularItems));
+    }
+    const category = orderedCategories[i];
+    if (!category) continue;
     if (selectedCategoryId !== 'all' && selectedCategoryId !== category.id) continue;
     const related = sorted.filter(d => d.categoryId === category.id);
     if (related.length) menuContainer.appendChild(createMenuSection(category, related));
   }
   if (!menuContainer.children.length) menuContainer.textContent = translations[currentLanguage].noDishes;
 }
-// Popular is a virtual category: its toggle and position belong to its own
-// shared settings record. Read the older replicated flag for compatibility.
+// The optional Popular category uses extra fields on an EXISTING, validated
+// categorySettings entry. This avoids unsupported synthetic keys.
 function popularSettings() {
-  const owner = categories.find(c => typeof c.popularCategoryEnabled === 'boolean');
-  if (owner) return {enabled: owner.popularCategoryEnabled, position: Number(owner.popularCategoryPosition) || 0};
-  return { enabled: categories.some(c => categorySettings[c.id]?.showPopularCategory === true), position: 0 };
+  const record = categories.map(c => categorySettings[c.id]).find(x => typeof x?.showPopularCategory === 'boolean');
+  if (record) return { enabled: record.showPopularCategory, position: Number(record.popularCategoryPosition) || 0 };
+  const legacy = categories.find(c => typeof c.popularCategoryEnabled === 'boolean');
+  if (legacy) return { enabled: legacy.popularCategoryEnabled, position: Number(legacy.popularCategoryPosition) || 0 };
+  return {enabled:false, position:0};
 }
-function popularCategoryEnabled() {
-  return popularSettings().enabled === true &&
-    dishes.some(d => d.visible !== false && d.tag === 'popular');
-}
+function popularCategoryEnabled() { return popularSettings().enabled === true; }
 function popularCategoryTitle() { return currentLanguage === 'ge' ? 'პოპულარული' : 'Popular'; }
 function createCategories() {
   categoryButtons.replaceChildren();
@@ -626,19 +632,15 @@ function createCategories() {
     const button = document.createElement('button');
     button.type = 'button'; button.className = 'category-btn'; button.textContent = label;
     button.classList.toggle('active', selectedCategoryId === id);
-    button.addEventListener('click', () => {
-      selectedCategoryId = id;
-      createCategories(); filterMenu();
-    });
+    button.addEventListener('click', () => { selectedCategoryId=id; createCategories(); filterMenu(); });
     categoryButtons.appendChild(button);
   }
   appendCategory('all', translations[currentLanguage].all);
-  const sortedCategories = [...categories].sort((a, b) => a.order - b.order);
-  const popularPosition = Math.max(0, Math.min(sortedCategories.length,
-    Number.isFinite(Number(popularSettings().position)) ? Number(popularSettings().position) : 0));
-  for (let i = 0; i <= sortedCategories.length; i++) {
-    if (i === popularPosition && popularCategoryEnabled()) appendCategory('popular', popularCategoryTitle());
-    if (i < sortedCategories.length) appendCategory(sortedCategories[i].id, getCategoryName(sortedCategories[i]));
+  const sorted = [...categories].sort((a,b)=>a.order-b.order);
+  const at = Math.max(0, Math.min(sorted.length, popularSettings().position));
+  for (let i=0;i<=sorted.length;i++) {
+    if (i===at && popularCategoryEnabled()) appendCategory('popular', popularCategoryTitle());
+    if (i<sorted.length) appendCategory(sorted[i].id, getCategoryName(sorted[i]));
   }
 }
 function filterMenu() {

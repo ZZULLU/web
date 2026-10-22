@@ -775,3 +775,9 @@ body.list-view .food-card.dish-in-personal-list { background:rgba(31,153,92,.09)
 @media (prefers-reduced-motion: reduce) { .dish-detail-add.personal-added-bounce { animation: none; } }
 /* Ensure the drop-down content animates without repositioning the chevron. */
 .menu-category-section > .menu-grid { transform-origin: top center; will-change: transform, opacity; }
+
+/* Keep the name centered vertically in the complete list-row layout. */
+body.list-view .food-card .food-info { justify-content: center; min-height: 78px; }
+body.list-view .food-card .food-title { align-items: center; min-height: 40px; }
+body.list-view .food-card .food-title h3 { display: flex; align-items: center; align-self: center; margin-block: auto; line-height: 1.35; }
+body.list-view .food-card .price { align-self: center; }

@@ -321,94 +321,66 @@
   document.getElementById('languageEn')?.addEventListener('click', () => setTimeout(applyControls, 0));
 })();
 
-/* Popular lives in the same Admin category list as ordinary categories.
-   Saves into categorySettings.__popular__; never inserts a fake category into
-   categories[] (which would corrupt existing dish category IDs). */
+/* Popular category — computed from tagged dishes, saved on real categories. */
 (() => {
   const list = document.getElementById('categoryList');
   if (!list) return;
-  let busy = false;
-  const getGe = () => ['ge', '"ge"'].includes(localStorage.getItem('restaurantLanguage'));
-  const text = (ge, en) => getGe() ? ge : en;
-  function settings() {
-    // The Worker validates categorySettings keys against real category IDs.
-    // Store virtual Popular metadata on real category records, not under
-    // the invalid __popular__ key. Existing category records allow extra fields.
-    const owner = categories.find(c => typeof c.popularCategoryEnabled === 'boolean');
-    return {
-      enabled: owner ? owner.popularCategoryEnabled : categories.some(c => categorySettings[c.id]?.showPopularCategory === true),
-      position: owner ? (Number(owner.popularCategoryPosition) || 0) : 0
-    };
+  let busy=false;
+  const lang=()=>['ge','"ge"'].includes(localStorage.getItem('restaurantLanguage'));
+  const t=(ge,en)=>lang()?ge:en;
+  function state() {
+    if (typeof categories === 'undefined' || typeof categorySettings === 'undefined') return {enabled:false,position:0};
+    const saved=categories.map(c=>categorySettings[c.id]).find(v=>typeof v?.showPopularCategory==='boolean');
+    if(saved) return {enabled:saved.showPopularCategory,position:Number(saved.popularCategoryPosition)||0};
+    const old=categories.find(c=>typeof c.popularCategoryEnabled==='boolean');
+    return old?{enabled:old.popularCategoryEnabled,position:Number(old.popularCategoryPosition)||0}:{enabled:false,position:0};
   }
-  function update() {
-    if (typeof categories === 'undefined' || typeof categorySettings === 'undefined') return;
-    const real = [...list.children].filter(el => el.classList.contains('category-row'));
-    const old = list.querySelector('.admin-popular-category-row');
-    if (!real.length && !old) return; // Admin menu has not finished loading.
-    const state = settings();
-    const position = Math.max(0, Math.min(real.length, Number(state.position) || 0));
-    const row = old || document.createElement('div');
-    row.className = 'admin-popular-category-row';
-    row.dataset.virtualCategory = 'popular';
-    if (!old) {
-      row.innerHTML = `
-        <div class="popular-order-actions">
-          <button type="button" class="popular-move-up" aria-label="Move Popular up">↑</button>
-          <button type="button" class="popular-move-down" aria-label="Move Popular down">↓</button>
-        </div>
-        <div class="popular-category-main">
-          <div class="popular-category-names"><strong class="popular-name-ge">GE: პოპულარული</strong><strong class="popular-name-en">EN: Popular</strong></div>
-          <small class="popular-hint"></small>
-        </div>
-        <label class="popular-category-switch"><span class="popular-switch-text"></span><input type="checkbox" class="popular-enabled" aria-label="Show Popular category on customer menu"></label>`;
-      row.querySelector('.popular-move-up').addEventListener('click', () => move(-1));
-      row.querySelector('.popular-move-down').addEventListener('click', () => move(1));
-      row.querySelector('.popular-enabled').addEventListener('change', async e => {
-        if (busy) return;
-        await saveSettings({ enabled: e.target.checked });
-      });
-    }
-    row.querySelector('.popular-hint').textContent = text('ჩნდება მხოლოდ მაშინ, როცა პოპულარული კერძი არსებობს','Appears if at least one visible dish is labeled Popular');
-    row.querySelector('.popular-switch-text').textContent = text('მენიუში გამოჩენა','Show on menu');
-    row.querySelector('.popular-enabled').checked = state.enabled === true;
-    row.querySelector('.popular-enabled').disabled = busy;
-    row.querySelector('.popular-move-up').disabled = busy || !state.enabled || position === 0;
-    row.querySelector('.popular-move-down').disabled = busy || !state.enabled || position === real.length;
-    row.classList.toggle('popular-category-disabled', state.enabled !== true);
-    const next = real[position] || null;
-    if (row.parentElement !== list || row.nextElementSibling !== next) list.insertBefore(row, next);
-  }
-  async function saveSettings(patch) {
-    if (busy || typeof commitChange !== 'function') return;
-    busy = true; update();
+  async function save(patch) {
+    if (busy || typeof commitChange !== 'function' || !categories.length) return;
+    busy=true; render();
     try {
-      await commitChange(() => {
-        const next = { ...settings(), ...patch };
-        // Mirror onto every real category so it survives category deletion
-        // and remains independent from image-toggle updates.
-        for (const cat of categories) {
-          cat.popularCategoryEnabled = next.enabled === true;
-          cat.popularCategoryPosition = Math.max(0, Math.min(categories.length, Number(next.position) || 0));
+      const success=await commitChange(()=>{
+        const next={...state(),...patch};
+        const pos=Math.max(0,Math.min(categories.length,Number(next.position)||0));
+        // All records are real IDs and contain showImages, as Worker requires.
+        for(const c of categories){
+          const prior=categorySettings[c.id]||{};
+          categorySettings[c.id]={...prior,showImages:prior.showImages!==false,
+            showPopularCategory:next.enabled===true,popularCategoryPosition:pos};
         }
-        // Clear the invalid setting left in local state by older versions.
         delete categorySettings.__popular__;
       });
-    } finally { busy = false; update(); }
+      if(success===false) console.warn('Popular category setting was not saved.');
+    } finally {busy=false;render();}
   }
-  async function move(delta) {
-    if (busy || !settings().enabled) return;
-    const length = categories.length;
-    const position = Math.max(0, Math.min(length, Number(settings().position) || 0));
-    const next = Math.max(0, Math.min(length, position + delta));
-    if (next !== position) await saveSettings({ position: next });
+  function render() {
+    if (typeof categories === 'undefined' || typeof categorySettings === 'undefined') return;
+    const regular=[...list.children].filter(n=>n.classList.contains('category-row'));
+    if (!regular.length) return;
+    const s=state();
+    const pos=Math.max(0,Math.min(regular.length,s.position));
+    let row=list.querySelector('.admin-popular-category-row');
+    if(!row) {
+      row=document.createElement('div');row.className='admin-popular-category-row';
+      row.innerHTML=`<div class="popular-order-actions"><button type="button" class="popular-move-up" aria-label="Move Popular up">↑</button><button type="button" class="popular-move-down" aria-label="Move Popular down">↓</button></div><div class="popular-category-main"><div class="popular-category-names"><strong>GE: პოპულარული</strong><strong>EN: Popular</strong></div><small class="popular-hint"></small></div><label class="popular-category-switch"><span class="popular-switch-text"></span><input type="checkbox" class="popular-enabled" aria-label="Show Popular category"></label>`;
+      row.querySelector('.popular-enabled').addEventListener('change',e=>save({enabled:e.target.checked}));
+      row.querySelector('.popular-move-up').addEventListener('click',()=>save({position:Math.max(0,state().position-1)}));
+      row.querySelector('.popular-move-down').addEventListener('click',()=>save({position:Math.min(categories.length,state().position+1)}));
+    }
+    row.querySelector('.popular-hint').textContent=t('პოპულარული ნიშნით მონიშნული კერძები ავტომატურად გამოჩნდება','Popular-tagged dishes appear automatically');
+    row.querySelector('.popular-switch-text').textContent=t('მენიუში გამოჩენა','Show on menu');
+    row.querySelector('.popular-enabled').checked=s.enabled;
+    row.querySelector('.popular-enabled').disabled=busy;
+    row.querySelector('.popular-move-up').disabled=busy||pos===0;
+    row.querySelector('.popular-move-down').disabled=busy||pos===regular.length;
+    row.classList.toggle('popular-category-disabled',!s.enabled);
+    const before=regular[pos]||null;
+    if(row.parentNode!==list||row.nextElementSibling!==before)list.insertBefore(row,before);
   }
-  // Observe *direct* child replacement by original admin.js, not our own
-  // button / label updates. Avoid mutating the list if nothing changed.
-  new MutationObserver(records => {
-    if (records.some(r => [...r.addedNodes].some(n => n.nodeType===1 && n.classList.contains('category-row')) ||
-      [...r.removedNodes].some(n => n.nodeType===1 && n.classList.contains('category-row')))) update();
-  }).observe(list, {childList:true});
-  document.getElementById('languageGe')?.addEventListener('click',update);
-  document.getElementById('languageEn')?.addEventListener('click',update);
-  update();
+  new MutationObserver(records=>{
+    if(records.some(r=>[...r.addedNodes,...r.removedNodes].some(n=>n.nodeType===1&&n.classList.contains('category-row')))) render();
+  }).observe(list,{childList:true});
+  document.getElementById('languageGe')?.addEventListener('click',render);
+  document.getElementById('languageEn')?.addEventListener('click',render);
+  render();
 })();
