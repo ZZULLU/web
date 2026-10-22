@@ -486,7 +486,7 @@ function createDishCard(dish) {
     imageFrame.append(img);
     card.appendChild(imageFrame);
   } else if (!dish.image) card.classList.add('no-image');
-  if (['popular', 'new', 'sale'].includes(dish.tag)) {
+  if (customerView.view !== 'list' && ['popular', 'new', 'sale'].includes(dish.tag)) {
     const badge = document.createElement('span');
     badge.className = 'dish-tag dish-tag-' + dish.tag;
     badge.textContent = dishTagWords[currentLanguage][dish.tag];

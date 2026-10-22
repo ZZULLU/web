@@ -254,3 +254,42 @@ form { display: flex; flex-direction: column; gap: 11px; }
 .dish-is-hidden { opacity: .75; }
 .dish-is-hidden .dish-info h3 { text-decoration: line-through; text-decoration-thickness: 1px; }
 @media (max-width:600px) { .dish-availability-controls { width: 100%; gap: 12px; } }
+
+
+/* Compact Admin dish settings — eye among row actions, tag under dish text. */
+.dish-row .actions { align-items: stretch; min-width: 90px; }
+.dish-visibility-eye {
+  display: inline-flex; justify-content: center; align-items: center; gap: 7px;
+  background: var(--panel-background); color: var(--text-main);
+  border: 1px solid var(--border-color); padding: 9px 12px; min-height: 40px;
+  border-radius: 10px; cursor: pointer;
+}
+.dish-visibility-eye svg { display: block; width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dish-visibility-eye[aria-pressed="false"] { color: var(--text-secondary); background: var(--soft-background); }
+.dish-visibility-eye:hover { border-color: var(--accent); filter: none; }
+.dish-tag-inline { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.dish-tag-inline .dish-tag-caption { font-size: .79rem; font-weight: 700; color: var(--text-secondary); }
+.dish-tag-inline select {
+  flex: 0 1 170px; min-width: 110px; max-width: 190px;
+  padding: 7px 30px 7px 10px; border: 1px solid var(--border-color);
+  border-radius: 9px; background: var(--panel-background); color: var(--text-main);
+  font: 600 .83rem var(--body-font); cursor: pointer;
+}
+.dish-is-hidden { opacity: .72; }
+.dish-is-hidden .dish-info h3 { text-decoration: none; }
+.admin-visibility-filter {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  padding: 10px 14px; border: 1px solid var(--border-color); border-radius: 12px;
+  background: var(--panel-background); color: var(--text-main);
+  font-size: .86rem; font-weight: 700; cursor: pointer;
+}
+.admin-visibility-filter svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.admin-visibility-filter[aria-pressed="true"] { border-color: var(--accent-2); background: var(--soft-background); }
+.admin-dish-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 4px; }
+.admin-dish-toolbar .admin-order-tip { flex: 1 1 220px; margin: 0; }
+.dish-row.admin-hidden-filtered { display: none !important; }
+@media(max-width:700px) {
+  .dish-row .actions { grid-column: 2; display: flex; flex-direction: row; flex-wrap: wrap; }
+  .dish-visibility-eye { min-width: 42px; padding: 8px; }
+  .dish-tag-inline select { max-width: 100%; }
+}

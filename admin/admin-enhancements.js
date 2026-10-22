@@ -15,6 +15,26 @@
     row.classList.contains('dish-row') || row.classList.contains('category-row')
   );
   let orderSaving = false;
+  let showAll = false;
+  const showAllButton = document.getElementById('adminShowAllDishes');
+  const showAllText = document.getElementById('adminShowAllDishesText');
+  function applyAllFilter() {
+    const all = rowsOf(dishList);
+    all.forEach(row => {
+      row.classList.toggle('admin-hidden-filtered', !showAll && row.classList.contains('dish-is-hidden'));
+    });
+    const ge = isGeorgian();
+    if (showAllText) showAllText.textContent = showAll
+      ? (ge ? 'მხოლოდ ხილული' : 'Visible items only')
+      : (ge ? 'ყველა კერძის ჩვენება' : 'Show all items');
+    if (showAllButton) {
+      showAllButton.setAttribute('aria-pressed', String(showAll));
+      showAllButton.title = showAllText?.textContent || '';
+    }
+  }
+  showAllButton?.addEventListener('click', () => {
+    showAll = !showAll; applyAllFilter(); applyDishSearch();
+  });
 
   function applyDishSearch() {
     const q = search.value.trim().toLocaleLowerCase();
@@ -24,8 +44,10 @@
       const info = row.querySelector('.dish-info');
       const match = !q || Boolean(info && info.textContent.toLocaleLowerCase().includes(q));
       row.classList.toggle('admin-filtered-out', !match);
-      if (match) shown++;
+      if (match && !row.classList.contains('admin-hidden-filtered')) shown++;
     }
+    applyAllFilter();
+    shown = rows.filter(row => !row.classList.contains('admin-filtered-out') && !row.classList.contains('admin-hidden-filtered')).length;
     count.textContent = isGeorgian()
       ? `${shown} / ${rows.length} კერძი`
       : `${shown} / ${rows.length} dishes`;
@@ -84,11 +106,13 @@
     refresh();
   };
 
+  dishList.addEventListener('admin-visibility-updated', () => { applyAllFilter(); applyDishSearch(); });
   search.addEventListener('input', applyDishSearch);
   document.getElementById('languageGe')?.addEventListener('click', applyDishSearch);
   document.getElementById('languageEn')?.addEventListener('click', applyDishSearch);
   observeList(dishList, 'dish');
   observeList(categoryList, 'category');
+  setTimeout(applyDishSearch, 0);
 })();
 
 /* =========================================================
@@ -205,27 +229,42 @@
     if (typeof dishes === 'undefined') return;
     const w = text[lang()];
     list.querySelectorAll('.dish-row').forEach(row => {
-      if (row.querySelector('.dish-availability-controls')) return;
+      if (row.dataset.availabilityReady === '1') return;
+      row.dataset.availabilityReady = '1';
       const dish = dishes.find(d => d.id === row.dataset.id);
       if (!dish) return;
-      const controls = document.createElement('div');
-      controls.className = 'dish-availability-controls';
-      const visibility = document.createElement('label');
-      visibility.className = 'dish-visibility-label';
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox'; checkbox.checked = dish.visible !== false;
-      checkbox.setAttribute('aria-label', w.show);
-      const label = document.createElement('span');
-      label.textContent = checkbox.checked ? w.show : w.hide;
-      visibility.append(checkbox, label);
-      row.classList.toggle('dish-is-hidden', !checkbox.checked);
-      checkbox.addEventListener('change', async () => {
-        const result = await setDishField(dish.id, 'visible', checkbox.checked);
-        if (!result) { checkbox.checked = !checkbox.checked; label.textContent = w.error; }
+      const actions = row.querySelector('.actions');
+      const info = row.querySelector('.dish-info');
+      if (!actions || !info) return;
+
+      // The eye lives beside Edit/Delete, not in a full-width settings bar.
+      const eye = document.createElement('button');
+      eye.type = 'button'; eye.className = 'dish-visibility-eye';
+      const eyeSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>';
+      const hiddenSvg = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 3 18 18"/><path d="M10.6 5.1c.5-.1.9-.1 1.4-.1 6.5 0 10 7 10 7a17 17 0 0 1-3.2 3.7M6.3 6.3A15 15 0 0 0 2 12s3.5 7 10 7c1.5 0 2.8-.4 3.9-1"/><path d="M10 10a3 3 0 0 0 4 4"/></svg>';
+      const syncEye = () => {
+        const isVisible = dish.visible !== false;
+        eye.innerHTML = isVisible ? eyeSvg : hiddenSvg;
+        eye.setAttribute('aria-pressed', String(isVisible));
+        eye.setAttribute('aria-label', isVisible ? w.show : w.hide);
+        eye.title = (isVisible ? w.show : w.hide) + ' — click to change';
+        row.classList.toggle('dish-is-hidden', !isVisible);
+        row.dispatchEvent(new CustomEvent('admin-visibility-updated', { bubbles: true }));
+      };
+      eye.addEventListener('click', async () => {
+        if (busy) return;
+        eye.disabled = true;
+        const success = await setDishField(dish.id, 'visible', dish.visible === false);
+        if (!success) syncEye();
+        eye.disabled = false;
       });
-      const tagLabel = document.createElement('label');
-      tagLabel.className = 'dish-tag-label';
-      tagLabel.append(document.createTextNode(w.tag + ': '));
+      actions.prepend(eye);
+
+      // Compact label selector under the dish's price/details.
+      const tagWrap = document.createElement('div');
+      tagWrap.className = 'dish-tag-inline';
+      const tagTitle = document.createElement('span');
+      tagTitle.className = 'dish-tag-caption'; tagTitle.textContent = w.tag;
       const select = document.createElement('select');
       for (const [key, caption] of [['', w.none], ['popular', w.popular], ['new', w.new], ['sale', w.sale]]) {
         const option = document.createElement('option'); option.value = key; option.textContent = caption; select.append(option);
@@ -234,12 +273,14 @@
       select.setAttribute('aria-label', w.tag);
       select.addEventListener('change', async () => {
         const previous = dish.tag || '';
+        select.disabled = true;
         const result = await setDishField(dish.id, 'tag', select.value);
-        if (!result) { select.value = previous; }
+        if (!result) select.value = previous;
+        select.disabled = false;
       });
-      tagLabel.append(select);
-      controls.append(visibility, tagLabel);
-      row.append(controls);
+      tagWrap.append(tagTitle, select);
+      info.append(tagWrap);
+      syncEye();
     });
   }
   const observer = new MutationObserver(mutations => {
