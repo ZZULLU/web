@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin</title>
-    <link rel="stylesheet" href="admin.css?v=polish-v2">
+    <link rel="stylesheet" href="admin.css?v=groups-v1">
 </head>
 <body>
     <!-- Public admin page, but actual editing requires a backend session. -->
@@ -119,9 +119,8 @@
                 <div class="admin-dish-toolbar">
                     <button type="button" id="adminShowAllDishes" class="admin-visibility-filter" aria-pressed="false" title="Show all dishes, including hidden items">
                         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <span id="adminShowAllDishesText">Show all items</span>
+                        <span id="adminShowAllDishesText">Show all on menu</span>
                     </button>
-                    <p class="admin-order-tip" id="adminOrderTip">Use ↑ and ↓ beside a dish to move it one position, including on mobile. Dragging still works on desktop.</p>
                 </div>
                 <div id="dishList"></div>
             </div>
@@ -129,7 +128,7 @@
     </div>
 
     <script src="admin.js"></script>
-    <script src="admin-enhancements.js?v=polish-v2"></script>
+    <script src="admin-enhancements.js?v=groups-v1"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {

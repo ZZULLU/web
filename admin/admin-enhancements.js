@@ -1,118 +1,147 @@
-/*
- * UI enhancements for the existing Admin page.
- * Online persistence and authentication remain in admin.js.
- * This uses the existing reorderDishes() and reorderCategories().
- */
+/* Admin menu enhancements. Uses original admin.js for login, updates and storage. */
 (() => {
+  const list = document.getElementById('dishList');
+  const categoryList = document.getElementById('categoryList');
   const search = document.getElementById('adminDishSearch');
   const count = document.getElementById('adminDishSearchCount');
-  const dishList = document.getElementById('dishList');
-  const categoryList = document.getElementById('categoryList');
-  if (!search || !count || !dishList || !categoryList) return;
-
-  const isGeorgian = () => localStorage.getItem('restaurantLanguage') === 'ge';
-  const rowsOf = list => Array.from(list.children).filter(row =>
-    row.classList.contains('dish-row') || row.classList.contains('category-row')
-  );
-  let orderSaving = false;
-  let showAll = false;
-  const showAllButton = document.getElementById('adminShowAllDishes');
-  const showAllText = document.getElementById('adminShowAllDishesText');
-  function applyAllFilter() {
-    const all = rowsOf(dishList);
-    all.forEach(row => {
-      row.classList.toggle('admin-hidden-filtered', !showAll && row.classList.contains('dish-is-hidden'));
-    });
-    const ge = isGeorgian();
-    if (showAllText) showAllText.textContent = showAll
-      ? (ge ? 'მხოლოდ ხილული' : 'Visible items only')
-      : (ge ? 'ყველა კერძის ჩვენება' : 'Show all items');
-    if (showAllButton) {
-      showAllButton.setAttribute('aria-pressed', String(showAll));
-      showAllButton.title = showAllText?.textContent || '';
-    }
-  }
-  showAllButton?.addEventListener('click', () => {
-    showAll = !showAll; applyAllFilter(); applyDishSearch();
-  });
-
-  function applyDishSearch() {
-    const q = search.value.trim().toLocaleLowerCase();
-    const rows = rowsOf(dishList);
-    let shown = 0;
-    for (const row of rows) {
-      const info = row.querySelector('.dish-info');
-      const match = !q || Boolean(info && info.textContent.toLocaleLowerCase().includes(q));
-      row.classList.toggle('admin-filtered-out', !match);
-      if (match && !row.classList.contains('admin-hidden-filtered')) shown++;
-    }
-    applyAllFilter();
-    shown = rows.filter(row => !row.classList.contains('admin-filtered-out') && !row.classList.contains('admin-hidden-filtered')).length;
-    count.textContent = isGeorgian()
-      ? `${shown} / ${rows.length} კერძი`
-      : `${shown} / ${rows.length} dishes`;
-  }
-
-  function makeOrderButtons(list, type) {
-    const rows = rowsOf(list);
-    const selector = type === 'dish' ? '.dish-order-actions' : '.category-order-actions';
-    rows.forEach((row, index) => {
-      if (row.querySelector(selector)) return;
-      const controls = document.createElement('div');
-      controls.className = type === 'dish' ? 'dish-order-actions' : 'category-order-actions';
-      controls.setAttribute('role', 'group');
-      controls.setAttribute('aria-label', type === 'dish' ? 'Dish order' : 'Category order');
-
-      const makeButton = (direction, targetIndex) => {
-        const button = document.createElement('button');
-        button.type = 'button';
-        button.textContent = direction === 'up' ? '↑' : '↓';
-        button.title = `Move ${type} ${direction}`;
-        button.setAttribute('aria-label', button.title);
-        button.disabled = targetIndex < 0 || targetIndex >= rows.length;
-        button.addEventListener('click', async () => {
-          if (orderSaving) return;
-          const liveRows = rowsOf(list);
-          const currentIndex = liveRows.findIndex(r => r.dataset.id === row.dataset.id);
-          const nextIndex = currentIndex + (direction === 'up' ? -1 : 1);
-          if (currentIndex < 0 || nextIndex < 0 || nextIndex >= liveRows.length) return;
-          const functionName = type === 'dish' ? 'reorderDishes' : 'reorderCategories';
-          const reorder = type === 'dish'
-            ? (typeof reorderDishes === 'function' ? reorderDishes : null)
-            : (typeof reorderCategories === 'function' ? reorderCategories : null);
-          if (!reorder) { console.error(`${functionName} is unavailable`); return; }
-          orderSaving = true;
-          try {
-            await reorder(row.dataset.id, liveRows[nextIndex].dataset.id);
-          } finally {
-            orderSaving = false;
-          }
-        });
-        return button;
-      };
-      controls.append(makeButton('up', index - 1), makeButton('down', index + 1));
-      row.insertBefore(controls, row.firstChild);
-    });
-    if (type === 'dish') applyDishSearch();
-  }
-
-  const observeList = (list, type) => {
-    const refresh = () => makeOrderButtons(list, type);
-    const observer = new MutationObserver(mutations => {
-      // Only react when the original Admin renderer replaces the list's rows.
-      if (mutations.some(m => m.target === list && m.type === 'childList')) refresh();
-    });
-    observer.observe(list, { childList: true });
-    refresh();
+  const showAll = document.getElementById('adminShowAllDishes');
+  if (!list || !categoryList || !search || !count) return;
+  const ge = () => {
+    const raw = localStorage.getItem('restaurantLanguage');
+    return raw === 'ge' || raw === '"ge"';
   };
-
-  dishList.addEventListener('admin-visibility-updated', () => { applyAllFilter(); applyDishSearch(); });
-  search.addEventListener('input', applyDishSearch);
-  document.getElementById('languageGe')?.addEventListener('click', applyDishSearch);
-  document.getElementById('languageEn')?.addEventListener('click', applyDishSearch);
-  observeList(dishList, 'dish');
-  observeList(categoryList, 'category');
-  setTimeout(applyDishSearch, 0);
+  const label = (g,e) => ge() ? g : e;
+  const opened = new Map();
+  let ordering = false, revealing = false;
+  const rows = (root, selector) => [...root.querySelectorAll(selector)];
+  const menuCategories = () => typeof categories !== 'undefined' ? [...categories].sort((a,b)=>a.order-b.order) : [];
+  const visibleText = dish => (dish.nameGe || dish.nameEn || '') + ' ' + (dish.nameEn || '') + ' ' + (dish.descriptionGe || '') + ' ' + (dish.descriptionEn || '');
+  function recalc() {
+    const q = search.value.trim().toLocaleLowerCase();
+    let shown = 0;
+    for (const row of rows(list, '.dish-row')) {
+      const dish = typeof dishes !== 'undefined' && dishes.find(d=>d.id===row.dataset.id);
+      const match = !q || (dish && visibleText(dish).toLocaleLowerCase().includes(q));
+      row.classList.toggle('admin-filtered-out', !match);
+      if (match) shown++;
+    }
+    for (const group of rows(list, '.admin-dish-group')) {
+      const n = rows(group,'.dish-row:not(.admin-filtered-out)').length;
+      const counter = group.querySelector('.admin-group-count');
+      if (counter) counter.textContent = String(n);
+      group.classList.toggle('admin-group-empty', n === 0);
+      // For a search, automatically expand groups with matches.
+      if (q && n) group.open = true;
+    }
+    const total = rows(list,'.dish-row').length;
+    count.textContent = label(`${shown} / ${total} კერძი`,`${shown} / ${total} dishes`);
+  }
+  function makeArrow(direction, categoryId, row) {
+    const button = document.createElement('button');
+    button.type='button'; button.textContent=direction==='up'?'↑':'↓';
+    button.setAttribute('aria-label',direction==='up'?'Move dish up':'Move dish down');
+    button.title=button.getAttribute('aria-label');
+    button.addEventListener('click', async () => {
+      if (ordering) return;
+      const siblings = rows(list,'.dish-row').filter(r => r.dataset.categoryId===categoryId);
+      const from=siblings.findIndex(r=>r.dataset.id===row.dataset.id);
+      const target=from+(direction==='up'?-1:1);
+      if (from<0 || target<0 || target>=siblings.length) return;
+      if (typeof reorderDishes!=='function') return;
+      ordering=true;
+      try { await reorderDishes(row.dataset.id,siblings[target].dataset.id); }
+      finally { ordering=false; }
+    });
+    return button;
+  }
+  function decorateCategories() {
+    const items=rows(categoryList,'.category-row');
+    items.forEach((row,index)=>{
+      if(row.querySelector('.category-order-actions'))return;
+      const box=document.createElement('div'); box.className='category-order-actions';
+      ['up','down'].forEach(dir=>{
+        const b=document.createElement('button');b.type='button';b.textContent=dir==='up'?'↑':'↓';
+        b.disabled=dir==='up'?index===0:index===items.length-1;
+        b.title=dir==='up'?'Move category up':'Move category down';
+        b.addEventListener('click',async()=>{
+          if(ordering||typeof reorderCategories!=='function')return;
+          const live=rows(categoryList,'.category-row'); const i=live.findIndex(r=>r.dataset.id===row.dataset.id);
+          const j=i+(dir==='up'?-1:1);if(j<0||j>=live.length)return;
+          ordering=true;try{await reorderCategories(row.dataset.id,live[j].dataset.id);}finally{ordering=false;}
+        }); box.append(b);
+      });
+      row.prepend(box);
+    });
+  }
+  function groupDishes() {
+    // Original admin.js replaces the direct rows after each save; regroup those rows.
+    const direct=[...list.children].filter(el=>el.classList.contains('dish-row'));
+    if(!direct.length) {recalc();return;}
+    const fragment=document.createDocumentFragment();
+    const byId=new Map();
+    const cats=menuCategories();
+    for(const cat of cats)byId.set(cat.id,[]);
+    for(const row of direct){
+      const dish=typeof dishes!=='undefined'&&dishes.find(d=>d.id===row.dataset.id);
+      const id=dish?.categoryId || '__uncategorized';
+      if(!byId.has(id))byId.set(id,[]);
+      row.dataset.categoryId=id;
+      byId.get(id).push(row);
+    }
+    for(const [id,groupRows] of byId){
+      if(!groupRows.length)continue;
+      const cat=cats.find(c=>c.id===id);
+      const details=document.createElement('details');details.className='admin-dish-group';details.dataset.categoryId=id;
+      details.open=opened.get(id)!==false;
+      const summary=document.createElement('summary');summary.className='admin-dish-group-heading';
+      const heading=document.createElement('strong');heading.textContent=cat?(ge()?(cat.nameGe||cat.nameEn):(cat.nameEn||cat.nameGe)):label('სხვა','Other');
+      const badge=document.createElement('span');badge.className='admin-group-count';badge.textContent=String(groupRows.length);
+      const chevron=document.createElement('span');chevron.className='admin-group-chevron';chevron.setAttribute('aria-hidden','true');
+      summary.append(heading,badge,chevron);details.append(summary);
+      const content=document.createElement('div');content.className='admin-dish-group-content';
+      groupRows.forEach((row,i)=>{
+        const controls=document.createElement('div');controls.className='dish-order-actions';
+        const up=makeArrow('up',id,row),down=makeArrow('down',id,row);
+        up.disabled=i===0;down.disabled=i===groupRows.length-1;
+        controls.append(up,down);row.prepend(controls);content.append(row);
+      });
+      details.append(content);details.addEventListener('toggle',()=>{if(details.isConnected)opened.set(id,details.open);});
+      fragment.append(details);
+    }
+    // Moving rows retains the handlers attached by original admin.js.
+    list.replaceChildren(fragment);
+    recalc();
+  }
+  showAll?.addEventListener('click',async()=>{
+    if(revealing||typeof commitChange!=='function'||typeof dishes==='undefined')return;
+    const hidden=dishes.filter(d=>d.visible===false);
+    if(!hidden.length)return;
+    const confirmed=confirm(label(`ყველა ${hidden.length} დამალული კერძი გამოჩნდეს მენიუში?`,`Make all ${hidden.length} hidden dishes visible on the customer menu?`));
+    if(!confirmed)return;
+    revealing=true;showAll.disabled=true;
+    try{await commitChange(()=>{dishes.forEach(d=>{d.visible=true;});});}
+    finally{revealing=false;showAll.disabled=false;}
+  });
+  function updateBulkLabel(){
+    if(!showAll || typeof dishes==='undefined')return;
+    const n=dishes.filter(d=>d.visible===false).length;
+    const span=document.getElementById('adminShowAllDishesText');
+    if(span)span.textContent=label(`ყველა კერძის გამოჩენა${n?' ('+n+')':''}`,`Show all on menu${n?' ('+n+')':''}`);
+    showAll.disabled=n===0;
+  }
+  const originalRecalc=recalc;
+  search.addEventListener('input',recalc);
+  list.addEventListener('admin-visibility-updated',()=>{recalc();updateBulkLabel();});
+  new MutationObserver(ms=>{
+    if(ms.some(m=>m.target===list&&m.type==='childList')){
+      if([...list.children].some(el=>el.classList.contains('dish-row')))groupDishes();
+      updateBulkLabel();
+    }
+  }).observe(list,{childList:true});
+  new MutationObserver(()=>decorateCategories()).observe(categoryList,{childList:true});
+  document.getElementById('languageGe')?.addEventListener('click',()=>{recalc();updateBulkLabel();});
+  document.getElementById('languageEn')?.addEventListener('click',()=>{recalc();updateBulkLabel();});
+  decorateCategories();groupDishes();updateBulkLabel();
 })();
 
 /* =========================================================
@@ -290,4 +319,33 @@
   applyControls();
   document.getElementById('languageGe')?.addEventListener('click', () => setTimeout(applyControls, 0));
   document.getElementById('languageEn')?.addEventListener('click', () => setTimeout(applyControls, 0));
+})();
+
+/* Optional "Popular" filter chip — saved online with categorySettings. */
+(() => {
+  const anchor=document.getElementById('dishList')?.closest('.admin-section');
+  if(!anchor)return;
+  const section=document.createElement('section');section.className='admin-popular-setting';
+  section.innerHTML='<label class="admin-popular-label"><input type="checkbox" id="adminPopularCategoryToggle"><span id="adminPopularCategoryText">Show Popular category in customer menu</span></label><p id="adminPopularCategoryNote">Only appears when at least one visible dish is labeled Popular.</p>';
+  anchor.querySelector('.section-content')?.prepend(section);
+  const input=section.querySelector('input');const title=section.querySelector('#adminPopularCategoryText');const note=section.querySelector('#adminPopularCategoryNote');
+  let busy=false;
+  const update=()=>{
+    if(typeof categories==='undefined'||typeof categorySettings==='undefined')return;
+    const raw=localStorage.getItem('restaurantLanguage');const ge=raw==='ge'||raw==='"ge"';
+    title.textContent=ge?'პოპულარული კატეგორიის ჩვენება მენიუში':'Show Popular category in menu';
+    note.textContent=ge?'ჩნდება მხოლოდ მაშინ, თუ მენიუში პოპულარული მონიშნული კერძი არსებობს.':'Appears only when at least one visible dish has the Popular label.';
+    input.checked=categories.some(c=>categorySettings[c.id]?.showPopularCategory===true);
+    input.disabled=busy||!categories.length;
+  };
+  input.addEventListener('change',async()=>{
+    if(busy||typeof commitChange!=='function')return;
+    busy=true;const enabled=input.checked;input.disabled=true;
+    try{await commitChange(()=>{categories.forEach(c=>{categorySettings[c.id]={...categorySettings[c.id],showPopularCategory:enabled};});});}
+    finally{busy=false;update();}
+  });
+  new MutationObserver(()=>update()).observe(document.getElementById('categoryList'),{childList:true});
+  document.getElementById('languageGe')?.addEventListener('click',update);
+  document.getElementById('languageEn')?.addEventListener('click',update);
+  update();
 })();

@@ -742,3 +742,15 @@ body.list-view .food-card .dish-tag { display: none !important; }
 /* Keep footer as the final document block, while retaining full-length menus. */
 html, body { max-width: 100%; }
 body { overflow-x: clip; }
+
+/* Clear visual feedback after adding a dish to the private list. */
+.food-card .food-info > button.personal-add-button { width:42px; height:42px; min-width:42px; font-size:28px; transition:transform .17s ease,box-shadow .17s ease; }
+.food-card.dish-just-added { box-shadow:0 0 0 3px rgba(36,158,93,.65),0 0 24px rgba(36,158,93,.4) !important; background-image:linear-gradient(rgba(49,171,101,.09),rgba(49,171,101,.09)); }
+.food-card .food-info > button.personal-add-button.personal-added-bounce { animation:personalButtonBounce .55s cubic-bezier(.2,.7,.3,1) both; box-shadow:0 0 0 5px rgba(44,171,104,.25),0 5px 15px rgba(0,0,0,.19); }
+@keyframes personalButtonBounce {0%{transform:scale(1)}35%{transform:scale(1.24)}64%{transform:scale(.92)}100%{transform:scale(1)}}
+@media(max-width:600px){ .food-card .food-info > button.personal-add-button {width:35px;height:35px;min-width:35px;font-size:25px;} }
+@media(prefers-reduced-motion:reduce){ .food-card .food-info > button.personal-add-button.personal-added-bounce {animation:none;} }
+
+/* A subtle persistent indication that this dish is already in My List. */
+.food-card.dish-in-personal-list { box-shadow:0 0 0 2px rgba(31,153,92,.45),0 5px 17px rgba(31,153,92,.13); }
+body.list-view .food-card.dish-in-personal-list { background:rgba(31,153,92,.09); border-radius:8px; }
