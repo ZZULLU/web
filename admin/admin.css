@@ -327,3 +327,28 @@ form { display: flex; flex-direction: column; gap: 11px; }
  .admin-popular-category-row .popular-category-main {grid-column:2;grid-row:1;}
  .admin-popular-category-row .popular-category-switch {grid-column:2;grid-row:2;justify-self:start;}
 }
+
+
+/* Restore categorized dish accordion layout, missing in previous release. */
+/* Categorized Admin menu, mobile-safe within-category reordering */
+#dishList { display:flex; flex-direction:column; gap:14px; }
+.admin-dish-group { border:1px solid var(--border-color); border-radius:17px; overflow:hidden; background:var(--panel-background); }
+.admin-dish-group-heading { list-style:none; cursor:pointer; display:flex; align-items:center; gap:12px; padding:15px 18px; font-weight:750; background:var(--soft-background); }
+.admin-dish-group-heading::-webkit-details-marker { display:none; }
+.admin-dish-group-heading strong { flex:1; }
+.admin-group-count { min-width:30px; text-align:center; padding:4px 9px; border-radius:99px; background:var(--panel-background); }
+.admin-group-chevron { display:inline-block; width:11px; height:11px; border-right:2px solid currentColor; border-bottom:2px solid currentColor; transform:rotate(45deg); transition:transform .22s ease; margin:0 6px 6px 8px; }
+.admin-dish-group[open] .admin-group-chevron { transform:rotate(225deg); margin-top:8px; margin-bottom:0; }
+.admin-dish-group-content { display:flex; flex-direction:column; gap:10px; padding:12px; animation:adminCategoryReveal .2s ease both; }
+@keyframes adminCategoryReveal { from {opacity:.25;transform:translateY(-6px)} to {opacity:1;transform:translateY(0)} }
+.admin-dish-group.admin-group-empty { display:none; }
+#dishList .dish-row.dish-is-hidden { background:rgba(194,65,65,.14) !important; border:2px solid rgba(194,65,65,.65) !important; opacity:1; }
+body.dark-mode #dishList .dish-row.dish-is-hidden { background:rgba(190,65,65,.22) !important; }
+#dishList .dish-row.dish-is-hidden .dish-info::after { content:'Hidden from customer menu'; display:block; margin-top:8px; color:#b13c42; font-weight:700; font-size:.78rem; }
+#dishList .dish-order-actions { display:flex; flex-direction:column; flex-wrap:nowrap; }
+#dishList .dish-row { grid-template-columns:44px 120px minmax(0,1fr) auto; }
+#dishList .dish-row.admin-filtered-out { display:none !important; }
+.admin-dish-toolbar .admin-visibility-filter:disabled { opacity:.5; cursor:default; }
+@media(max-width:700px){ #dishList .dish-row {grid-template-columns:40px minmax(0,1fr)} #dishList .dish-order-actions{grid-column:1;grid-row:1/4} #dishList .dish-row img,#dishList .dish-row .dish-info,#dishList .dish-row .actions {grid-column:2} .admin-dish-group-content{padding:8px} }
+@media(prefers-reduced-motion:reduce){ .admin-dish-group-content{animation:none} .admin-group-chevron{transition:none} }
+
