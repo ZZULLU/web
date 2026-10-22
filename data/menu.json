@@ -59,19 +59,6 @@
       "visible": true
     },
     {
-      "id": "dish-ff0bfe53-f1da-484f-a112-0b5a59531c71",
-      "nameGe": "ხინკალი",
-      "nameEn": "khinkali",
-      "descriptionGe": "",
-      "descriptionEn": "",
-      "price": 2,
-      "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
-      "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
-      "order": 2,
-      "tag": "sale",
-      "visible": true
-    },
-    {
       "id": "dish-536da40a-d18a-4b28-8d75-c421fc8ad91c",
       "nameGe": "ფანტა",
       "nameEn": "fanta",
@@ -80,7 +67,7 @@
       "price": 3,
       "categoryId": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
       "image": "images/uploads/50101e25-fd22-4212-8143-a9636540ef5f.jpg",
-      "order": 3,
+      "order": 2,
       "visible": true
     },
     {
@@ -92,7 +79,20 @@
       "price": 10,
       "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "image": "images/uploads/f2a97023-078a-450f-ad4b-659bf7afb15b.jpg",
+      "order": 3,
+      "visible": true
+    },
+    {
+      "id": "dish-ff0bfe53-f1da-484f-a112-0b5a59531c71",
+      "nameGe": "ხინკალი",
+      "nameEn": "khinkali",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 2,
+      "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
+      "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
       "order": 4,
+      "tag": "sale",
       "visible": true
     },
     {
