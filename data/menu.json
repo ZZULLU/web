@@ -65,7 +65,8 @@
       "price": 2,
       "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
-      "order": 2
+      "order": 2,
+      "tag": "sale"
     },
     {
       "id": "dish-d374dbda-21a2-42e9-958e-95e8f5bd2ffc",
