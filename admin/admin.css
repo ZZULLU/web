@@ -3,19 +3,19 @@
 * { box-sizing: border-box; }
 :root {
   color-scheme: light;
-  --page-background: #f8f2e9;
-  --panel-background: #fffdfa;
-  --text-main: #382c2c;
-  --text-secondary: #766863;
-  --border-color: #e9d9cb;
-  --soft-background: #f2e7da;
-  --button-main: #963f3d;
-  --button-text: #fffaf1;
-  --danger: #b73d4d;
-  --accent: #b96b42;
-  --accent-2: #287565;
-  --gold: #c49157;
-  --shadow: 0 12px 32px rgba(83, 48, 37, .08);
+  --page-background: #F5EFEB;
+  --panel-background: #FFFFFF;
+  --text-main: #2F4156;
+  --text-secondary: #567C8D;
+  --border-color: #C8D9E6;
+  --soft-background: #C8D9E6;
+  --button-main: #2F4156;
+  --button-text: #FFFFFF;
+  --danger: #2F4156;
+  --accent: #567C8D;
+  --accent-2: #567C8D;
+  --gold: #C8D9E6;
+  --shadow: 0 12px 32px rgba(47,65,86,.10);
   --body-font: 'DM Sans', 'Noto Sans Georgian', sans-serif;
   --heading-font: 'Playfair Display', 'Noto Serif Georgian', Georgia, serif;
 }
@@ -464,3 +464,69 @@ body.dark-mode #dishList .dish-row.dish-is-hidden {background:rgba(101,73,34,.45
 body.dark-mode #dishList .dish-row.dish-is-hidden .dish-info::after {color:#B68B4B;}
 body.dark-mode .info-message {color:#B68B4B;}
 
+
+
+/* ===============================================================
+   LIGHT MODE — NAVY / TEAL / SKY / BEIGE / WHITE (user palette)
+   Scope to non-dark body. Existing forest dark mode is untouched.
+   #2F4156 #567C8D #C8D9E6 #F5EFEB #FFFFFF
+================================================================ */
+body:not(.dark-mode) {background:#F5EFEB;color:#2F4156;}
+body:not(.dark-mode) .admin-container,
+body:not(.dark-mode) .admin-header,
+body:not(.dark-mode) .admin-section,
+body:not(.dark-mode) .admin-personal-feature,
+body:not(.dark-mode) .admin-dish-group,
+body:not(.dark-mode) .login-panel {color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .admin-header,
+body:not(.dark-mode) .admin-section,
+body:not(.dark-mode) .admin-personal-feature,
+body:not(.dark-mode) .admin-dish-group,
+body:not(.dark-mode) .login-panel {background-color:#FFFFFF;}
+body:not(.dark-mode) .admin-header {border-top-color:#567C8D;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n + 1) {border-top-color:#2F4156;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n + 2) {border-top-color:#567C8D;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n) {border-top-color:#C8D9E6;}
+body:not(.dark-mode) .category-row,
+body:not(.dark-mode) .dish-row,
+body:not(.dark-mode) .admin-popular-category-row,
+body:not(.dark-mode) .admin-dish-group-heading,
+body:not(.dark-mode) .dish-availability-controls {background:#F5EFEB;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .admin-section summary:hover,
+body:not(.dark-mode) .admin-dish-group-heading:hover {background:#C8D9E6;}
+body:not(.dark-mode) input,
+body:not(.dark-mode) textarea,
+body:not(.dark-mode) select,
+body:not(.dark-mode) .category-language-value,
+body:not(.dark-mode) .popular-category-names strong {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) input:focus,
+body:not(.dark-mode) textarea:focus,
+body:not(.dark-mode) select:focus {border-color:#567C8D;box-shadow:0 0 0 3px rgba(86,124,141,.18);}
+body:not(.dark-mode) button,
+body:not(.dark-mode) .top-control-button.active,
+body:not(.dark-mode) .view-menu-button {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .top-control-button:not(.active),
+body:not(.dark-mode) .cancel-button,
+body:not(.dark-mode) .category-order-actions button,
+body:not(.dark-mode) .dish-order-actions button,
+body:not(.dark-mode) .popular-order-actions button,
+body:not(.dark-mode) .dish-visibility-eye,
+body:not(.dark-mode) .category-drag-handle,
+body:not(.dark-mode) .drag-handle {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .category-edit-button,
+body:not(.dark-mode) .edit-btn {background:#567C8D;color:#FFFFFF;border-color:#567C8D;}
+body:not(.dark-mode) .category-delete-button,
+body:not(.dark-mode) .delete-btn {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .image-toggle {background:#C8D9E6;}
+body:not(.dark-mode) .image-toggle.on,
+body:not(.dark-mode) .admin-personal-switch input:checked + .admin-personal-switch-track {background:#567C8D;}
+body:not(.dark-mode) input[type='checkbox'],
+body:not(.dark-mode) .popular-category-switch input {accent-color:#567C8D;}
+body:not(.dark-mode) .info-message,
+body:not(.dark-mode) .dish-info strong,
+body:not(.dark-mode) .dish-language {color:#567C8D;}
+body:not(.dark-mode) .login-screen {
+  background:radial-gradient(circle at 20% 15%,rgba(200,217,230,.45),transparent 35%),radial-gradient(circle at 85% 90%,rgba(86,124,141,.14),transparent 42%),#F5EFEB;
+}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:rgba(86,124,141,.12)!important;border:2px solid #567C8D!important;opacity:1;}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden .dish-info::after {color:#2F4156;}
