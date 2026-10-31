@@ -530,3 +530,30 @@ body:not(.dark-mode) .login-screen {
 }
 body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:rgba(86,124,141,.12)!important;border:2px solid #567C8D!important;opacity:1;}
 body:not(.dark-mode) #dishList .dish-row.dish-is-hidden .dish-info::after {color:#2F4156;}
+
+
+/* FINAL LIGHT PALETTE — explicit component colors. Does not apply in dark mode. */
+body:not(.dark-mode) {
+ --page-background:#F5EFEB; --panel-background:#FFFFFF;
+ --text-main:#2F4156; --text-secondary:#567C8D;
+ --border-color:#C8D9E6; --soft-background:#C8D9E6;
+ --button-main:#2F4156; --button-text:#FFFFFF;
+ --accent:#567C8D; --accent-2:#567C8D;
+ --gold:#C8D9E6; --danger:#2F4156;
+}
+body:not(.dark-mode) .admin-header,body:not(.dark-mode) .admin-section,
+body:not(.dark-mode) .admin-dish-group,body:not(.dark-mode) .login-panel {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .category-row,body:not(.dark-mode) .dish-row,
+body:not(.dark-mode) .admin-popular-category-row,
+body:not(.dark-mode) .admin-dish-group-heading {background:#F5EFEB;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .admin-section > summary:hover,
+body:not(.dark-mode) .admin-dish-group-heading:hover {background:#C8D9E6;}
+body:not(.dark-mode) .category-edit-button,body:not(.dark-mode) .edit-btn {background:#567C8D;color:#FFFFFF;}
+body:not(.dark-mode) .category-delete-button,body:not(.dark-mode) .delete-btn {background:#2F4156;color:#FFFFFF;}
+body:not(.dark-mode) .dish-visibility-eye,
+body:not(.dark-mode) .dish-order-actions button,
+body:not(.dark-mode) .category-order-actions button,
+body:not(.dark-mode) .popular-order-actions button {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .dish-tag-inline select,body:not(.dark-mode) input,
+body:not(.dark-mode) textarea,body:not(.dark-mode) select {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:#C8D9E6!important;border:2px solid #567C8D!important;}

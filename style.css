@@ -1056,3 +1056,35 @@ body:not(.dark-mode) .footer-admin-link {color:#FFFFFF;}
 body:not(.dark-mode) .food-card.dish-in-personal-list {box-shadow:0 0 0 2px #567C8D,0 5px 17px rgba(47,65,86,.14);}
 body:not(.dark-mode) .food-card.dish-just-added {box-shadow:0 0 0 3px #567C8D,0 0 20px rgba(86,124,141,.24)!important;}
 body:not(.dark-mode) .food-card .food-info > button.personal-add-button.personal-added-bounce {box-shadow:0 0 0 5px rgba(86,124,141,.20);}
+
+
+/* FINAL LIGHT PALETTE — explicit component colors. Does not apply in dark mode. */
+body:not(.dark-mode) {
+  --page-background:#F5EFEB; --card-background:#FFFFFF;
+  --soft-background:#C8D9E6; --field-background:#FFFFFF;
+  --text-main:#2F4156; --text-secondary:#567C8D;
+  --border-color:#C8D9E6; --button-main:#2F4156;
+  --button-text:#FFFFFF; --footer-background:#2F4156;
+  --footer-text:#FFFFFF; --accent:#567C8D;
+  --accent-2:#567C8D; --gold:#C8D9E6;
+}
+body:not(.dark-mode) .hero { background-image:linear-gradient(115deg,rgba(47,65,86,.92),rgba(86,124,141,.66)),url('images/khachapuri.jpg'); }
+body:not(.dark-mode) .hero::after { background:linear-gradient(90deg,#2F4156,#567C8D,#C8D9E6); }
+body:not(.dark-mode) .menu-category-title,
+body:not(.dark-mode) .menu-category-section > summary,
+body:not(.dark-mode) .category-dropdown > summary,
+body:not(.dark-mode) .category-section-header {color:#2F4156;background-color:#C8D9E6;}
+body:not(.dark-mode) .food-card,body:not(.dark-mode) .category-dropdown,
+body:not(.dark-mode) .menu-category-section,body:not(.dark-mode) .dish-detail-dialog,
+body:not(.dark-mode) .personal-list-panel { background-color:#FFFFFF;color:#2F4156;border-color:#C8D9E6; }
+body:not(.dark-mode) .personal-add-button,body:not(.dark-mode) .personal-list-float,
+body:not(.dark-mode) .dish-detail-add,body:not(.dark-mode) .category-btn.active,
+body:not(.dark-mode) .display-controls .display-button.active,
+body:not(.dark-mode) .display-controls .size-button.active,
+body:not(.dark-mode) .display-controls .sort-button.active {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .price,body:not(.dark-mode) .dish-detail-price,
+body:not(.dark-mode) .personal-panel-total strong { color:#567C8D; }
+body:not(.dark-mode) .dish-tag,body:not(.dark-mode) .dish-detail-tag {background:#2F4156;color:#FFFFFF;}
+body:not(.dark-mode) .dish-tag-new {background:#567C8D;color:#FFFFFF;}
+body:not(.dark-mode) .dish-tag-sale {background:#C8D9E6;color:#2F4156;}
+body:not(.dark-mode) footer {background:#2F4156;color:#FFFFFF;border-top-color:#567C8D;}
