@@ -360,3 +360,14 @@ body.dark-mode .edit-btn { background: #4D574E; color: #f5eddf; }
 body.dark-mode .image-toggle.on { background: #956E2F; }
 body.dark-mode .category-delete-button,
 body.dark-mode .delete-btn { background: #654922; color: #fff8e9; }
+
+
+/* DARK MODE ONLY: exact supplied palette; light mode remains untouched. */
+body.dark-mode .category-edit-button, body.dark-mode .edit-btn { background: #4D574E; color: #F5EDDF; }
+body.dark-mode .category-delete-button, body.dark-mode .delete-btn { background: #654922; color: #F5EDDF; }
+body.dark-mode .image-toggle.on { background: #956E2F; }
+body.dark-mode .cancel-button { background: #4D574E; color: #F5EDDF; }
+body.dark-mode .dish-visibility-label input { accent-color: #B68B4B; }
+body.dark-mode .admin-personal-switch input { accent-color: #B68B4B; }
+body.dark-mode input:focus, body.dark-mode textarea:focus, body.dark-mode select:focus { box-shadow: 0 0 0 3px rgba(182,139,75,.25); }
+body.dark-mode #dishList .dish-row.dish-is-hidden { background: rgba(101,73,34,.34) !important; border-color: #956E2F !important; }

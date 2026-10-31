@@ -833,3 +833,24 @@ body.dark-mode .dish-tag { background: #654922; color: #fff8e9; }
 body.dark-mode .dish-tag-new { background: #4D574E; color: #fff8e9; }
 body.dark-mode .dish-tag-sale { background: #956E2F; color: #fff8e9; }
 body.dark-mode .personal-remove-btn { color: #f4b7ad; }
+
+
+/* DARK MODE ONLY: exact supplied palette; light mode remains untouched. */
+body.dark-mode .hero::after { background: linear-gradient(90deg, #654922, #956E2F, #B68B4B, #4D574E, #654922); }
+body.dark-mode .hero p { color: #F5EDDF; }
+body.dark-mode .admin-button { background: #303531; border-color: #654922; color: #F5EDDF; }
+body.dark-mode .admin-button:hover { background: #654922; }
+body.dark-mode .top-control-button { border-color: #4D574E; }
+body.dark-mode .top-control-button.active { background: #B68B4B; border-color: #B68B4B; color: #202221; }
+body.dark-mode .header-search-toggle { background: #303531; color: #F5EDDF; }
+body.dark-mode .header-search-panel { border-color: #4D574E; }
+body.dark-mode .dish-detail-photo { background: #202221; }
+body.dark-mode .dish-detail-close { background: #303531; color: #F5EDDF; }
+body.dark-mode .dish-tag, body.dark-mode .dish-detail-tag { background: #654922; color: #F5EDDF; }
+body.dark-mode .dish-tag-new { background: #4D574E; color: #F5EDDF; }
+body.dark-mode .dish-tag-sale { background: #956E2F; color: #202221; }
+body.dark-mode .food-card.dish-just-added { box-shadow: 0 0 0 3px #B68B4B, 0 0 22px rgba(182,139,75,.35) !important; background-image: linear-gradient(rgba(182,139,75,.09),rgba(182,139,75,.09)); }
+body.dark-mode .food-card.dish-in-personal-list { box-shadow: 0 0 0 2px #956E2F, 0 6px 20px rgba(149,110,47,.22); }
+body.dark-mode.list-view .food-card.dish-in-personal-list { background: rgba(149,110,47,.18); }
+body.dark-mode .personal-add-button.personal-added-bounce { box-shadow: 0 0 0 5px rgba(182,139,75,.25), 0 5px 15px rgba(0,0,0,.2); }
+body.dark-mode .personal-list-badge { background: #956E2F; color: #F5EDDF; }
