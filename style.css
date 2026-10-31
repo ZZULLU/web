@@ -24,21 +24,22 @@ html { scroll-behavior: smooth; }
 }
 body.dark-mode {
   color-scheme: dark;
-  --page-background: #141e23;
-  --card-background: #233036;
-  --text-main: #f7eee5;
-  --text-secondary: #c5b9b0;
-  --border-color: #415057;
-  --soft-background: #2b3c3e;
-  --button-main: #d29b67;
-  --button-text: #19242a;
-  --footer-background: #10191c;
-  --footer-text: #e8dccc;
-  --accent: #e2a06c;
-  --accent-2: #a2d1b5;
-  --gold: #e0ae72;
-  --field-background: #263439;
-  --shadow: 0 15px 38px rgba(0, 0, 0, .24);
+  /* Autumn forest palette supplied by the restaurant owner */
+  --page-background: #202221;
+  --card-background: #303531;
+  --text-main: #f5eddf;
+  --text-secondary: #d4c6ae;
+  --border-color: #4D574E;
+  --soft-background: #4D574E;
+  --button-main: #B68B4B;
+  --button-text: #202221;
+  --footer-background: #202221;
+  --footer-text: #f5eddf;
+  --accent: #956E2F;
+  --accent-2: #B68B4B;
+  --gold: #B68B4B;
+  --field-background: #303531;
+  --shadow: 0 15px 38px rgba(0,0,0,.32);
 }
 body {
   margin: 0;
@@ -822,3 +823,13 @@ body:not(.list-view).menu-size-large .menu-grid .food-card .food-info {
 }
 /* List view is unaffected by the card preview height rule. */
 body.list-view .menu-grid .food-card .food-info { height: auto; max-height: none; }
+
+/* Dark palette refinements. Light-mode styling remains unchanged. */
+body.dark-mode .hero {
+  background-image: linear-gradient(120deg, rgba(32,34,33,.92), rgba(77,87,78,.7)), url('images/khachapuri.jpg');
+}
+body.dark-mode .top-control-button.active { background: #B68B4B; color: #202221; border-color: #B68B4B; }
+body.dark-mode .dish-tag { background: #654922; color: #fff8e9; }
+body.dark-mode .dish-tag-new { background: #4D574E; color: #fff8e9; }
+body.dark-mode .dish-tag-sale { background: #956E2F; color: #fff8e9; }
+body.dark-mode .personal-remove-btn { color: #f4b7ad; }

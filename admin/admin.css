@@ -21,19 +21,20 @@
 }
 body.dark-mode {
   color-scheme: dark;
-  --page-background: #141e23;
-  --panel-background: #233036;
-  --text-main: #f7eee5;
-  --text-secondary: #c5b9b0;
-  --border-color: #415057;
-  --soft-background: #2b3c3e;
-  --button-main: #d29b67;
-  --button-text: #19242a;
-  --danger: #bc5967;
-  --accent: #e2a06c;
-  --accent-2: #a2d1b5;
-  --gold: #e0ae72;
-  --shadow: 0 15px 38px rgba(0,0,0,.24);
+  /* Autumn forest palette supplied by the restaurant owner */
+  --page-background: #202221;
+  --panel-background: #303531;
+  --text-main: #f5eddf;
+  --text-secondary: #d4c6ae;
+  --border-color: #4D574E;
+  --soft-background: #4D574E;
+  --button-main: #B68B4B;
+  --button-text: #202221;
+  --danger: #bb6668;
+  --accent: #956E2F;
+  --accent-2: #B68B4B;
+  --gold: #B68B4B;
+  --shadow: 0 15px 38px rgba(0,0,0,.32);
 }
 body { margin: 0; min-height: 100vh; background: var(--page-background); color: var(--text-main); font: 400 16px/1.55 var(--body-font); transition: background .25s, color .25s; }
 [hidden], .hidden { display: none !important; }
@@ -352,3 +353,10 @@ body.dark-mode #dishList .dish-row.dish-is-hidden { background:rgba(190,65,65,.2
 @media(max-width:700px){ #dishList .dish-row {grid-template-columns:40px minmax(0,1fr)} #dishList .dish-order-actions{grid-column:1;grid-row:1/4} #dishList .dish-row img,#dishList .dish-row .dish-info,#dishList .dish-row .actions {grid-column:2} .admin-dish-group-content{padding:8px} }
 @media(prefers-reduced-motion:reduce){ .admin-dish-group-content{animation:none} .admin-group-chevron{transition:none} }
 
+
+/* Dark palette refinements. Light-mode styling remains unchanged. */
+body.dark-mode .category-edit-button,
+body.dark-mode .edit-btn { background: #4D574E; color: #f5eddf; }
+body.dark-mode .image-toggle.on { background: #956E2F; }
+body.dark-mode .category-delete-button,
+body.dark-mode .delete-btn { background: #654922; color: #fff8e9; }
