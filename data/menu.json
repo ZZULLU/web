@@ -4,31 +4,56 @@
       "id": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "nameGe": "მთავარი კერძები",
       "nameEn": "Main Dishes",
-      "order": 0
+      "order": 0,
+      "siteHero": {
+        "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
+        "x": 100,
+        "y": 62
+      }
     },
     {
       "id": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "nameGe": "ცხელი კერძი",
       "nameEn": "Hot Dish",
-      "order": 1
+      "order": 1,
+      "siteHero": {
+        "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
+        "x": 100,
+        "y": 62
+      }
     },
     {
       "id": "category-bd9d8af6-63a2-4fa6-91fa-67be77864991",
       "nameGe": "სალათები",
       "nameEn": "Salads",
-      "order": 2
+      "order": 2,
+      "siteHero": {
+        "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
+        "x": 100,
+        "y": 62
+      }
     },
     {
       "id": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
       "nameGe": "ცომეული",
       "nameEn": "Pastry",
-      "order": 3
+      "order": 3,
+      "siteHero": {
+        "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
+        "x": 100,
+        "y": 62
+      }
     },
     {
       "id": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
       "nameGe": "წვენები",
       "nameEn": "Drinks",
-      "order": 4
+      "order": 4,
+      "siteHero": {
+        "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
+        "x": 100,
+        "y": 62
+      }
     }
   ],
   "dishes": [
