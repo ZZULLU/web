@@ -572,32 +572,35 @@ function createMenuSection(category, items) {
   const grid = document.createElement('div'); grid.className = 'menu-grid';
   items.forEach(d => grid.appendChild(createDishCard(d)));
   section.append(title, grid);
-  // Intercept the summary interaction so details stay open until the
-  // closing animation finishes. Native details would otherwise hide instantly.
+  // Animate the REAL grid height, not just opacity/transform. As the grid's
+  // height changes, the details element and every section below it move in
+  // the same layout frame, with no delayed jump at the end.
   let moving = false;
   title.addEventListener('click', event => {
-    if (moving) {event.preventDefault(); return;}
+    if (moving) { event.preventDefault(); return; }
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || !grid.animate) return;
     event.preventDefault();
     moving = true;
-    const duration = 300;
-    if (section.open) {
-      const animation = grid.animate([
-        {opacity:1, transform:'translateY(0)'},
-        {opacity:0, transform:'translateY(-12px)'}
-      ], {duration, easing:'ease-in-out'});
-      animation.finished.catch(()=>{}).then(() => {
-        section.open = false;
-        moving = false;
-      });
-    } else {
-      section.open = true;
-      const animation = grid.animate([
-        {opacity:0, transform:'translateY(-12px)'},
-        {opacity:1, transform:'translateY(0)'}
-      ], {duration, easing:'ease-out'});
-      animation.finished.catch(()=>{}).then(() => {moving = false;});
-    }
+    const wasOpen = section.open;
+    if (!wasOpen) section.open = true; // The grid must be laid out to measure it.
+
+    const computed = getComputedStyle(grid);
+    const topPadding = computed.paddingTop;
+    const bottomPadding = computed.paddingBottom;
+    const fullHeight = grid.getBoundingClientRect().height;
+    const collapsed = {height:'0px', paddingTop:'0px', paddingBottom:'0px', opacity:0};
+    const expanded = {height:`${fullHeight}px`, paddingTop:topPadding,
+      paddingBottom:bottomPadding, opacity:1};
+    const animation = grid.animate(
+      wasOpen ? [expanded, collapsed] : [collapsed, expanded],
+      {duration:220, easing:'cubic-bezier(.25,.1,.25,1)', fill:'both'}
+    );
+    animation.finished.then(() => {
+      if (wasOpen) section.open = false;
+    }).catch(() => {}).finally(() => {
+      animation.cancel(); // Return sizing to natural auto height.
+      moving = false;
+    });
   });
   section.addEventListener('toggle', () => {
     if (section.isConnected) categoryOpenStates.set(category.id, section.open);
