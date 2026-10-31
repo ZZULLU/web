@@ -371,3 +371,96 @@ body.dark-mode .dish-visibility-label input { accent-color: #B68B4B; }
 body.dark-mode .admin-personal-switch input { accent-color: #B68B4B; }
 body.dark-mode input:focus, body.dark-mode textarea:focus, body.dark-mode select:focus { box-shadow: 0 0 0 3px rgba(182,139,75,.25); }
 body.dark-mode #dishList .dish-row.dish-is-hidden { background: rgba(101,73,34,.34) !important; border-color: #956E2F !important; }
+
+
+/* ============================================================
+   OCT 31 — FINAL DARK-ONLY FOREST / BRONZE PALETTE
+   Exact colors supplied by client. Never applied to light mode.
+   #654922 brown | #956E2F bronze | #B68B4B gold
+   #4D574E olive | #303531 charcoal | #202221 black
+   Warm readable text (#F5EDDF) is an accessibility exception.
+============================================================ */
+body.dark-mode {
+  color-scheme: dark;
+  --page-background: #202221;
+  --panel-background: #303531;
+  --card-background: #303531;
+  --text-main: #F5EDDF;
+  --text-secondary: #D4C6AE;
+  --border-color: #4D574E;
+  --soft-background: #4D574E;
+  --button-main: #B68B4B;
+  --button-text: #202221;
+  --accent: #956E2F;
+  --accent-2: #B68B4B;
+  --gold: #B68B4B;
+  --field-background: #303531;
+  --footer-background: #202221;
+  --footer-text: #F5EDDF;
+  --danger: #B68B4B;
+  --shadow: 0 14px 30px rgba(0,0,0,.32);
+  background-color: #202221;
+  color: #F5EDDF;
+}
+body.dark-mode button:focus-visible,
+body.dark-mode a:focus-visible,
+body.dark-mode input:focus-visible,
+body.dark-mode select:focus-visible {outline-color:#B68B4B;}
+
+
+/* Admin: dark surfaces, inputs, buttons and category lists */
+body.dark-mode .admin-container,
+body.dark-mode .admin-header,
+body.dark-mode .admin-section,
+body.dark-mode .admin-personal-feature,
+body.dark-mode .admin-dish-group,
+body.dark-mode .category-row,
+body.dark-mode .dish-row {color:#F5EDDF; border-color:#4D574E;}
+body.dark-mode .admin-header,
+body.dark-mode .admin-section,
+body.dark-mode .admin-personal-feature,
+body.dark-mode .admin-dish-group,
+body.dark-mode .dish-row {background-color:#303531;}
+body.dark-mode .category-row,
+body.dark-mode .admin-dish-group-heading,
+body.dark-mode .admin-section > summary,
+body.dark-mode .dish-availability-controls,
+body.dark-mode .admin-popular-category-row {background-color:#4D574E;}
+body.dark-mode .admin-header {border-top-color:#956E2F;}
+body.dark-mode .admin-section:nth-of-type(3n + 1) {border-top-color:#654922;}
+body.dark-mode .admin-section:nth-of-type(3n + 2) {border-top-color:#956E2F;}
+body.dark-mode .admin-section:nth-of-type(3n) {border-top-color:#B68B4B;}
+body.dark-mode .admin-section summary:hover,
+body.dark-mode .admin-dish-group-heading:hover {background-color:#654922;}
+body.dark-mode input,
+body.dark-mode textarea,
+body.dark-mode select,
+body.dark-mode .dish-tag-inline select,
+body.dark-mode .admin-popular-category-row .popular-category-names strong {background:#303531; color:#F5EDDF; border-color:#654922;}
+body.dark-mode input[type='file'] {background:#4D574E;}
+body.dark-mode button,
+body.dark-mode .view-menu-button,
+body.dark-mode .top-control-button {background:#B68B4B; color:#202221; border-color:#B68B4B;}
+body.dark-mode .category-order-actions button,
+body.dark-mode .dish-order-actions button,
+body.dark-mode .popular-order-actions button,
+body.dark-mode .category-drag-handle,
+body.dark-mode .drag-handle,
+body.dark-mode .dish-visibility-eye,
+body.dark-mode .admin-group-count {background:#303531; color:#F5EDDF; border-color:#654922;}
+body.dark-mode .category-edit-button,
+body.dark-mode .edit-btn {background:#4D574E; color:#F5EDDF;}
+body.dark-mode .category-delete-button,
+body.dark-mode .delete-btn {background:#654922; color:#F5EDDF;}
+body.dark-mode .cancel-button {background:#4D574E; color:#F5EDDF;}
+body.dark-mode .image-toggle.on,
+body.dark-mode .admin-personal-switch input:checked + .admin-personal-switch-track {background:#956E2F;}
+body.dark-mode .dish-tag-label select,
+body.dark-mode .dish-tag-inline select {color:#F5EDDF; background:#303531; border-color:#654922;}
+body.dark-mode input[type='checkbox'],
+body.dark-mode .dish-visibility-label input,
+body.dark-mode .admin-popular-category-row .popular-category-switch input {accent-color:#B68B4B;}
+body.dark-mode #dishList .dish-row.dish-is-hidden {background:rgba(101,73,34,.45)!important; border:2px solid #956E2F!important; opacity:1;}
+body.dark-mode #dishList .dish-row.dish-is-hidden .dish-info::after {color:#B68B4B;}
+body.dark-mode .info-message {color:#B68B4B;}
+

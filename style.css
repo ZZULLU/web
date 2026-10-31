@@ -854,3 +854,130 @@ body.dark-mode .food-card.dish-in-personal-list { box-shadow: 0 0 0 2px #956E2F,
 body.dark-mode.list-view .food-card.dish-in-personal-list { background: rgba(149,110,47,.18); }
 body.dark-mode .personal-add-button.personal-added-bounce { box-shadow: 0 0 0 5px rgba(182,139,75,.25), 0 5px 15px rgba(0,0,0,.2); }
 body.dark-mode .personal-list-badge { background: #956E2F; color: #F5EDDF; }
+
+
+/* ============================================================
+   OCT 31 — FINAL DARK-ONLY FOREST / BRONZE PALETTE
+   Exact colors supplied by client. Never applied to light mode.
+   #654922 brown | #956E2F bronze | #B68B4B gold
+   #4D574E olive | #303531 charcoal | #202221 black
+   Warm readable text (#F5EDDF) is an accessibility exception.
+============================================================ */
+body.dark-mode {
+  color-scheme: dark;
+  --page-background: #202221;
+  --panel-background: #303531;
+  --card-background: #303531;
+  --text-main: #F5EDDF;
+  --text-secondary: #D4C6AE;
+  --border-color: #4D574E;
+  --soft-background: #4D574E;
+  --button-main: #B68B4B;
+  --button-text: #202221;
+  --accent: #956E2F;
+  --accent-2: #B68B4B;
+  --gold: #B68B4B;
+  --field-background: #303531;
+  --footer-background: #202221;
+  --footer-text: #F5EDDF;
+  --danger: #B68B4B;
+  --shadow: 0 14px 30px rgba(0,0,0,.32);
+  background-color: #202221;
+  color: #F5EDDF;
+}
+body.dark-mode button:focus-visible,
+body.dark-mode a:focus-visible,
+body.dark-mode input:focus-visible,
+body.dark-mode select:focus-visible {outline-color:#B68B4B;}
+
+
+/* Every primary visible menu surface stays in the supplied palette */
+body.dark-mode .hero {
+  background-image: linear-gradient(120deg,rgba(32,34,33,.93),rgba(48,53,49,.82)), url('images/khachapuri.jpg');
+  color:#F5EDDF;
+}
+body.dark-mode .hero::after,
+body.dark-mode .menu-header h2::after {
+  background:linear-gradient(90deg,#654922,#956E2F,#B68B4B,#4D574E);
+}
+body.dark-mode .hero p, body.dark-mode .hero h1 {color:#F5EDDF;}
+body.dark-mode .admin-button,
+body.dark-mode .top-control-button,
+body.dark-mode .header-search-toggle {
+  background:#303531; border-color:#654922; color:#F5EDDF;
+}
+body.dark-mode .admin-button:hover,
+body.dark-mode .top-control-button:hover,
+body.dark-mode .header-search-toggle:hover {background:#4D574E;}
+body.dark-mode .top-control-button.active,
+body.dark-mode .display-button.active,
+body.dark-mode .size-button.active,
+body.dark-mode .category-btn.active,
+body.dark-mode .personal-add-button,
+body.dark-mode .personal-list-float,
+body.dark-mode .dish-detail-add {background:#B68B4B; color:#202221; border-color:#B68B4B;}
+body.dark-mode .header-search-panel,
+body.dark-mode #searchInput,
+body.dark-mode #sortSelect,
+body.dark-mode .search-suggestions,
+body.dark-mode #searchSuggestions,
+body.dark-mode .dish-detail-dialog,
+body.dark-mode .personal-list-panel {
+  background-color:#303531; color:#F5EDDF; border-color:#4D574E;
+}
+body.dark-mode #searchSuggestions .search-suggestion-item,
+body.dark-mode #searchSuggestions .search-suggestion,
+body.dark-mode #searchSuggestions button {background:#303531; color:#F5EDDF; border-color:#4D574E;}
+body.dark-mode #searchSuggestions button:hover,
+body.dark-mode #searchSuggestions .search-suggestion-item:hover {background:#4D574E;}
+body.dark-mode .category-btn,
+body.dark-mode .control-group,
+body.dark-mode .menu-category-section,
+body.dark-mode .food-card,
+body.dark-mode .food-info,
+body.dark-mode .menu-category-section > summary,
+body.dark-mode .menu-category-section .category-heading,
+body.dark-mode .category-dropdown,
+body.dark-mode .personal-panel-close,
+body.dark-mode .personal-quantity-btn,
+body.dark-mode .personal-remove-btn,
+body.dark-mode .personal-clear-btn {
+  border-color:#4D574E; color:#F5EDDF;
+}
+body.dark-mode .category-btn,
+body.dark-mode .food-card,
+body.dark-mode .food-info,
+body.dark-mode .menu-category-section,
+body.dark-mode .category-dropdown {background-color:#303531;}
+body.dark-mode .control-group,
+body.dark-mode .menu-category-section > summary,
+body.dark-mode .menu-category-section .category-heading,
+body.dark-mode .personal-panel-header,
+body.dark-mode .personal-quantity-btn,
+body.dark-mode .personal-remove-btn,
+body.dark-mode .personal-clear-btn {background-color:#4D574E;}
+body.dark-mode .food-card h3,
+body.dark-mode .food-card .food-title,
+body.dark-mode .menu-category-section summary,
+body.dark-mode .personal-panel-header h2 {color:#F5EDDF;}
+body.dark-mode .food-card .price,
+body.dark-mode .dish-detail-price,
+body.dark-mode .personal-panel-total strong,
+body.dark-mode .personal-item-detail span {color:#B68B4B;}
+body.dark-mode .dish-tag,
+body.dark-mode .dish-detail-tag {background:#654922; color:#F5EDDF;}
+body.dark-mode .dish-tag-new {background:#4D574E; color:#F5EDDF;}
+body.dark-mode .dish-tag-sale {background:#956E2F; color:#202221;}
+body.dark-mode .personal-list-badge {background:#956E2F; color:#F5EDDF;}
+body.dark-mode .dish-detail-photo {background:#202221;}
+body.dark-mode .dish-detail-close {background:#303531; color:#F5EDDF;}
+body.dark-mode footer,
+body.dark-mode .footer,
+body.dark-mode .site-footer {background-color:#202221; color:#F5EDDF;}
+body.dark-mode .personal-add-button:hover {background:#956E2F; color:#F5EDDF;}
+/* Replace older bright green success glows with warm bronze */
+body.dark-mode .food-card.dish-just-added {box-shadow:0 0 0 3px #B68B4B,0 0 22px rgba(182,139,75,.36)!important; background-image:linear-gradient(rgba(182,139,75,.09),rgba(182,139,75,.09));}
+body.dark-mode .food-card.dish-in-personal-list {box-shadow:0 0 0 2px #956E2F,0 5px 17px rgba(149,110,47,.20);}
+body.dark-mode.list-view .food-card.dish-in-personal-list {background:#303531; border:1px solid #956E2F;}
+body.dark-mode .food-card .food-info > button.personal-add-button.personal-added-bounce {box-shadow:0 0 0 5px rgba(182,139,75,.28),0 5px 15px rgba(0,0,0,.2);}
+
