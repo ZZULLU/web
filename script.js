@@ -138,6 +138,7 @@ async function loadMenu({ background = false } = {}) {
       price: Number(d.price) || 0, order: Number.isFinite(Number(d.order)) ? Number(d.order) : i
     }));
     categorySettings = data.categorySettings && typeof data.categorySettings === 'object' ? data.categorySettings : {};
+    applyPublicHeroConfig();
     categories.forEach(c => {
       if (!categorySettings[c.id]) categorySettings[c.id] = { showImages: c.showImages !== false };
     });
@@ -874,3 +875,43 @@ applyTheme();
 applyCustomerView();
 updateStaticLanguage();
 loadMenu();
+
+
+/* ====================================================
+   Restaurant hero image, scroll reveal and search polish
+   Hero settings live on existing category objects so the
+   current validated Worker and admin.js save flow preserve them.
+==================================================== */
+function applyPublicHeroConfig() {
+  const config = categories.find(c => c && c.siteHero && typeof c.siteHero === 'object')?.siteHero;
+  const hero = document.querySelector('.hero');
+  if (!hero) return;
+  const path = config?.image;
+  if (typeof path === 'string' && /^images\/[\w./-]+\.(?:jpg|jpeg|png|webp)$/i.test(path)) {
+    const absoluteUrl = new URL(path, document.baseURI).href;
+    hero.style.setProperty('--restaurant-hero-image', `url("${absoluteUrl}")`);
+  } else {
+    hero.style.removeProperty('--restaurant-hero-image');
+  }
+  const clamp = value => Number.isFinite(Number(value)) ? Math.max(0,Math.min(100,Number(value))) : 50;
+  hero.style.setProperty('--restaurant-hero-x', clamp(config?.x) + '%');
+  hero.style.setProperty('--restaurant-hero-y', clamp(config?.y) + '%');
+}
+// Only the hero title moves. Floating search/theme/language controls stay accessible.
+let heroMotionScheduled = false;
+function syncHeroScroll() {
+  heroMotionScheduled = false;
+  document.querySelector('.hero')?.classList.toggle('hero-text-away', window.scrollY > 9);
+}
+window.addEventListener('scroll', () => {
+  if (heroMotionScheduled) return;
+  heroMotionScheduled = true;
+  requestAnimationFrame(syncHeroScroll);
+}, { passive: true });
+syncHeroScroll();
+// Close expanded search when pressing anywhere outside the search panel.
+document.addEventListener('pointerdown', event => {
+  if (headerSearchPanel.hidden) return;
+  if (headerSearchPanel.contains(event.target) || searchToggle.contains(event.target)) return;
+  toggleSearch(false);
+});

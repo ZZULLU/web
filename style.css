@@ -1194,3 +1194,48 @@ body.dark-mode .hero .top-controls {
     right: max(8px, env(safe-area-inset-right));
   }
 }
+
+
+/* =====================================================
+   HERO IMAGE UPLOADED BY ADMIN + SCROLL REVEAL
+   Scoped to hero; do not alter either color palette.
+===================================================== */
+.hero {
+  --restaurant-hero-x: 50%; --restaurant-hero-y: 50%;
+  background-image: linear-gradient(110deg, rgba(20,25,27,.66), rgba(20,25,27,.38)),
+                    var(--restaurant-hero-image, url('images/khachapuri.jpg')) !important;
+  background-position: center, var(--restaurant-hero-x) var(--restaurant-hero-y) !important;
+  background-size: cover, cover !important;
+  background-repeat: no-repeat;
+}
+body.dark-mode .hero {
+  background-image: linear-gradient(110deg, rgba(12,17,16,.76), rgba(18,22,20,.40)),
+                    var(--restaurant-hero-image, url('images/khachapuri.jpg')) !important;
+}
+.hero .hero-content {
+  opacity: 1; transform: translate3d(0,0,0); filter: blur(0);
+  transition: transform .58s cubic-bezier(.2,.78,.21,1), opacity .4s ease, filter .5s ease;
+  will-change: transform,opacity;
+  pointer-events: auto;
+}
+.hero.hero-text-away .hero-content {
+  transform: translate3d(0,-105px,0); opacity: 0; filter: blur(6px);
+  pointer-events: none;
+}
+/* Search panel springs into the viewport; floating controls remain fixed. */
+.hero .header-search-panel:not([hidden]) {
+  transform-origin: 92% 0; animation: heroSearchBloom .46s cubic-bezier(.17,1.4,.35,1) both;
+}
+@keyframes heroSearchBloom {
+  0% { transform: translate3d(20px,-14px,0) scale(.88); opacity: 0; filter: blur(5px); }
+  65% { transform: translate3d(-3px,2px,0) scale(1.025); opacity: 1; filter: blur(0); }
+  100% { transform: translate3d(0,0,0) scale(1); opacity: 1; }
+}
+.hero .header-search-submit { transition: transform .2s ease, box-shadow .2s ease; }
+.hero .header-search-submit:hover { transform: scale(1.08) rotate(-9deg); box-shadow: 0 5px 18px rgba(0,0,0,.15); }
+.hero .header-search-panel:not([hidden]) #searchInput { animation: heroInputAppear .38s .08s both; }
+@keyframes heroInputAppear { from { opacity: 0; transform: translateX(11px); } to { opacity: 1; transform: translateX(0); } }
+@media (prefers-reduced-motion: reduce) {
+  .hero .hero-content { transition: none; }
+  .hero .header-search-panel:not([hidden]), .hero .header-search-panel:not([hidden]) #searchInput { animation: none; }
+}

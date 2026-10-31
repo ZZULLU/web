@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin</title>
-    <link rel="stylesheet" href="admin.css?v=20261031-gray-light-v1">
+    <link rel="stylesheet" href="admin.css?v=20261031-hero-editor-v1">
 </head>
 <body>
     <!-- Public admin page, but actual editing requires a backend session. -->
@@ -45,6 +45,27 @@
         </header>
 
         <p class="info-message" id="saveInfo" role="status" aria-live="polite"></p>
+
+        <!-- Restaurant cover photo editor: metadata is saved via the existing authenticated menu API. -->
+        <details class="admin-section hero-editor-section" open>
+            <summary><span>მთავარი ფოტო / Hero background</span><span class="section-arrow">▼</span></summary>
+            <div class="section-content hero-editor-content">
+                <p class="section-description">Upload a cover image, then drag the focal point or adjust X / Y to choose which part stays visible when the browser crops it. Preview desktop and mobile before saving. / აირჩიეთ ფოტო და მისი პოზიცია.</p>
+                <label for="heroPhotoInput">Cover image / მთავარი ფოტო</label>
+                <input type="file" id="heroPhotoInput" accept="image/jpeg,image/png,image/webp,image/*">
+                <p class="field-note">Automatically resized to fit the existing upload limit (JPEG under 950 KB). Original aspect ratio is retained; the browser crops visually to fill the hero.</p>
+                <div class="hero-previews">
+                  <div><strong>Desktop preview</strong><div id="heroPreviewDesktop" class="hero-preview hero-preview-desktop" tabindex="0" role="img" aria-label="Desktop hero crop preview, drag to change the focal point"><div class="hero-preview-caption">Georgian House</div></div></div>
+                  <div><strong>Mobile preview</strong><div id="heroPreviewMobile" class="hero-preview hero-preview-mobile" tabindex="0" role="img" aria-label="Mobile hero crop preview, drag to change the focal point"><div class="hero-preview-caption">Georgian House</div></div></div>
+                </div>
+                <div class="hero-slider-grid">
+                  <label for="heroFocusX">Horizontal crop <output id="heroFocusXValue">50%</output><input type="range" id="heroFocusX" min="0" max="100" value="50"></label>
+                  <label for="heroFocusY">Vertical crop <output id="heroFocusYValue">50%</output><input type="range" id="heroFocusY" min="0" max="100" value="50"></label>
+                </div>
+                <div class="hero-editor-actions"><button type="button" id="heroSaveButton">Save cover / ფოტოს შენახვა</button><button type="button" class="cancel-button" id="heroResetButton">Restore default / ნაგულისხმევი</button></div>
+                <p id="heroSaveStatus" role="status" aria-live="polite"></p>
+            </div>
+        </details>
 
         <details class="admin-section" open>
             <summary><span id="categoriesSectionTitle">Edit Categories</span><span class="section-arrow">▼</span></summary>
@@ -129,6 +150,7 @@
 
     <script src="admin.js"></script>
     <script src="admin-enhancements.js?v=20261022-popular-stable3"></script>
+    <script src="hero-editor.js?v=20261031-hero-editor-v1"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {
