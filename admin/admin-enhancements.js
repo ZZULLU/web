@@ -170,7 +170,7 @@
     </label>
     <p class="admin-personal-hint" id="personalFeatureHint" role="status" aria-live="polite"></p>
   `;
-  adminContainer.insertBefore(section, categorySection);
+  adminContainer.append(section);
   const checkbox = section.querySelector('#enablePersonalLists');
   const status = section.querySelector('#personalFeatureStatus');
   const hint = section.querySelector('#personalFeatureHint');

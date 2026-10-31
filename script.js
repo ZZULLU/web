@@ -331,16 +331,33 @@ function openDishFromSearch(dish) {
     card.addEventListener('animationend', () => card.classList.remove('search-result-highlight'), { once: true });
   }
 }
+let searchCloseTimeout = 0;
 function toggleSearch(open) {
-  headerSearchPanel.hidden = !open;
-  document.querySelector('.hero').classList.toggle('search-open', open);
-  searchToggle.setAttribute('aria-expanded', String(open));
+  clearTimeout(searchCloseTimeout);
+  const hero = document.querySelector('.hero');
   if (open) {
-    searchInput.focus();
+    headerSearchPanel.hidden = false;
+    headerSearchPanel.classList.remove('search-is-closing');
+    headerSearchPanel.classList.remove('search-is-open');
+    hero.classList.add('search-open');
+    // Force a start frame before running the horizontal expansion.
+    void headerSearchPanel.offsetWidth;
+    headerSearchPanel.classList.add('search-is-open');
+    searchToggle.setAttribute('aria-expanded', 'true');
+    searchInput.focus({preventScroll:true});
     updateSearchSuggestions();
   } else {
+    if (headerSearchPanel.hidden) return;
     hideSearchSuggestions();
-    searchToggle.focus();
+    headerSearchPanel.classList.remove('search-is-open');
+    headerSearchPanel.classList.add('search-is-closing');
+    searchToggle.setAttribute('aria-expanded', 'false');
+    const finish = () => {
+      headerSearchPanel.hidden = true;
+      headerSearchPanel.classList.remove('search-is-closing');
+      hero.classList.remove('search-open');
+    };
+    searchCloseTimeout = setTimeout(finish, 260);
   }
 }
 searchToggle.addEventListener('click', () => toggleSearch(true));

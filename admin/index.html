@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin</title>
-    <link rel="stylesheet" href="admin.css?v=20261031-crop-frame-v2">
+    <link rel="stylesheet" href="admin.css?v=20261031-refine-v3">
 </head>
 <body>
     <!-- Public admin page, but actual editing requires a backend session. -->
@@ -35,8 +35,9 @@
             </div>
             <div class="admin-top-actions">
                 <div class="language-switch">
-                    <button type="button" id="languageGe" class="top-control-button">ქართული</button>
-                    <button type="button" id="languageEn" class="top-control-button">English</button>
+                    <button type="button" id="adminLanguageToggle" class="top-control-button" aria-label="Switch language">English</button>
+                    <button type="button" id="languageGe" hidden>ქართული</button>
+                    <button type="button" id="languageEn" hidden>English</button>
                 </div>
                 <button type="button" id="themeToggle" class="top-control-button theme-button" aria-label="Change theme">🌙</button>
                 <button type="button" id="logoutButton" class="top-control-button">Log Out</button>
@@ -154,8 +155,8 @@
       </div>
     </div>
     <script src="admin.js"></script>
-    <script src="admin-enhancements.js?v=20261022-popular-stable3"></script>
-    <script src="hero-editor.js?v=20261031-crop-frame-v2"></script>
+    <script src="admin-enhancements.js?v=20261031-refine-v3"></script>
+    <script src="hero-editor.js?v=20261031-refine-v3"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {
@@ -180,5 +181,23 @@
         update();
       })();
     </script>
+<script>
+  (() => {
+    const toggle=document.getElementById('adminLanguageToggle');
+    const ge=document.getElementById('languageGe'),en=document.getElementById('languageEn');
+    if(!toggle||!ge||!en)return;
+    const refresh=()=>{
+      const isGe=document.documentElement.lang==='ka';
+      toggle.textContent=isGe?'English':'ქართული';
+      toggle.setAttribute('aria-label',isGe?'Switch to English':'ქართულზე გადასვლა');
+    };
+    toggle.addEventListener('click',()=>{
+      (document.documentElement.lang==='ka'?en:ge).click();
+      refresh();
+    });
+    new MutationObserver(refresh).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+    refresh();
+  })();
+</script>
 </body>
 </html>

@@ -642,3 +642,7 @@ body:not(.dark-mode) input:focus, body:not(.dark-mode) textarea:focus, body:not(
 .hero-crop-bottom button { min-height:42px; }
 .hero-preview { cursor:default; }
 @media(max-width:640px) { .hero-crop-dialog { padding:12px; } .hero-crop-top h2 { font-size:1.12rem; } }
+
+/* Single Georgian / English toggle; keep legacy buttons mounted for admin.js. */
+.language-switch #languageGe[hidden], .language-switch #languageEn[hidden] {display:none !important;}
+#adminLanguageToggle {min-width:100px;}

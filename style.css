@@ -1251,3 +1251,53 @@ body.dark-mode .hero {
     background-size: cover !important;
   }
 }
+
+/* =========================================================
+   Final interaction refinements (does not change either palette)
+========================================================= */
+@media (min-width: 701px) {
+  .hero { min-height: 560px; }
+}
+/* Fast, simple category movement: no delayed opacity or long slide. */
+.menu-category-section .section-chevron svg { transition: transform .15s ease !important; }
+.menu-category-section .category-body,
+.menu-category-section .category-dishes,
+.menu-category-section .category-content,
+.menu-category-section .menu-category-content { animation-duration: .16s !important; animation-delay: 0s !important; transition-duration: .16s !important; transition-delay: 0s !important; }
+/* Horizontal-only expansion. Fixed height in every state; existing search suggestions untouched. */
+.hero .header-search-panel,
+.hero .header-search-panel:not([hidden]) {
+  --search-height: 60px;
+  box-sizing: border-box;
+  height: var(--search-height) !important;
+  min-height: var(--search-height) !important;
+  max-height: var(--search-height) !important;
+  transform-origin: right center !important;
+  transform: scaleX(.11) !important;
+  opacity: 0;
+  pointer-events: none;
+  animation: none !important;
+  transition: transform .25s cubic-bezier(.2,.75,.25,1), opacity .17s ease !important;
+}
+.hero .header-search-panel.search-is-open {
+  transform: scaleX(1) !important;
+  opacity: 1;
+  pointer-events: auto;
+}
+.hero .header-search-panel.search-is-closing {
+  transform: scaleX(.11) !important;
+  opacity: 0;
+  pointer-events: none;
+}
+.hero .header-search-panel #searchInput { height: 44px !important; min-height:44px !important; animation:none !important; transform:none !important; }
+.hero .header-search-panel .header-search-submit { height:44px !important; min-height:44px !important; }
+/* Hide adjacent header buttons during expansion and contraction. */
+.hero.search-open .top-controls { visibility:hidden !important; opacity:0 !important; pointer-events:none !important; }
+@media(max-width:600px) {
+  .hero .header-search-panel, .hero .header-search-panel:not([hidden]) { --search-height:54px; }
+  .hero .header-search-panel #searchInput {height:40px !important; min-height:40px !important;}
+  .hero .header-search-panel .header-search-submit {height:40px !important; min-height:40px !important;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .hero .header-search-panel {transition:none !important;}
+}

@@ -9,6 +9,7 @@
   const matchesPath = value => typeof value === 'string' && /^images\/[\w./-]+\.(?:jpe?g|png|webp)$/i.test(value);
   let current = {image:'', mobileImage:'', x:50,y:50}, loadingSignature='';
   let srcURL='', naturalW=0,naturalH=0, rects=[null,null], step=0, pending=[null,null], dirty=false, busy=false;
+  let cropSourceWasLoadedFromSaved=false;
   const ratio=[16/7,4/5];
   const bound=(n,lo,hi)=>Math.max(lo,Math.min(hi,n));
   function config(){return typeof categories !== 'undefined' && Array.isArray(categories) ? categories.find(c=>c?.siteHero)?.siteHero || {} : {};}
@@ -80,7 +81,7 @@
     if(e.key==='ArrowRight')r.x=bound(r.x+d,0,z.w-r.w);
     renderFrame();
   });
-  function showModal(){step=0;modal.hidden=false;document.body.style.overflow='hidden';requestAnimationFrame(()=>{const z=stageSizes();rects=[cropRectFor(z.w,z.h,ratio[0]),cropRectFor(z.w,z.h,ratio[1])];goStep(0);});}
+  function showModal(){step=0;modal.hidden=false;document.body.style.overflow='hidden';requestAnimationFrame(()=>{const z=stageSizes();if(!rects[0]||!rects[1])rects=[cropRectFor(z.w,z.h,ratio[0]),cropRectFor(z.w,z.h,ratio[1])];goStep(0);});}
   function hideModal(){modal.hidden=true;document.body.style.overflow='';}
   $('heroCropCancel').addEventListener('click',hideModal);
   modal.addEventListener('pointerdown',e=>{if(e.target===modal)hideModal();});
@@ -98,14 +99,35 @@
     try{
       const parsed=await decode(file);
       if(srcURL)URL.revokeObjectURL(srcURL);
-      srcURL=parsed.url;naturalW=parsed.w;naturalH=parsed.h;
-      img.src=srcURL;await img.decode();
+      srcURL=parsed.url;naturalW=parsed.w;naturalH=parsed.h;cropSourceWasLoadedFromSaved=false;
+      img.src=srcURL;await img.decode();rects=[null,null];
       showModal();status.textContent='Adjust desktop and mobile crop frames, then save.';
     }catch(error){status.textContent=error.message;input.value='';}
   }
   input.addEventListener('change',()=>chooseFile(input.files?.[0]));
-  $('heroRecropButton').addEventListener('click',()=>{
-    if(srcURL)showModal();else input.click();
+  async function restoreCropSourceFromSaved() {
+    // If the original file is no longer in memory (e.g. after a reload),
+    // open the already-saved cover rather than asking for another upload.
+    const url = pending[0]?.url || (matchesPath(current.image) ? new URL('../' + current.image, location.href).href : null)
+             || pending[1]?.url || (matchesPath(current.mobileImage) ? new URL('../' + current.mobileImage, location.href).href : null);
+    if (!url) throw new Error('Choose a cover image first.');
+    const picture = new Image(); picture.src=url;
+    await picture.decode();
+    if (srcURL && srcURL.startsWith('blob:')) URL.revokeObjectURL(srcURL);
+    srcURL=url; naturalW=picture.naturalWidth; naturalH=picture.naturalHeight;
+    cropSourceWasLoadedFromSaved=true;
+    img.src=url; await img.decode();
+  }
+  $('heroRecropButton').addEventListener('click',async()=>{
+    if (busy) return;
+    try {
+      if (!srcURL) await restoreCropSourceFromSaved();
+      if (img.src!==srcURL) { img.src=srcURL; await img.decode(); }
+      showModal();
+      status.textContent=cropSourceWasLoadedFromSaved
+        ? 'Re-cropping the saved cover. Areas outside its original crop cannot be recovered; select a new source to access them.'
+        : 'Adjust the same selected photograph; no need to upload it again.';
+    } catch(error) { status.textContent=error.message; }
   });
   function dataURLForCrop(r){
     const z=stageSizes();
