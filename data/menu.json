@@ -7,8 +7,8 @@
       "order": 0,
       "siteHero": {
         "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
-        "x": 100,
-        "y": 62
+        "x": 95,
+        "y": 19
       }
     },
     {
@@ -18,8 +18,8 @@
       "order": 1,
       "siteHero": {
         "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
-        "x": 100,
-        "y": 62
+        "x": 95,
+        "y": 19
       }
     },
     {
@@ -29,8 +29,8 @@
       "order": 2,
       "siteHero": {
         "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
-        "x": 100,
-        "y": 62
+        "x": 95,
+        "y": 19
       }
     },
     {
@@ -40,8 +40,8 @@
       "order": 3,
       "siteHero": {
         "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
-        "x": 100,
-        "y": 62
+        "x": 95,
+        "y": 19
       }
     },
     {
@@ -51,8 +51,8 @@
       "order": 4,
       "siteHero": {
         "image": "images/uploads/1b4d5c00-6b57-42b1-b521-51ca7d2cb51e.jpg",
-        "x": 100,
-        "y": 62
+        "x": 95,
+        "y": 19
       }
     }
   ],
