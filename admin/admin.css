@@ -624,3 +624,21 @@ body:not(.dark-mode) input:focus, body:not(.dark-mode) textarea:focus, body:not(
 .hero-editor-actions { display: flex; flex-wrap: wrap; gap: 10px; }
 #heroSaveStatus { margin: 0; color: var(--accent-2); font-weight: 700; }
 @media(max-width:640px) { .hero-previews { grid-template-columns: minmax(0,1fr) minmax(110px,.65fr); gap: 9px; } .hero-slider-grid { grid-template-columns: 1fr; } .hero-preview-caption { font-size: 15px; } }
+
+/* Interactive crop frame: modal shown on image selection */
+.hero-crop-modal[hidden] { display: none !important; }
+.hero-crop-modal { position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,.79); display:grid; place-items:center; padding:12px; overflow:auto; }
+.hero-crop-dialog { background:var(--card-background,#fff); color:var(--text-main,#222); border:1px solid var(--border-color,#888); border-radius:18px; width:min(850px,100%); max-height:calc(100dvh - 24px); display:flex; flex-direction:column; gap:10px; padding:16px; box-shadow:0 20px 70px #0008; }
+.hero-crop-top, .hero-crop-bottom { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.hero-crop-top h2 { margin:0; font-size:1.4rem; }
+.hero-crop-top button { border:0; background:transparent; color:inherit; font-size:25px; cursor:pointer; }
+#heroCropHint { margin:0; font-size:.9rem; }
+.hero-crop-stage { position:relative; flex:1 1 auto; align-self:center; width:fit-content; max-width:100%; min-height:0; overflow:hidden; touch-action:none; user-select:none; }
+.hero-crop-stage img { display:block; max-width:100%; max-height:min(65dvh,600px); width:auto; height:auto; pointer-events:none; }
+.hero-crop-frame { position:absolute; border:3px solid white; outline:1px solid #1b1b1b; box-shadow:0 0 0 100vmax rgba(0,0,0,.5), inset 0 0 0 1px #0006; cursor:move; touch-action:none; }
+.hero-crop-grid { position:absolute; inset:0; background:linear-gradient(to right,transparent 33.1%,#fffa 33.3%,transparent 33.5%,transparent 66.4%,#fffa 66.6%,transparent 66.8%),linear-gradient(to bottom,transparent 33.1%,#fffa 33.3%,transparent 33.5%,transparent 66.4%,#fffa 66.6%,transparent 66.8%); pointer-events:none; }
+.hero-crop-handle { position:absolute; width:26px; height:26px; right:-13px; bottom:-13px; background:#fff; border:3px solid #222; border-radius:5px; cursor:nwse-resize; touch-action:none; }
+.hero-crop-bottom { padding-top:5px; }
+.hero-crop-bottom button { min-height:42px; }
+.hero-preview { cursor:default; }
+@media(max-width:640px) { .hero-crop-dialog { padding:12px; } .hero-crop-top h2 { font-size:1.12rem; } }

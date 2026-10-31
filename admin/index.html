@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin</title>
-    <link rel="stylesheet" href="admin.css?v=20261031-hero-editor-v1">
+    <link rel="stylesheet" href="admin.css?v=20261031-crop-frame-v2">
 </head>
 <body>
     <!-- Public admin page, but actual editing requires a backend session. -->
@@ -47,27 +47,24 @@
         <p class="info-message" id="saveInfo" role="status" aria-live="polite"></p>
 
         <!-- Restaurant cover photo editor: metadata is saved via the existing authenticated menu API. -->
-        <details class="admin-section hero-editor-section" open>
+        <details class="admin-section hero-editor-section">
             <summary><span>მთავარი ფოტო / Hero background</span><span class="section-arrow">▼</span></summary>
             <div class="section-content hero-editor-content">
-                <p class="section-description">Upload a cover image, then drag the focal point or adjust X / Y to choose which part stays visible when the browser crops it. Preview desktop and mobile before saving. / აირჩიეთ ფოტო და მისი პოზიცია.</p>
+                <p class="section-description">Choose a photo. A crop window opens automatically: adjust the desktop frame first, then the mobile frame. Drag the frame to move it, or drag its bottom-right corner to resize it.</p>
                 <label for="heroPhotoInput">Cover image / მთავარი ფოტო</label>
-                <input type="file" id="heroPhotoInput" accept="image/jpeg,image/png,image/webp,image/*">
-                <p class="field-note">Automatically resized to fit the existing upload limit (JPEG under 950 KB). Original aspect ratio is retained; the browser crops visually to fill the hero.</p>
+                <input type="file" id="heroPhotoInput" accept="image/*,.heic,.heif,.avif,.bmp,.tif,.tiff">
+                <p class="field-note">Browser-supported images are resized and converted to JPEG automatically. HEIC/HEIF depends on browser support. Desktop and mobile crops are saved separately.</p>
                 <div class="hero-previews">
-                  <div><strong>Desktop preview</strong><div id="heroPreviewDesktop" class="hero-preview hero-preview-desktop" tabindex="0" role="img" aria-label="Desktop hero crop preview, drag to change the focal point"><div class="hero-preview-caption">Georgian House</div></div></div>
-                  <div><strong>Mobile preview</strong><div id="heroPreviewMobile" class="hero-preview hero-preview-mobile" tabindex="0" role="img" aria-label="Mobile hero crop preview, drag to change the focal point"><div class="hero-preview-caption">Georgian House</div></div></div>
+                  <div><strong>Desktop cover</strong><div id="heroPreviewDesktop" class="hero-preview hero-preview-desktop" role="img" aria-label="Saved desktop image preview"></div></div>
+                  <div><strong>Mobile cover</strong><div id="heroPreviewMobile" class="hero-preview hero-preview-mobile" role="img" aria-label="Saved mobile image preview"></div></div>
                 </div>
-                <div class="hero-slider-grid">
-                  <label for="heroFocusX">Horizontal crop <output id="heroFocusXValue">50%</output><input type="range" id="heroFocusX" min="0" max="100" value="50"></label>
-                  <label for="heroFocusY">Vertical crop <output id="heroFocusYValue">50%</output><input type="range" id="heroFocusY" min="0" max="100" value="50"></label>
-                </div>
+                <button type="button" id="heroRecropButton" class="cancel-button">Adjust crops / კადრის შეცვლა</button>
                 <div class="hero-editor-actions"><button type="button" id="heroSaveButton">Save cover / ფოტოს შენახვა</button><button type="button" class="cancel-button" id="heroResetButton">Restore default / ნაგულისხმევი</button></div>
                 <p id="heroSaveStatus" role="status" aria-live="polite"></p>
             </div>
         </details>
 
-        <details class="admin-section" open>
+        <details class="admin-section">
             <summary><span id="categoriesSectionTitle">Edit Categories</span><span class="section-arrow">▼</span></summary>
             <div class="section-content">
                 <p class="section-description" id="categoriesDescription">Add, edit, delete and reorder categories. You can also choose whether dishes in each category show images.</p>
@@ -83,7 +80,7 @@
             </div>
         </details>
 
-        <details class="admin-section" open>
+        <details class="admin-section">
             <summary><span id="dishSectionTitle">Add / Edit Dish</span><span class="section-arrow">▼</span></summary>
             <div class="section-content">
                 <form id="dishForm">
@@ -128,7 +125,7 @@
             </div>
         </details>
 
-        <details class="admin-section" open>
+        <details class="admin-section">
             <summary><span id="currentMenuTitle">Current Menu</span><span class="section-arrow">▼</span></summary>
             <div class="section-content">
                 <p class="section-description" id="currentMenuDescription">Drag dishes using the handle on the left to change their order.</p>
@@ -148,9 +145,17 @@
         </details>
     </div>
 
+    <div id="heroCropModal" class="hero-crop-modal" hidden role="dialog" aria-modal="true" aria-labelledby="heroCropTitle">
+      <div class="hero-crop-dialog">
+        <div class="hero-crop-top"><h2 id="heroCropTitle">Desktop crop</h2><button type="button" id="heroCropCancel" aria-label="Close">✕</button></div>
+        <p id="heroCropHint">Drag the crop frame to move it. Drag the corner to resize.</p>
+        <div id="heroCropStage" class="hero-crop-stage"><img id="heroCropSource" alt="Selected photograph for cropping"><div id="heroCropFrame" class="hero-crop-frame" tabindex="0"><div class="hero-crop-grid"></div><span class="hero-crop-handle" aria-label="Resize crop area"></span></div></div>
+        <div class="hero-crop-bottom"><button type="button" id="heroCropBack" class="cancel-button" hidden>← Desktop</button><span id="heroCropStep">Step 1 of 2</span><button type="button" id="heroCropNext">Continue to mobile →</button></div>
+      </div>
+    </div>
     <script src="admin.js"></script>
     <script src="admin-enhancements.js?v=20261022-popular-stable3"></script>
-    <script src="hero-editor.js?v=20261031-hero-editor-v1"></script>
+    <script src="hero-editor.js?v=20261031-crop-frame-v2"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {

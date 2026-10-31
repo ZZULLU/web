@@ -893,6 +893,12 @@ function applyPublicHeroConfig() {
   } else {
     hero.style.removeProperty('--restaurant-hero-image');
   }
+  if (typeof config?.mobileImage === 'string' && /^images\/[\w./-]+\.(?:jpg|jpeg|png|webp)$/i.test(config.mobileImage)) {
+    const mobileUrl = new URL(config.mobileImage, document.baseURI).href;
+    hero.style.setProperty('--restaurant-hero-mobile-image', `url("${mobileUrl}")`);
+  } else {
+    hero.style.removeProperty('--restaurant-hero-mobile-image');
+  }
   const clamp = value => Number.isFinite(Number(value)) ? Math.max(0,Math.min(100,Number(value))) : 50;
   hero.style.setProperty('--restaurant-hero-x', clamp(config?.x) + '%');
   hero.style.setProperty('--restaurant-hero-y', clamp(config?.y) + '%');
