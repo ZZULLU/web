@@ -4,20 +4,20 @@
 html { scroll-behavior: smooth; }
 :root {
   color-scheme: light;
-  --page-background: #F5EFEB;
-  --card-background: #FFFFFF;
-  --text-main: #2F4156;
-  --text-secondary: #567C8D;
-  --border-color: #C8D9E6;
-  --soft-background: #C8D9E6;
-  --button-main: #2F4156;
-  --button-text: #FFFFFF;
-  --footer-background: #2F4156;
-  --footer-text: #FFFFFF;
-  --accent: #567C8D;
-  --accent-2: #567C8D;
-  --gold: #C8D9E6;
-  --field-background: #FFFFFF;
+  --page-background: #F2F2F2;
+  --card-background: #F2F2F2;
+  --text-main: #595959;
+  --text-secondary: #7F7F7F;
+  --border-color: #A5A5A5;
+  --soft-background: #CCCCCC;
+  --button-main: #595959;
+  --button-text: #F2F2F2;
+  --footer-background: #595959;
+  --footer-text: #F2F2F2;
+  --accent: #7F7F7F;
+  --accent-2: #7F7F7F;
+  --gold: #A5A5A5;
+  --field-background: #F2F2F2;
   --shadow: 0 12px 32px rgba(47,65,86,.10);
   --heading-font: 'Playfair Display', 'Noto Serif Georgian', Georgia, serif;
   --body-font: 'DM Sans', 'Noto Sans Georgian', sans-serif;
@@ -986,32 +986,32 @@ body.dark-mode .food-card .food-info > button.personal-add-button.personal-added
 /* ===============================================================
    LIGHT MODE — NAVY / TEAL / SKY / BEIGE / WHITE (user palette)
    Scope every rule to non-dark body. Dark mode remains unchanged.
-   #2F4156 #567C8D #C8D9E6 #F5EFEB #FFFFFF
+   #595959 #7F7F7F #A5A5A5 #F2F2F2 #FFFFFF
 ================================================================ */
-body:not(.dark-mode) { background-color:#F5EFEB; color:#2F4156; }
+body:not(.dark-mode) { background-color:#F2F2F2; color:#595959; }
 body:not(.dark-mode) .hero {
   background-image:linear-gradient(120deg,rgba(47,65,86,.90),rgba(86,124,141,.70)),url('images/khachapuri.jpg');
-  color:#FFFFFF;
+  color:#F2F2F2;
 }
-body:not(.dark-mode) .hero h1,body:not(.dark-mode) .hero p { color:#FFFFFF; }
+body:not(.dark-mode) .hero h1,body:not(.dark-mode) .hero p { color:#F2F2F2; }
 body:not(.dark-mode) .hero::after,body:not(.dark-mode) .menu-header h2::after {
-  background:linear-gradient(90deg,#2F4156,#567C8D,#C8D9E6);
+  background:linear-gradient(90deg,#595959,#7F7F7F,#A5A5A5);
 }
 body:not(.dark-mode) .admin-button,
 body:not(.dark-mode) .top-control-button,
-body:not(.dark-mode) .header-search-toggle {background:rgba(47,65,86,.90);border-color:#C8D9E6;color:#FFFFFF;}
+body:not(.dark-mode) .header-search-toggle {background:rgba(47,65,86,.90);border-color:#A5A5A5;color:#F2F2F2;}
 body:not(.dark-mode) .admin-button:hover,
 body:not(.dark-mode) .top-control-button:hover,
-body:not(.dark-mode) .header-search-toggle:hover { background:#567C8D; }
-body:not(.dark-mode) .top-control-button.active {background:#FFFFFF;color:#2F4156;border-color:#FFFFFF;}
+body:not(.dark-mode) .header-search-toggle:hover { background:#7F7F7F; }
+body:not(.dark-mode) .top-control-button.active {background:#F2F2F2;color:#595959;border-color:#F2F2F2;}
 body:not(.dark-mode) .header-search-panel,
 body:not(.dark-mode) #searchInput,
 body:not(.dark-mode) #sortSelect,
 body:not(.dark-mode) #searchSuggestions,
 body:not(.dark-mode) .search-suggestions,
 body:not(.dark-mode) .dish-detail-dialog,
-body:not(.dark-mode) .personal-list-panel {background-color:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
-body:not(.dark-mode) .header-search-close {background:#C8D9E6;color:#2F4156;}
+body:not(.dark-mode) .personal-list-panel {background-color:#F2F2F2;color:#595959;border-color:#A5A5A5;}
+body:not(.dark-mode) .header-search-close {background:#A5A5A5;color:#595959;}
 body:not(.dark-mode) .header-search-submit,
 body:not(.dark-mode) .display-button.active,
 body:not(.dark-mode) .size-button.active,
@@ -1019,72 +1019,122 @@ body:not(.dark-mode) .sort-button.active,
 body:not(.dark-mode) .category-btn.active,
 body:not(.dark-mode) .personal-add-button,
 body:not(.dark-mode) .personal-list-float,
-body:not(.dark-mode) .dish-detail-add {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .dish-detail-add {background:#595959;color:#F2F2F2;border-color:#595959;}
 body:not(.dark-mode) .control-group,
 body:not(.dark-mode) .menu-category-section > summary,
 body:not(.dark-mode) .category-dropdown > summary,
-body:not(.dark-mode) .personal-panel-header {background-color:#C8D9E6;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .personal-panel-header {background-color:#A5A5A5;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .category-dropdown,
 body:not(.dark-mode) .menu-category-section,
 body:not(.dark-mode) .food-card,
 body:not(.dark-mode) .personal-list-panel,
-body:not(.dark-mode) .dish-detail-dialog {background-color:#FFFFFF;border-color:#C8D9E6;}
-body:not(.dark-mode) .category-btn {background-color:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
-body:not(.dark-mode) .category-btn.active {background-color:#2F4156;color:#FFFFFF;border-color:#2F4156;}
-body:not(.dark-mode) .category-btn:hover:not(.active) {border-color:#567C8D;}
+body:not(.dark-mode) .dish-detail-dialog {background-color:#F2F2F2;border-color:#A5A5A5;}
+body:not(.dark-mode) .category-btn {background-color:#F2F2F2;color:#595959;border-color:#A5A5A5;}
+body:not(.dark-mode) .category-btn.active {background-color:#595959;color:#F2F2F2;border-color:#595959;}
+body:not(.dark-mode) .category-btn:hover:not(.active) {border-color:#7F7F7F;}
 body:not(.dark-mode) .food-card .price,
 body:not(.dark-mode) .dish-detail-price,
 body:not(.dark-mode) .personal-panel-total strong,
-body:not(.dark-mode) .personal-item-detail span {color:#567C8D;}
+body:not(.dark-mode) .personal-item-detail span {color:#7F7F7F;}
 body:not(.dark-mode) .dish-tag,
-body:not(.dark-mode) .dish-detail-tag {background:#2F4156;color:#FFFFFF;}
-body:not(.dark-mode) .dish-tag-new {background:#567C8D;color:#FFFFFF;}
-body:not(.dark-mode) .dish-tag-sale {background:#C8D9E6;color:#2F4156;}
-body:not(.dark-mode) .personal-list-badge {background:#567C8D;color:#FFFFFF;}
+body:not(.dark-mode) .dish-detail-tag {background:#595959;color:#F2F2F2;}
+body:not(.dark-mode) .dish-tag-new {background:#7F7F7F;color:#F2F2F2;}
+body:not(.dark-mode) .dish-tag-sale {background:#A5A5A5;color:#595959;}
+body:not(.dark-mode) .personal-list-badge {background:#7F7F7F;color:#F2F2F2;}
 body:not(.dark-mode) .personal-panel-close,
 body:not(.dark-mode) .personal-quantity-btn,
 body:not(.dark-mode) .personal-remove-btn,
 body:not(.dark-mode) .personal-clear-btn,
-body:not(.dark-mode) .dish-detail-close {background:#F5EFEB;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .dish-detail-close {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) #searchSuggestions button,
-body:not(.dark-mode) #searchSuggestions .search-suggestion-item {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) #searchSuggestions .search-suggestion-item {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) #searchSuggestions button:hover,
-body:not(.dark-mode) #searchSuggestions .search-suggestion-item:hover {background:#C8D9E6;}
+body:not(.dark-mode) #searchSuggestions .search-suggestion-item:hover {background:#A5A5A5;}
 body:not(.dark-mode) footer,
-body:not(.dark-mode) .site-footer {background-color:#2F4156;color:#FFFFFF;}
-body:not(.dark-mode) .footer-admin-link {color:#FFFFFF;}
-body:not(.dark-mode) .food-card.dish-in-personal-list {box-shadow:0 0 0 2px #567C8D,0 5px 17px rgba(47,65,86,.14);}
-body:not(.dark-mode) .food-card.dish-just-added {box-shadow:0 0 0 3px #567C8D,0 0 20px rgba(86,124,141,.24)!important;}
+body:not(.dark-mode) .site-footer {background-color:#595959;color:#F2F2F2;}
+body:not(.dark-mode) .footer-admin-link {color:#F2F2F2;}
+body:not(.dark-mode) .food-card.dish-in-personal-list {box-shadow:0 0 0 2px #7F7F7F,0 5px 17px rgba(47,65,86,.14);}
+body:not(.dark-mode) .food-card.dish-just-added {box-shadow:0 0 0 3px #7F7F7F,0 0 20px rgba(86,124,141,.24)!important;}
 body:not(.dark-mode) .food-card .food-info > button.personal-add-button.personal-added-bounce {box-shadow:0 0 0 5px rgba(86,124,141,.20);}
 
 
 /* FINAL LIGHT PALETTE — explicit component colors. Does not apply in dark mode. */
 body:not(.dark-mode) {
-  --page-background:#F5EFEB; --card-background:#FFFFFF;
-  --soft-background:#C8D9E6; --field-background:#FFFFFF;
-  --text-main:#2F4156; --text-secondary:#567C8D;
-  --border-color:#C8D9E6; --button-main:#2F4156;
-  --button-text:#FFFFFF; --footer-background:#2F4156;
-  --footer-text:#FFFFFF; --accent:#567C8D;
-  --accent-2:#567C8D; --gold:#C8D9E6;
+  --page-background:#F2F2F2; --card-background:#F2F2F2;
+  --soft-background:#CCCCCC; --field-background:#F2F2F2;
+  --text-main:#595959; --text-secondary:#7F7F7F;
+  --border-color:#A5A5A5; --button-main:#595959;
+  --button-text:#F2F2F2; --footer-background:#595959;
+  --footer-text:#F2F2F2; --accent:#7F7F7F;
+  --accent-2:#7F7F7F; --gold:#A5A5A5;
 }
 body:not(.dark-mode) .hero { background-image:linear-gradient(115deg,rgba(47,65,86,.92),rgba(86,124,141,.66)),url('images/khachapuri.jpg'); }
-body:not(.dark-mode) .hero::after { background:linear-gradient(90deg,#2F4156,#567C8D,#C8D9E6); }
+body:not(.dark-mode) .hero::after { background:linear-gradient(90deg,#595959,#7F7F7F,#A5A5A5); }
 body:not(.dark-mode) .menu-category-title,
 body:not(.dark-mode) .menu-category-section > summary,
 body:not(.dark-mode) .category-dropdown > summary,
-body:not(.dark-mode) .category-section-header {color:#2F4156;background-color:#C8D9E6;}
+body:not(.dark-mode) .category-section-header {color:#595959;background-color:#A5A5A5;}
 body:not(.dark-mode) .food-card,body:not(.dark-mode) .category-dropdown,
 body:not(.dark-mode) .menu-category-section,body:not(.dark-mode) .dish-detail-dialog,
-body:not(.dark-mode) .personal-list-panel { background-color:#FFFFFF;color:#2F4156;border-color:#C8D9E6; }
+body:not(.dark-mode) .personal-list-panel { background-color:#F2F2F2;color:#595959;border-color:#A5A5A5; }
 body:not(.dark-mode) .personal-add-button,body:not(.dark-mode) .personal-list-float,
 body:not(.dark-mode) .dish-detail-add,body:not(.dark-mode) .category-btn.active,
 body:not(.dark-mode) .display-controls .display-button.active,
 body:not(.dark-mode) .display-controls .size-button.active,
-body:not(.dark-mode) .display-controls .sort-button.active {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .display-controls .sort-button.active {background:#595959;color:#F2F2F2;border-color:#595959;}
 body:not(.dark-mode) .price,body:not(.dark-mode) .dish-detail-price,
-body:not(.dark-mode) .personal-panel-total strong { color:#567C8D; }
-body:not(.dark-mode) .dish-tag,body:not(.dark-mode) .dish-detail-tag {background:#2F4156;color:#FFFFFF;}
-body:not(.dark-mode) .dish-tag-new {background:#567C8D;color:#FFFFFF;}
-body:not(.dark-mode) .dish-tag-sale {background:#C8D9E6;color:#2F4156;}
-body:not(.dark-mode) footer {background:#2F4156;color:#FFFFFF;border-top-color:#567C8D;}
+body:not(.dark-mode) .personal-panel-total strong { color:#7F7F7F; }
+body:not(.dark-mode) .dish-tag,body:not(.dark-mode) .dish-detail-tag {background:#595959;color:#F2F2F2;}
+body:not(.dark-mode) .dish-tag-new {background:#7F7F7F;color:#F2F2F2;}
+body:not(.dark-mode) .dish-tag-sale {background:#A5A5A5;color:#595959;}
+body:not(.dark-mode) footer {background:#595959;color:#F2F2F2;border-top-color:#7F7F7F;}
+
+/* MONOCHROME LIGHT PALETTE 2026-10-31 — dark mode is deliberately excluded.
+   #595959 #7F7F7F #A5A5A5 #CCCCCC #F2F2F2 */
+body:not(.dark-mode) {
+  color-scheme: light;
+  --page-background: #F2F2F2;
+  --card-background: #F2F2F2;
+  --panel-background: #F2F2F2;
+  --field-background: #F2F2F2;
+  --text-main: #595959;
+  --text-secondary: #595959;
+  --border-color: #A5A5A5;
+  --soft-background: #CCCCCC;
+  --button-main: #595959;
+  --button-text: #F2F2F2;
+  --footer-background: #595959;
+  --footer-text: #F2F2F2;
+  --accent: #7F7F7F;
+  --accent-2: #7F7F7F;
+  --gold: #A5A5A5;
+  --danger: #595959;
+  --shadow: 0 12px 30px rgba(89,89,89,.13);
+}
+body:not(.dark-mode) .category-dropdown > summary,
+body:not(.dark-mode) .menu-category-section > summary,
+body:not(.dark-mode) .admin-dish-group-heading,
+body:not(.dark-mode) .personal-panel-header,
+body:not(.dark-mode) .control-group { background-color: #CCCCCC; color: #595959; border-color: #A5A5A5; }
+body:not(.dark-mode) .category-btn,
+body:not(.dark-mode) .food-card,
+body:not(.dark-mode) .admin-header,
+body:not(.dark-mode) .admin-section,
+body:not(.dark-mode) .dish-row,
+body:not(.dark-mode) .category-row,
+body:not(.dark-mode) .admin-dish-group,
+body:not(.dark-mode) .personal-list-panel { border-color: #A5A5A5; }
+body:not(.dark-mode) .food-card .price,
+body:not(.dark-mode) .dish-detail-price,
+body:not(.dark-mode) .personal-panel-total strong,
+body:not(.dark-mode) .dish-info strong { color: #595959; }
+body:not(.dark-mode) .category-btn.active,
+body:not(.dark-mode) .sort-button.active,
+body:not(.dark-mode) .size-button.active,
+body:not(.dark-mode) .display-button.active,
+body:not(.dark-mode) .personal-add-button,
+body:not(.dark-mode) .personal-list-float { background-color: #595959; color: #F2F2F2; border-color: #595959; }
+body:not(.dark-mode) .category-btn:hover:not(.active),
+body:not(.dark-mode) .admin-section summary:hover { background-color: #CCCCCC; }
+body:not(.dark-mode) input, body:not(.dark-mode) textarea, body:not(.dark-mode) select { background-color: #F2F2F2; color: #595959; border-color: #A5A5A5; }
+body:not(.dark-mode) input:focus, body:not(.dark-mode) textarea:focus, body:not(.dark-mode) select:focus { border-color: #7F7F7F; box-shadow: 0 0 0 3px rgba(127,127,127,.20); }

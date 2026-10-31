@@ -3,18 +3,18 @@
 * { box-sizing: border-box; }
 :root {
   color-scheme: light;
-  --page-background: #F5EFEB;
-  --panel-background: #FFFFFF;
-  --text-main: #2F4156;
-  --text-secondary: #567C8D;
-  --border-color: #C8D9E6;
-  --soft-background: #C8D9E6;
-  --button-main: #2F4156;
-  --button-text: #FFFFFF;
-  --danger: #2F4156;
-  --accent: #567C8D;
-  --accent-2: #567C8D;
-  --gold: #C8D9E6;
+  --page-background: #F2F2F2;
+  --panel-background: #F2F2F2;
+  --text-main: #595959;
+  --text-secondary: #7F7F7F;
+  --border-color: #A5A5A5;
+  --soft-background: #CCCCCC;
+  --button-main: #595959;
+  --button-text: #F2F2F2;
+  --danger: #595959;
+  --accent: #7F7F7F;
+  --accent-2: #7F7F7F;
+  --gold: #A5A5A5;
   --shadow: 0 12px 32px rgba(47,65,86,.10);
   --body-font: 'DM Sans', 'Noto Sans Georgian', sans-serif;
   --heading-font: 'Playfair Display', 'Noto Serif Georgian', Georgia, serif;
@@ -469,42 +469,42 @@ body.dark-mode .info-message {color:#B68B4B;}
 /* ===============================================================
    LIGHT MODE — NAVY / TEAL / SKY / BEIGE / WHITE (user palette)
    Scope to non-dark body. Existing forest dark mode is untouched.
-   #2F4156 #567C8D #C8D9E6 #F5EFEB #FFFFFF
+   #595959 #7F7F7F #A5A5A5 #F2F2F2 #FFFFFF
 ================================================================ */
-body:not(.dark-mode) {background:#F5EFEB;color:#2F4156;}
+body:not(.dark-mode) {background:#F2F2F2;color:#595959;}
 body:not(.dark-mode) .admin-container,
 body:not(.dark-mode) .admin-header,
 body:not(.dark-mode) .admin-section,
 body:not(.dark-mode) .admin-personal-feature,
 body:not(.dark-mode) .admin-dish-group,
-body:not(.dark-mode) .login-panel {color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .login-panel {color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .admin-header,
 body:not(.dark-mode) .admin-section,
 body:not(.dark-mode) .admin-personal-feature,
 body:not(.dark-mode) .admin-dish-group,
-body:not(.dark-mode) .login-panel {background-color:#FFFFFF;}
-body:not(.dark-mode) .admin-header {border-top-color:#567C8D;}
-body:not(.dark-mode) .admin-section:nth-of-type(3n + 1) {border-top-color:#2F4156;}
-body:not(.dark-mode) .admin-section:nth-of-type(3n + 2) {border-top-color:#567C8D;}
-body:not(.dark-mode) .admin-section:nth-of-type(3n) {border-top-color:#C8D9E6;}
+body:not(.dark-mode) .login-panel {background-color:#F2F2F2;}
+body:not(.dark-mode) .admin-header {border-top-color:#7F7F7F;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n + 1) {border-top-color:#595959;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n + 2) {border-top-color:#7F7F7F;}
+body:not(.dark-mode) .admin-section:nth-of-type(3n) {border-top-color:#A5A5A5;}
 body:not(.dark-mode) .category-row,
 body:not(.dark-mode) .dish-row,
 body:not(.dark-mode) .admin-popular-category-row,
 body:not(.dark-mode) .admin-dish-group-heading,
-body:not(.dark-mode) .dish-availability-controls {background:#F5EFEB;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .dish-availability-controls {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .admin-section summary:hover,
-body:not(.dark-mode) .admin-dish-group-heading:hover {background:#C8D9E6;}
+body:not(.dark-mode) .admin-dish-group-heading:hover {background:#A5A5A5;}
 body:not(.dark-mode) input,
 body:not(.dark-mode) textarea,
 body:not(.dark-mode) select,
 body:not(.dark-mode) .category-language-value,
-body:not(.dark-mode) .popular-category-names strong {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .popular-category-names strong {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) input:focus,
 body:not(.dark-mode) textarea:focus,
-body:not(.dark-mode) select:focus {border-color:#567C8D;box-shadow:0 0 0 3px rgba(86,124,141,.18);}
+body:not(.dark-mode) select:focus {border-color:#7F7F7F;box-shadow:0 0 0 3px rgba(86,124,141,.18);}
 body:not(.dark-mode) button,
 body:not(.dark-mode) .top-control-button.active,
-body:not(.dark-mode) .view-menu-button {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
+body:not(.dark-mode) .view-menu-button {background:#595959;color:#F2F2F2;border-color:#595959;}
 body:not(.dark-mode) .top-control-button:not(.active),
 body:not(.dark-mode) .cancel-button,
 body:not(.dark-mode) .category-order-actions button,
@@ -512,48 +512,98 @@ body:not(.dark-mode) .dish-order-actions button,
 body:not(.dark-mode) .popular-order-actions button,
 body:not(.dark-mode) .dish-visibility-eye,
 body:not(.dark-mode) .category-drag-handle,
-body:not(.dark-mode) .drag-handle {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .drag-handle {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .category-edit-button,
-body:not(.dark-mode) .edit-btn {background:#567C8D;color:#FFFFFF;border-color:#567C8D;}
+body:not(.dark-mode) .edit-btn {background:#7F7F7F;color:#F2F2F2;border-color:#7F7F7F;}
 body:not(.dark-mode) .category-delete-button,
-body:not(.dark-mode) .delete-btn {background:#2F4156;color:#FFFFFF;border-color:#2F4156;}
-body:not(.dark-mode) .image-toggle {background:#C8D9E6;}
+body:not(.dark-mode) .delete-btn {background:#595959;color:#F2F2F2;border-color:#595959;}
+body:not(.dark-mode) .image-toggle {background:#A5A5A5;}
 body:not(.dark-mode) .image-toggle.on,
-body:not(.dark-mode) .admin-personal-switch input:checked + .admin-personal-switch-track {background:#567C8D;}
+body:not(.dark-mode) .admin-personal-switch input:checked + .admin-personal-switch-track {background:#7F7F7F;}
 body:not(.dark-mode) input[type='checkbox'],
-body:not(.dark-mode) .popular-category-switch input {accent-color:#567C8D;}
+body:not(.dark-mode) .popular-category-switch input {accent-color:#7F7F7F;}
 body:not(.dark-mode) .info-message,
 body:not(.dark-mode) .dish-info strong,
-body:not(.dark-mode) .dish-language {color:#567C8D;}
+body:not(.dark-mode) .dish-language {color:#7F7F7F;}
 body:not(.dark-mode) .login-screen {
-  background:radial-gradient(circle at 20% 15%,rgba(200,217,230,.45),transparent 35%),radial-gradient(circle at 85% 90%,rgba(86,124,141,.14),transparent 42%),#F5EFEB;
+  background:radial-gradient(circle at 20% 15%,rgba(200,217,230,.45),transparent 35%),radial-gradient(circle at 85% 90%,rgba(86,124,141,.14),transparent 42%),#F2F2F2;
 }
-body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:rgba(86,124,141,.12)!important;border:2px solid #567C8D!important;opacity:1;}
-body:not(.dark-mode) #dishList .dish-row.dish-is-hidden .dish-info::after {color:#2F4156;}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:rgba(86,124,141,.12)!important;border:2px solid #7F7F7F!important;opacity:1;}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden .dish-info::after {color:#595959;}
 
 
 /* FINAL LIGHT PALETTE — explicit component colors. Does not apply in dark mode. */
 body:not(.dark-mode) {
- --page-background:#F5EFEB; --panel-background:#FFFFFF;
- --text-main:#2F4156; --text-secondary:#567C8D;
- --border-color:#C8D9E6; --soft-background:#C8D9E6;
- --button-main:#2F4156; --button-text:#FFFFFF;
- --accent:#567C8D; --accent-2:#567C8D;
- --gold:#C8D9E6; --danger:#2F4156;
+ --page-background:#F2F2F2; --panel-background:#F2F2F2;
+ --text-main:#595959; --text-secondary:#7F7F7F;
+ --border-color:#A5A5A5; --soft-background:#CCCCCC;
+ --button-main:#595959; --button-text:#F2F2F2;
+ --accent:#7F7F7F; --accent-2:#7F7F7F;
+ --gold:#A5A5A5; --danger:#595959;
 }
 body:not(.dark-mode) .admin-header,body:not(.dark-mode) .admin-section,
-body:not(.dark-mode) .admin-dish-group,body:not(.dark-mode) .login-panel {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .admin-dish-group,body:not(.dark-mode) .login-panel {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .category-row,body:not(.dark-mode) .dish-row,
 body:not(.dark-mode) .admin-popular-category-row,
-body:not(.dark-mode) .admin-dish-group-heading {background:#F5EFEB;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .admin-dish-group-heading {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .admin-section > summary:hover,
-body:not(.dark-mode) .admin-dish-group-heading:hover {background:#C8D9E6;}
-body:not(.dark-mode) .category-edit-button,body:not(.dark-mode) .edit-btn {background:#567C8D;color:#FFFFFF;}
-body:not(.dark-mode) .category-delete-button,body:not(.dark-mode) .delete-btn {background:#2F4156;color:#FFFFFF;}
+body:not(.dark-mode) .admin-dish-group-heading:hover {background:#A5A5A5;}
+body:not(.dark-mode) .category-edit-button,body:not(.dark-mode) .edit-btn {background:#7F7F7F;color:#F2F2F2;}
+body:not(.dark-mode) .category-delete-button,body:not(.dark-mode) .delete-btn {background:#595959;color:#F2F2F2;}
 body:not(.dark-mode) .dish-visibility-eye,
 body:not(.dark-mode) .dish-order-actions button,
 body:not(.dark-mode) .category-order-actions button,
-body:not(.dark-mode) .popular-order-actions button {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
+body:not(.dark-mode) .popular-order-actions button {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
 body:not(.dark-mode) .dish-tag-inline select,body:not(.dark-mode) input,
-body:not(.dark-mode) textarea,body:not(.dark-mode) select {background:#FFFFFF;color:#2F4156;border-color:#C8D9E6;}
-body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:#C8D9E6!important;border:2px solid #567C8D!important;}
+body:not(.dark-mode) textarea,body:not(.dark-mode) select {background:#F2F2F2;color:#595959;border-color:#A5A5A5;}
+body:not(.dark-mode) #dishList .dish-row.dish-is-hidden {background:#A5A5A5!important;border:2px solid #7F7F7F!important;}
+
+/* MONOCHROME LIGHT PALETTE 2026-10-31 — dark mode is deliberately excluded.
+   #595959 #7F7F7F #A5A5A5 #CCCCCC #F2F2F2 */
+body:not(.dark-mode) {
+  color-scheme: light;
+  --page-background: #F2F2F2;
+  --card-background: #F2F2F2;
+  --panel-background: #F2F2F2;
+  --field-background: #F2F2F2;
+  --text-main: #595959;
+  --text-secondary: #595959;
+  --border-color: #A5A5A5;
+  --soft-background: #CCCCCC;
+  --button-main: #595959;
+  --button-text: #F2F2F2;
+  --footer-background: #595959;
+  --footer-text: #F2F2F2;
+  --accent: #7F7F7F;
+  --accent-2: #7F7F7F;
+  --gold: #A5A5A5;
+  --danger: #595959;
+  --shadow: 0 12px 30px rgba(89,89,89,.13);
+}
+body:not(.dark-mode) .category-dropdown > summary,
+body:not(.dark-mode) .menu-category-section > summary,
+body:not(.dark-mode) .admin-dish-group-heading,
+body:not(.dark-mode) .personal-panel-header,
+body:not(.dark-mode) .control-group { background-color: #CCCCCC; color: #595959; border-color: #A5A5A5; }
+body:not(.dark-mode) .category-btn,
+body:not(.dark-mode) .food-card,
+body:not(.dark-mode) .admin-header,
+body:not(.dark-mode) .admin-section,
+body:not(.dark-mode) .dish-row,
+body:not(.dark-mode) .category-row,
+body:not(.dark-mode) .admin-dish-group,
+body:not(.dark-mode) .personal-list-panel { border-color: #A5A5A5; }
+body:not(.dark-mode) .food-card .price,
+body:not(.dark-mode) .dish-detail-price,
+body:not(.dark-mode) .personal-panel-total strong,
+body:not(.dark-mode) .dish-info strong { color: #595959; }
+body:not(.dark-mode) .category-btn.active,
+body:not(.dark-mode) .sort-button.active,
+body:not(.dark-mode) .size-button.active,
+body:not(.dark-mode) .display-button.active,
+body:not(.dark-mode) .personal-add-button,
+body:not(.dark-mode) .personal-list-float { background-color: #595959; color: #F2F2F2; border-color: #595959; }
+body:not(.dark-mode) .category-btn:hover:not(.active),
+body:not(.dark-mode) .admin-section summary:hover { background-color: #CCCCCC; }
+body:not(.dark-mode) input, body:not(.dark-mode) textarea, body:not(.dark-mode) select { background-color: #F2F2F2; color: #595959; border-color: #A5A5A5; }
+body:not(.dark-mode) input:focus, body:not(.dark-mode) textarea:focus, body:not(.dark-mode) select:focus { border-color: #7F7F7F; box-shadow: 0 0 0 3px rgba(127,127,127,.20); }
