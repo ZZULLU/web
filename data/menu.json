@@ -110,7 +110,7 @@
       "categoryId": "category-ea7c0b5f-61f6-4035-a180-af3f86c7bd0f",
       "image": "images/uploads/f2a97023-078a-450f-ad4b-659bf7afb15b.jpg",
       "order": 3,
-      "visible": false
+      "visible": true
     },
     {
       "id": "dish-ff0bfe53-f1da-484f-a112-0b5a59531c71",
@@ -123,7 +123,7 @@
       "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
       "order": 4,
       "tag": "sale",
-      "visible": false
+      "visible": true
     },
     {
       "id": "dish-2d0bb7bc-a33d-4f55-987f-0881de9b139a",
