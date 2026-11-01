@@ -123,7 +123,7 @@
       "image": "images/uploads/226e0959-5d9e-42ee-a5a3-14d883b89737.jpg",
       "order": 4,
       "tag": "sale",
-      "visible": true
+      "visible": false
     },
     {
       "id": "dish-2d0bb7bc-a33d-4f55-987f-0881de9b139a",
