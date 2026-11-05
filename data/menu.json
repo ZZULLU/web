@@ -156,6 +156,17 @@
       "order": 6,
       "visible": true,
       "tag": "sale"
+    },
+    {
+      "id": "dish-e88e4992-9a7e-4d98-a459-36660767a897",
+      "nameGe": "ხარჩო",
+      "nameEn": "Kharcho",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 13,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/37a94241-a806-4857-bc89-e136360f45b7.jpg",
+      "order": 7
     }
   ],
   "categorySettings": {
