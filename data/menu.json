@@ -65,6 +65,12 @@
       "nameGe": "წვნიანი",
       "nameEn": "Soups",
       "order": 5
+    },
+    {
+      "id": "category-520c2202-a9d2-455b-b310-dbdc8ef98c32",
+      "nameGe": "თევზეული",
+      "nameEn": "fish dishes",
+      "order": 6
     }
   ],
   "dishes": [
@@ -289,6 +295,9 @@
       "personalListEnabled": true
     },
     "category-a347b58c-2677-4b2d-8ae9-30339bce0862": {
+      "showImages": true
+    },
+    "category-520c2202-a9d2-455b-b310-dbdc8ef98c32": {
       "showImages": true
     }
   }
