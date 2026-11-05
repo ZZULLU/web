@@ -222,6 +222,17 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/fb08c6d9-11fe-46db-a936-c1f9bcf1e192.jpg",
       "order": 12
+    },
+    {
+      "id": "dish-38638a99-5cb0-4e51-ad5c-d7562ce019f4",
+      "nameGe": "ოჯახური ხბოს ხორცით",
+      "nameEn": "odjakhuri with veal",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 26.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/a022b687-1933-46e8-bb8b-6fef0f2f90bc.jpg",
+      "order": 13
     }
   ],
   "categorySettings": {
