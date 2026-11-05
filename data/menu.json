@@ -189,6 +189,17 @@
       "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
       "image": "images/uploads/9117a9c8-a9ce-411b-907a-8dfd88b6f2b0.jpg",
       "order": 9
+    },
+    {
+      "id": "dish-b23b0612-d093-4c37-84e8-28d237d878f1",
+      "nameGe": "სოკოს სუპი",
+      "nameEn": "Mushroom Soup",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 11,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/be856c86-7a9c-49c0-9d8e-6247081b7b91.jpg",
+      "order": 10
     }
   ],
   "categorySettings": {
