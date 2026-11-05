@@ -1301,3 +1301,62 @@ body.dark-mode .hero {
 @media(prefers-reduced-motion:reduce) {
   .hero .header-search-panel {transition:none !important;}
 }
+
+
+/* ================================================
+   2026-11-05: symmetric dish card text and controls
+   The title always reserves two lines, the price is
+   always below the title, and list view is unchanged.
+   ================================================ */
+body:not(.list-view) .menu-grid .food-card .food-title {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 7px;
+  min-width: 0;
+  flex: 0 0 auto;
+}
+body:not(.list-view) .menu-grid .food-card .food-title h3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  height: 2.8em;
+  min-height: 2.8em;
+  max-height: 2.8em;
+  line-height: 1.4;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  flex: 0 0 auto;
+  margin: 0;
+}
+body:not(.list-view) .menu-grid .food-card .food-title .price {
+  display: block;
+  align-self: flex-start;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  margin: 0;
+}
+body:not(.list-view) .menu-grid .food-card .food-info > p {
+  margin-top: 10px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3em;
+}
+body:not(.list-view) .menu-grid .food-card .food-info > .personal-add-button {
+  margin-top: auto;
+  margin-left: auto;
+  align-self: flex-end;
+  flex: 0 0 auto;
+}
+/* On narrow, three-column cards, preserve the same internal hierarchy. */
+@media (max-width: 600px) {
+  body:not(.list-view).menu-size-small .menu-grid .food-card .food-title { gap: 3px; }
+  body:not(.list-view).menu-size-small .menu-grid .food-card .food-info > p { margin-top: 5px; }
+}
