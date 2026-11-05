@@ -355,17 +355,6 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/009a11bb-d8ea-47fc-89f5-6f9166844513.jpg",
       "order": 23
-    },
-    {
-      "id": "dish-9b677fe5-8f4c-4562-9482-e722a2c8c588",
-      "nameGe": "dsaa",
-      "nameEn": "",
-      "descriptionGe": "",
-      "descriptionEn": "",
-      "price": 22,
-      "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
-      "image": "",
-      "order": 24
     }
   ],
   "categorySettings": {
