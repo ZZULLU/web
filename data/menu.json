@@ -267,6 +267,17 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/f36a6148-d5d8-46da-af1d-12f92de517fa.jpg",
       "order": 15
+    },
+    {
+      "id": "dish-dda5e0b6-e4f4-433c-bdc6-107038132bb8",
+      "nameGe": "ბაჟე",
+      "nameEn": "bazhe",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 9.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 16
     }
   ],
   "categorySettings": {
