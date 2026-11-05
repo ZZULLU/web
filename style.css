@@ -1422,3 +1422,74 @@ body:not(.list-view) .menu-grid .food-card.no-image .personal-add-button {
     max-width: calc(100% - 10px);
   }
 }
+
+/* ===========================================================
+   2026-11-06 — Compact, balanced cards WITHOUT photographs
+   Badges sit beside the + control, never above the dish name.
+   Image cards and list view are deliberately left untouched.
+   =========================================================== */
+body:not(.list-view) .menu-grid .food-card.no-image {
+  position: relative;
+  isolation: isolate;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-info {
+  /* Remove the old, empty 29–60px label slot above the dish. */
+  padding-top: 16px;
+  padding-bottom: 14px;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  min-width: 0;
+}
+body:not(.list-view) .menu-grid .food-card.no-image > .dish-tag {
+  position: absolute;
+  top: auto;
+  right: auto;
+  bottom: 20px;
+  left: 14px;
+  inset-block-start: auto;
+  inset-block-end: 20px;
+  margin: 0;
+  max-width: calc(100% - 74px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-sizing: border-box;
+  z-index: 2;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-title,
+body:not(.list-view) .menu-grid .food-card.no-image .food-title h3 {
+  min-width: 0;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-info > .personal-add-button {
+  margin-top: auto;
+  margin-left: auto;
+  align-self: flex-end;
+  position: relative;
+  z-index: 3;
+}
+@media (max-width: 600px) {
+  body:not(.list-view).menu-size-small .menu-grid .food-card.no-image .food-info,
+  body:not(.list-view).menu-size-medium .menu-grid .food-card.no-image .food-info,
+  body:not(.list-view).menu-size-large .menu-grid .food-card.no-image .food-info {
+    padding-top: 9px;
+    padding-bottom: 9px;
+  }
+  body:not(.list-view).menu-size-small .menu-grid .food-card.no-image > .dish-tag,
+  body:not(.list-view).menu-size-medium .menu-grid .food-card.no-image > .dish-tag,
+  body:not(.list-view).menu-size-large .menu-grid .food-card.no-image > .dish-tag {
+    top: auto;
+    inset-block-start: auto;
+    bottom: 14px;
+    inset-block-end: 14px;
+    left: 8px;
+    padding: 3px 5px;
+    font-size: .55rem;
+    max-width: calc(100% - 51px);
+  }
+  body:not(.list-view).menu-size-small .menu-grid .food-card.no-image > .dish-tag {
+    left: 5px;
+    max-width: calc(100% - 44px);
+    font-size: .5rem;
+    padding: 2px 3px;
+  }
+}
