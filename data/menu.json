@@ -59,6 +59,12 @@
         "x": 50,
         "y": 50
       }
+    },
+    {
+      "id": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "nameGe": "წვნიანი",
+      "nameEn": "Soups",
+      "order": 5
     }
   ],
   "dishes": [
@@ -182,6 +188,9 @@
       "showPopularCategory": true,
       "popularCategoryPosition": 0,
       "personalListEnabled": true
+    },
+    "category-a347b58c-2677-4b2d-8ae9-30339bce0862": {
+      "showImages": true
     }
   }
 }
