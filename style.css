@@ -1360,3 +1360,65 @@ body:not(.list-view) .menu-grid .food-card .food-info > .personal-add-button {
   body:not(.list-view).menu-size-small .menu-grid .food-card .food-title { gap: 3px; }
   body:not(.list-view).menu-size-small .menu-grid .food-card .food-info > p { margin-top: 5px; }
 }
+
+/* =========================================================
+   2026-11-06 — Consistent cards without photos and full rows
+   Align no-image dishes even when only some have a label.
+   A dish's full text remains available in the detail popup.
+========================================================= */
+body:not(.list-view) .menu-grid .food-card.no-image {
+  position: relative;
+}
+body:not(.list-view) .menu-grid .food-card.no-image > .dish-tag {
+  position: absolute;
+  inset: 12px auto auto 12px;
+  z-index: 2;
+  margin: 0;
+  max-width: calc(100% - 24px);
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-info {
+  /* Reserve the SAME space for a possible label on every imageless card. */
+  padding-top: 60px;
+  box-sizing: border-box;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-title {
+  flex: 0 0 auto;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-title h3 {
+  min-height: 2.8em;
+  max-height: 2.8em;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .food-title .price {
+  margin-top: 0;
+}
+body:not(.list-view) .menu-grid .food-card.no-image .personal-add-button {
+  margin-top: auto;
+  align-self: flex-end;
+}
+/* Fill the *available* desktop row width without stretching a single card
+   across the full row. auto-fill maintains consistent track widths, including
+   a partially filled final row. */
+@media (min-width: 701px) {
+  body:not(.list-view) .menu-category-section > .menu-grid,
+  body:not(.list-view) .menu-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--card-width)), 1fr));
+    justify-content: stretch;
+  }
+}
+/* Compact phones: preserve the label slot without crowding the + button. */
+@media (max-width: 600px) {
+  body:not(.list-view).menu-size-small .menu-grid .food-card.no-image .food-info {
+    padding-top: 29px;
+  }
+  body:not(.list-view).menu-size-medium .menu-grid .food-card.no-image .food-info {
+    padding-top: 38px;
+  }
+  body:not(.list-view).menu-size-large .menu-grid .food-card.no-image .food-info {
+    padding-top: 54px;
+  }
+  body:not(.list-view).menu-size-small .menu-grid .food-card.no-image > .dish-tag {
+    top: 5px;
+    left: 5px;
+    max-width: calc(100% - 10px);
+  }
+}

@@ -92,7 +92,7 @@
       if(!groupRows.length)continue;
       const cat=cats.find(c=>c.id===id);
       const details=document.createElement('details');details.className='admin-dish-group';details.dataset.categoryId=id;
-      details.open=opened.get(id)!==false;
+      details.open=opened.get(id)===true;
       const summary=document.createElement('summary');summary.className='admin-dish-group-heading';
       const heading=document.createElement('strong');heading.textContent=cat?(ge()?(cat.nameGe||cat.nameEn):(cat.nameEn||cat.nameGe)):label('სხვა','Other');
       const badge=document.createElement('span');badge.className='admin-group-count';badge.textContent=String(groupRows.length);
@@ -383,4 +383,39 @@
   document.getElementById('languageGe')?.addEventListener('click',render);
   document.getElementById('languageEn')?.addEventListener('click',render);
   render();
+})();
+
+
+/* =========================================================
+   Remember last selected dish category in this browser.
+   Never send this UI preference to the shared menu database.
+   Restores selection after admin.js resets its add-dish form.
+========================================================= */
+(() => {
+  const select = document.getElementById('dishCategory');
+  const form = document.getElementById('dishForm');
+  if (!select || !form) return;
+  const storageKey = 'restaurantAdminLastDishCategory';
+  const getSaved = () => {
+    try { return localStorage.getItem(storageKey) || ''; } catch { return ''; }
+  };
+  const remember = () => {
+    if (!select.value) return;
+    try { localStorage.setItem(storageKey, select.value); } catch {}
+  };
+  const restore = () => {
+    const saved = getSaved();
+    if (saved && [...select.options].some(option => option.value === saved)) select.value = saved;
+  };
+  // The original admin.js creates options after authenticated menu loading.
+  new MutationObserver(() => restore()).observe(select, { childList: true });
+  restore();
+  select.addEventListener('change', remember);
+  // Capture choice even if the native form's submit handler later resets it.
+  form.addEventListener('submit', remember, true);
+  form.addEventListener('reset', () => {
+    // Native reset happens *after* the reset event and selects the first option.
+    // Restore only after that operation completes.
+    setTimeout(restore, 0);
+  });
 })();
