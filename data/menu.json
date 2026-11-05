@@ -289,6 +289,17 @@
       "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
       "image": "",
       "order": 17
+    },
+    {
+      "id": "dish-aab23199-360d-437b-b0ba-c4a287d5445a",
+      "nameGe": "საწებელი",
+      "nameEn": "tomato sauce",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 18
     }
   ],
   "categorySettings": {
