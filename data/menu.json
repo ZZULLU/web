@@ -178,6 +178,17 @@
       "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
       "image": "images/uploads/dcf47a5e-9740-4ba3-a721-dfbe08c2e6e7.jpg",
       "order": 8
+    },
+    {
+      "id": "dish-24192143-5940-4565-8aa4-ec5d671a8490",
+      "nameGe": "ჩიხირთმა",
+      "nameEn": "Chikhirtma",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 14.5,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/9117a9c8-a9ce-411b-907a-8dfd88b6f2b0.jpg",
+      "order": 9
     }
   ],
   "categorySettings": {
