@@ -311,6 +311,17 @@
       "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
       "image": "",
       "order": 19
+    },
+    {
+      "id": "dish-04013105-8bc0-4837-bf35-b3b3a1c65706",
+      "nameGe": "კეტჩუპი",
+      "nameEn": "ketchup",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 20
     }
   ],
   "categorySettings": {
