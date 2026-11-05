@@ -322,6 +322,17 @@
       "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
       "image": "",
       "order": 20
+    },
+    {
+      "id": "dish-328513c3-c711-475e-a544-9d08f848075e",
+      "nameGe": "ხაჭაპური მეგრული",
+      "nameEn": "Khatchapuri megruli",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 20.5,
+      "categoryId": "category-006bd1ab-0e4d-42ad-9574-589686d91a08",
+      "image": "images/uploads/2dce1abc-8d1f-47fc-bcf7-ced326686ab8.jpg",
+      "order": 21
     }
   ],
   "categorySettings": {
