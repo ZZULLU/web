@@ -167,6 +167,17 @@
       "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
       "image": "images/uploads/37a94241-a806-4857-bc89-e136360f45b7.jpg",
       "order": 7
+    },
+    {
+      "id": "dish-3c385adc-3c34-44d6-a73c-84332a7abbb7",
+      "nameGe": "თათარიახნი",
+      "nameEn": "Tatariakhni",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 14.5,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/dcf47a5e-9740-4ba3-a721-dfbe08c2e6e7.jpg",
+      "order": 8
     }
   ],
   "categorySettings": {
