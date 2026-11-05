@@ -211,6 +211,17 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/fc255b1b-60b2-46a7-bbec-570d500a2494.jpg",
       "order": 11
+    },
+    {
+      "id": "dish-d8c8beff-e4a2-4601-8564-351e3a0257f3",
+      "nameGe": "ოჯახური ღორის ხორცით",
+      "nameEn": "odjakhuri with pork",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 20.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/fb08c6d9-11fe-46db-a936-c1f9bcf1e192.jpg",
+      "order": 12
     }
   ],
   "categorySettings": {
