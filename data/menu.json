@@ -244,6 +244,17 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/50cb5351-08fc-4baf-8ec4-f53861d3b65c.jpg",
       "order": 14
+    },
+    {
+      "id": "dish-944171f4-c459-4e04-8547-e37ee6e2cff4",
+      "nameGe": "ხბოს ჩაშუშული",
+      "nameEn": "veal stew",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 25,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/f36a6148-d5d8-46da-af1d-12f92de517fa.jpg",
+      "order": 15
     }
   ],
   "categorySettings": {
