@@ -233,6 +233,17 @@
       "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
       "image": "images/uploads/a022b687-1933-46e8-bb8b-6fef0f2f90bc.jpg",
       "order": 13
+    },
+    {
+      "id": "dish-e5a7089b-495f-4148-a634-cc27542de390",
+      "nameGe": "ხაშლამა",
+      "nameEn": "khashlama",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 29,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/50cb5351-08fc-4baf-8ec4-f53861d3b65c.jpg",
+      "order": 14
     }
   ],
   "categorySettings": {
