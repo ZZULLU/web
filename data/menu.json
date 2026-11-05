@@ -59,6 +59,24 @@
         "x": 50,
         "y": 50
       }
+    },
+    {
+      "id": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "nameGe": "წვნიანი",
+      "nameEn": "Soups",
+      "order": 5
+    },
+    {
+      "id": "category-520c2202-a9d2-455b-b310-dbdc8ef98c32",
+      "nameGe": "თევზეული",
+      "nameEn": "fish dishes",
+      "order": 6
+    },
+    {
+      "id": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "nameGe": "სოუსი",
+      "nameEn": "sauce",
+      "order": 7
     }
   ],
   "dishes": [
@@ -150,6 +168,160 @@
       "order": 6,
       "visible": true,
       "tag": "sale"
+    },
+    {
+      "id": "dish-e88e4992-9a7e-4d98-a459-36660767a897",
+      "nameGe": "ხარჩო",
+      "nameEn": "Kharcho",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 13,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/37a94241-a806-4857-bc89-e136360f45b7.jpg",
+      "order": 7
+    },
+    {
+      "id": "dish-3c385adc-3c34-44d6-a73c-84332a7abbb7",
+      "nameGe": "თათარიახნი",
+      "nameEn": "Tatariakhni",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 14.5,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/dcf47a5e-9740-4ba3-a721-dfbe08c2e6e7.jpg",
+      "order": 8
+    },
+    {
+      "id": "dish-24192143-5940-4565-8aa4-ec5d671a8490",
+      "nameGe": "ჩიხირთმა",
+      "nameEn": "Chikhirtma",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 14.5,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/9117a9c8-a9ce-411b-907a-8dfd88b6f2b0.jpg",
+      "order": 9
+    },
+    {
+      "id": "dish-b23b0612-d093-4c37-84e8-28d237d878f1",
+      "nameGe": "სოკოს სუპი",
+      "nameEn": "Mushroom Soup",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 11,
+      "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "image": "images/uploads/be856c86-7a9c-49c0-9d8e-6247081b7b91.jpg",
+      "order": 10
+    },
+    {
+      "id": "dish-3ef5b86f-2207-4bd3-8aa2-65c30ac09ece",
+      "nameGe": "ოსტრი",
+      "nameEn": "Ostri",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 21.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/fc255b1b-60b2-46a7-bbec-570d500a2494.jpg",
+      "order": 11
+    },
+    {
+      "id": "dish-d8c8beff-e4a2-4601-8564-351e3a0257f3",
+      "nameGe": "ოჯახური ღორის ხორცით",
+      "nameEn": "odjakhuri with pork",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 20.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/fb08c6d9-11fe-46db-a936-c1f9bcf1e192.jpg",
+      "order": 12
+    },
+    {
+      "id": "dish-38638a99-5cb0-4e51-ad5c-d7562ce019f4",
+      "nameGe": "ოჯახური ხბოს ხორცით",
+      "nameEn": "odjakhuri with veal",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 26.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/a022b687-1933-46e8-bb8b-6fef0f2f90bc.jpg",
+      "order": 13
+    },
+    {
+      "id": "dish-e5a7089b-495f-4148-a634-cc27542de390",
+      "nameGe": "ხაშლამა",
+      "nameEn": "khashlama",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 29,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/50cb5351-08fc-4baf-8ec4-f53861d3b65c.jpg",
+      "order": 14
+    },
+    {
+      "id": "dish-944171f4-c459-4e04-8547-e37ee6e2cff4",
+      "nameGe": "ხბოს ჩაშუშული",
+      "nameEn": "veal stew",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 25,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/f36a6148-d5d8-46da-af1d-12f92de517fa.jpg",
+      "order": 15
+    },
+    {
+      "id": "dish-dda5e0b6-e4f4-433c-bdc6-107038132bb8",
+      "nameGe": "ბაჟე",
+      "nameEn": "bazhe",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 9.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 16
+    },
+    {
+      "id": "dish-eba5e5c8-a862-4746-a636-e8bf6fc809a1",
+      "nameGe": "ტყემალი",
+      "nameEn": "tkemali",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 17
+    },
+    {
+      "id": "dish-aab23199-360d-437b-b0ba-c4a287d5445a",
+      "nameGe": "საწებელი",
+      "nameEn": "tomato sauce",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 18
+    },
+    {
+      "id": "dish-a106cf38-c1cd-4ff4-bd2e-e917f42904e3",
+      "nameGe": "საფირმო საწებელი \"ტკბილი აჯიკა\"",
+      "nameEn": "branded cauce \"sweet adjika\"",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 4.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 19
+    },
+    {
+      "id": "dish-04013105-8bc0-4837-bf35-b3b3a1c65706",
+      "nameGe": "კეტჩუპი",
+      "nameEn": "ketchup",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 20
     }
   ],
   "categorySettings": {
@@ -180,7 +352,17 @@
     "category-257fc02e-b702-48b8-a33f-56e588ac0be5": {
       "showImages": false,
       "showPopularCategory": true,
-      "popularCategoryPosition": 0
+      "popularCategoryPosition": 0,
+      "personalListEnabled": true
+    },
+    "category-a347b58c-2677-4b2d-8ae9-30339bce0862": {
+      "showImages": true
+    },
+    "category-520c2202-a9d2-455b-b310-dbdc8ef98c32": {
+      "showImages": true
+    },
+    "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf": {
+      "showImages": false
     }
   }
 }
