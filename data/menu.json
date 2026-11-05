@@ -278,6 +278,17 @@
       "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
       "image": "",
       "order": 16
+    },
+    {
+      "id": "dish-eba5e5c8-a862-4746-a636-e8bf6fc809a1",
+      "nameGe": "ტყემალი",
+      "nameEn": "tkemali",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 3.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 17
     }
   ],
   "categorySettings": {
