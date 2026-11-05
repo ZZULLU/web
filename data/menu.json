@@ -300,6 +300,17 @@
       "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
       "image": "",
       "order": 18
+    },
+    {
+      "id": "dish-a106cf38-c1cd-4ff4-bd2e-e917f42904e3",
+      "nameGe": "საფირმო საწებელი \"ტკბილი აჯიკა\"",
+      "nameEn": "branded cauce \"sweet adjika\"",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 4.5,
+      "categoryId": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "image": "",
+      "order": 19
     }
   ],
   "categorySettings": {
