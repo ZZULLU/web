@@ -200,6 +200,17 @@
       "categoryId": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
       "image": "images/uploads/be856c86-7a9c-49c0-9d8e-6247081b7b91.jpg",
       "order": 10
+    },
+    {
+      "id": "dish-3ef5b86f-2207-4bd3-8aa2-65c30ac09ece",
+      "nameGe": "ოსტრი",
+      "nameEn": "Ostri",
+      "descriptionGe": "",
+      "descriptionEn": "",
+      "price": 21.5,
+      "categoryId": "category-f5188c66-5f02-4018-9856-452f2ff89914",
+      "image": "images/uploads/fc255b1b-60b2-46a7-bbec-570d500a2494.jpg",
+      "order": 11
     }
   ],
   "categorySettings": {
