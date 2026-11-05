@@ -71,6 +71,12 @@
       "nameGe": "თევზეული",
       "nameEn": "fish dishes",
       "order": 6
+    },
+    {
+      "id": "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf",
+      "nameGe": "სოუსი",
+      "nameEn": "sauce",
+      "order": 7
     }
   ],
   "dishes": [
@@ -298,6 +304,9 @@
       "showImages": true
     },
     "category-520c2202-a9d2-455b-b310-dbdc8ef98c32": {
+      "showImages": true
+    },
+    "category-c952204c-ef1e-4a6f-a17d-3ada99b111bf": {
       "showImages": true
     }
   }
