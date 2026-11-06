@@ -309,16 +309,10 @@
       }
     },
     {
-      "id": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
-      "nameGe": "წვენები",
-      "nameEn": "Drinks",
+      "id": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
+      "nameGe": "წვნიანი",
+      "nameEn": "Soups",
       "order": 4,
-      "siteHero": {
-        "image": "images/uploads/52aaab40-2249-497f-991a-89f88d59cf8a.jpg",
-        "mobileImage": "images/uploads/3804a0df-bd2a-403c-b085-e4038c2d51ce.jpg",
-        "x": 50,
-        "y": 50
-      },
       "siteFooter": {
         "nameGe": "ქართული სახლიი",
         "nameEn": "Georgian Housee",
@@ -386,10 +380,16 @@
       }
     },
     {
-      "id": "category-a347b58c-2677-4b2d-8ae9-30339bce0862",
-      "nameGe": "წვნიანი",
-      "nameEn": "Soups",
+      "id": "category-257fc02e-b702-48b8-a33f-56e588ac0be5",
+      "nameGe": "წვენები",
+      "nameEn": "Drinks",
       "order": 5,
+      "siteHero": {
+        "image": "images/uploads/52aaab40-2249-497f-991a-89f88d59cf8a.jpg",
+        "mobileImage": "images/uploads/3804a0df-bd2a-403c-b085-e4038c2d51ce.jpg",
+        "x": 50,
+        "y": 50
+      },
       "siteFooter": {
         "nameGe": "ქართული სახლიი",
         "nameEn": "Georgian Housee",
