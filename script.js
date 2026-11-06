@@ -968,7 +968,8 @@ function applyPublicFooterConfig() {
   const name = cfg ? getTranslatedValue(cfg.nameGe,cfg.nameEn) : 'Georgian House';
   const location = cfg ? getTranslatedValue(cfg.locationGe,cfg.locationEn) : 'Tbilisi, Georgia';
   const heroName = $('restaurantHeroName'), footerName = $('footerRestaurantName');
-  if (heroName) heroName.textContent = name || 'Georgian House';
+  const heroTitle = cfg && getTranslatedValue(cfg.heroTitleGe || '', cfg.heroTitleEn || '');
+  if (heroName) heroName.textContent = heroTitle || name || 'Georgian House';
   if (footerName) footerName.textContent = name || 'Georgian House';
   const subtitle = $('heroSubtitle');
   if (subtitle) subtitle.textContent = (cfg && getTranslatedValue(cfg.subtitleGe,cfg.subtitleEn)) || translations[currentLanguage].heroSubtitle;
@@ -1019,12 +1020,22 @@ function applyPublicFooterConfig() {
         schedule.append(p);
       } else {
         const title=document.createElement('p');title.className='footer-hours-title';title.textContent=currentLanguage==='ge'?'სამუშაო საათები':'Opening hours';schedule.append(title);
-        normalized.forEach((d,i)=>{
+        // Group only adjacent days with exactly matching opening status and hours.
+        // Monday-Friday and Saturday-Sunday therefore render as two lines.
+        const sameHours=(a,b)=>a.open===b.open && (!a.open || (a.from===b.from && a.to===b.to));
+        for(let start=0;start<normalized.length;){
+          let end=start;
+          while(end+1<normalized.length && sameHours(normalized[start],normalized[end+1])) end++;
           const line=document.createElement('p');line.className='footer-day-line';
-          const day=document.createElement('span');day.textContent=FOOTER_WEEKDAYS[currentLanguage][i];
-          const time=document.createElement('span');time.textContent=d.open?d.from+'–'+d.to:(currentLanguage==='ge'?'დაკეტილია':'Closed');
+          const day=document.createElement('span');
+          day.textContent=FOOTER_WEEKDAYS[currentLanguage][start] +
+            (end>start ? '–'+FOOTER_WEEKDAYS[currentLanguage][end] : '');
+          const time=document.createElement('span');
+          time.textContent=normalized[start].open ? normalized[start].from+'–'+normalized[start].to :
+            (currentLanguage==='ge'?'დაკეტილია':'Closed');
           line.append(day,time);schedule.append(line);
-        });
+          start=end+1;
+        }
       }
     }
   }
