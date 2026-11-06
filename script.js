@@ -139,6 +139,7 @@ async function loadMenu({ background = false } = {}) {
     }));
     categorySettings = data.categorySettings && typeof data.categorySettings === 'object' ? data.categorySettings : {};
     applyPublicHeroConfig();
+    applyPublicFooterConfig();
     categories.forEach(c => {
       if (!categorySettings[c.id]) categorySettings[c.id] = { showImages: c.showImages !== false };
     });
@@ -221,7 +222,8 @@ function updateStaticLanguage() {
   $('searchLabel').textContent = t.search;
   $('adminButton').textContent = t.admin;
   $('heroSubtitle').textContent = t.heroSubtitle;
-  $('footerHours').textContent = t.hours;
+  if (!getSiteFooterConfig()) $('footerHours').textContent = t.hours;
+  applyPublicFooterConfig();
   setAccessibleTitle(searchToggle, t.openSearch);
   setAccessibleTitle(closeSearch, t.closeSearch);
   searchSuggestions.setAttribute('aria-label', t.suggestions);
@@ -941,3 +943,89 @@ document.addEventListener('pointerdown', event => {
   if (headerSearchPanel.contains(event.target) || searchToggle.contains(event.target)) return;
   toggleSearch(false);
 });
+
+/* =====================================================
+   Restaurant footer settings (read-only on customer site).
+   The Admin saves siteFooter on existing category records.
+   No customer data is stored in GitHub.
+===================================================== */
+var FOOTER_WEEKDAYS = {
+  ge: ['ორშაბათი','სამშაბათი','ოთხშაბათი','ხუთშაბათი','პარასკევი','შაბათი','კვირა'],
+  en: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']
+};
+function getSiteFooterConfig() {
+  return categories.find(c => c?.siteFooter && typeof c.siteFooter === 'object')?.siteFooter || null;
+}
+function safeExternalLink(raw) {
+  if (typeof raw !== 'string' || !raw.trim()) return '';
+  try {
+    const url = new URL(raw.trim());
+    return ['https:', 'http:'].includes(url.protocol) ? url.href : '';
+  } catch { return ''; }
+}
+function applyPublicFooterConfig() {
+  const cfg = getSiteFooterConfig();
+  const name = cfg ? getTranslatedValue(cfg.nameGe,cfg.nameEn) : 'Georgian House';
+  const location = cfg ? getTranslatedValue(cfg.locationGe,cfg.locationEn) : 'Tbilisi, Georgia';
+  const phone = cfg ? String(cfg.phone || '').trim() : '+995 555 123 456';
+  const heroName = $('restaurantHeroName'), footerName = $('footerRestaurantName');
+  if (heroName) heroName.textContent = name || 'Georgian House';
+  if (footerName) footerName.textContent = name || 'Georgian House';
+  document.title = (name || 'Georgian House') + ' — ' + (currentLanguage === 'ge' ? 'მენიუ' : 'Menu');
+  const phoneLink = $('footerPhone');
+  if (phoneLink) {
+    phoneLink.hidden = !phone;
+    if (phone) {
+      phoneLink.querySelector('span').textContent = phone;
+      phoneLink.href = 'tel:' + phone.replace(/[^+\d]/g, '');
+    }
+  }
+  const locationLink = $('footerLocation');
+  if (locationLink) {
+    locationLink.hidden = !location;
+    if (location) {
+      locationLink.querySelector('span').textContent = location;
+      const mapUrl = safeExternalLink(cfg?.mapUrl);
+      locationLink.href = mapUrl || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(location);
+    }
+  }
+  const schedule = $('footerSchedule');
+  if (schedule) {
+    schedule.replaceChildren();
+    const days = cfg && Array.isArray(cfg.days) ? cfg.days : null;
+    if (!days) {
+      const p=document.createElement('p');p.id='footerHours';p.textContent=translations[currentLanguage].hours;schedule.append(p);
+    } else {
+      const normalized = Array.from({length:7},(_,i)=>{
+        const d=days[i] || {};
+        return {open:d.open!==false,from:String(d.from||'10:00'),to:String(d.to||'23:00')};
+      });
+      const allSame = normalized.every(d=>d.open===normalized[0].open&&d.from===normalized[0].from&&d.to===normalized[0].to);
+      if(allSame){
+        const p=document.createElement('p');
+        p.textContent = normalized[0].open
+          ? (currentLanguage==='ge'?'ყოველდღე':'Every day') + ': ' + normalized[0].from + '–' + normalized[0].to
+          : (currentLanguage==='ge'?'ყოველდღე დაკეტილია':'Closed every day');
+        schedule.append(p);
+      } else {
+        const title=document.createElement('p');title.className='footer-hours-title';title.textContent=currentLanguage==='ge'?'სამუშაო საათები':'Opening hours';schedule.append(title);
+        normalized.forEach((d,i)=>{
+          const line=document.createElement('p');line.className='footer-day-line';
+          const day=document.createElement('span');day.textContent=FOOTER_WEEKDAYS[currentLanguage][i];
+          const time=document.createElement('span');time.textContent=d.open?d.from+'–'+d.to:(currentLanguage==='ge'?'დაკეტილია':'Closed');
+          line.append(day,time);schedule.append(line);
+        });
+      }
+    }
+  }
+  const socialContainer=$('footerSocials');
+  let socialCount=0;
+  for(const [id,value] of [['footerFacebook',cfg?.facebook],['footerInstagram',cfg?.instagram]]){
+    const el=$(id);if(!el)continue;
+    const href=safeExternalLink(value);
+    el.hidden=!href;
+    if(href){el.href=href;socialCount++;}
+    else el.removeAttribute('href');
+  }
+  if(socialContainer)socialContainer.hidden=socialCount===0;
+}

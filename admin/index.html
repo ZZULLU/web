@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Menu Admin</title>
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
-    <link rel="stylesheet" href="admin.css?v=20261031-refine-v3">
+    <link rel="stylesheet" href="admin.css?v=20261106-footer-editor-v1">
 </head>
 <body>
     <!-- Public admin page, but actual editing requires a backend session. -->
@@ -145,6 +145,28 @@
                 <div id="dishList"></div>
             </div>
         </details>
+
+        <!-- Footer details: collapsed by default; saved with the authenticated menu API. -->
+        <details class="admin-section footer-editor-section" id="footerEditorSection">
+          <summary><span id="footerEditorTitle">Footer Information / ინფორმაცია</span><span class="section-arrow">▼</span></summary>
+          <div class="section-content">
+            <p id="footerEditorIntro" class="section-description">Update the restaurant identity, contacts, social links, and opening times.</p>
+            <form id="footerEditorForm">
+              <div class="footer-editor-grid">
+                <label><span data-footer-label="nameGe">Restaurant name (Georgian)</span><input id="footerNameGe" type="text" maxlength="160" autocomplete="organization"></label>
+                <label><span data-footer-label="nameEn">Restaurant name (English)</span><input id="footerNameEn" type="text" maxlength="160"></label>
+                <label><span data-footer-label="phone">Phone number</span><input id="footerEditPhone" type="tel" maxlength="45" placeholder="+995 555 123 456"></label>
+                <label><span data-footer-label="locationGe">Location (Georgian)</span><input id="footerLocationGe" type="text" maxlength="240"></label>
+                <label><span data-footer-label="locationEn">Location (English)</span><input id="footerLocationEn" type="text" maxlength="240"></label>
+                <label><span data-footer-label="map">Google Maps link (optional)</span><input id="footerMapUrl" type="url" placeholder="https://maps.google.com/..."></label>
+                <label><span data-footer-label="facebook">Facebook page URL</span><input id="footerFacebookUrl" type="url" placeholder="https://www.facebook.com/..."></label>
+                <label><span data-footer-label="instagram">Instagram profile URL</span><input id="footerInstagramUrl" type="url" placeholder="https://www.instagram.com/..."></label>
+              </div>
+              <fieldset class="footer-days-fieldset"><legend id="footerDaysLegend">Opening days and hours</legend><p id="footerDaysHint" class="field-note">Uncheck a day to mark it closed.</p><div id="footerDaysRows" class="footer-days-rows"></div></fieldset>
+              <div class="footer-editor-actions"><button type="submit" id="footerSaveButton">Save footer information</button><span id="footerEditorStatus" role="status" aria-live="polite"></span></div>
+            </form>
+          </div>
+        </details>
     </div>
 
     <div id="heroCropModal" class="hero-crop-modal" hidden role="dialog" aria-modal="true" aria-labelledby="heroCropTitle">
@@ -158,6 +180,7 @@
     <script src="admin.js"></script>
     <script src="admin-enhancements.js?v=20261106-category-memory-v2"></script>
     <script src="hero-editor.js?v=20261031-refine-v3"></script>
+    <script src="footer-editor.js?v=20261106-footer-v1"></script>
     <script>
       // UI-only password visibility control; does not change authentication.
       (() => {
