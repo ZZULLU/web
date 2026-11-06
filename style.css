@@ -1506,3 +1506,9 @@ body:not(.list-view) .menu-grid .food-card.no-image .food-info > .personal-add-b
 .restaurant-footer .footer-socials {display:flex;justify-content:center;flex-wrap:wrap;gap:20px;margin:14px auto 12px;}
 .restaurant-footer [hidden] {display:none !important;}
 @media (max-width:480px){.restaurant-footer .footer-contact-link {max-width:100%;font-size:.92rem;}}
+
+/* Multiple independent footer contact entries */
+.restaurant-footer .footer-contact {display:flex;flex-direction:column;align-items:center;gap:10px;margin:16px auto;}
+.restaurant-footer .footer-contact-link {display:inline-flex;gap:10px;align-items:center;justify-content:center;text-align:center;max-width:min(100%,650px);overflow-wrap:anywhere;}
+.restaurant-footer .footer-contact-icon {display:inline-grid;place-items:center;width:24px;height:24px;flex:0 0 24px;font-size:1.15em;}
+.restaurant-footer [hidden] {display:none!important;}

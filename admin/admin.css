@@ -625,3 +625,18 @@ body:not(.dark-mode) input:focus, body:not(.dark-mode) textarea:focus, body:not(
 .footer-editor-actions button{min-width:180px;}
 #footerEditorStatus{font-weight:600;}
 @media(max-width:650px){.footer-editor-section .footer-editor-grid{grid-template-columns:1fr;}.footer-day-row{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}.footer-day-name{grid-column:1/-1;}}
+
+/* Repeatable restaurant phone and address fields */
+.footer-multiple-fieldset {margin:20px 0;padding:16px;border:1px solid var(--border-color);border-radius:14px;min-width:0;}
+.footer-multiple-fieldset legend {padding:0 8px;font-weight:700;}
+.footer-repeat-rows {display:grid;gap:12px;}
+.footer-repeat-row {display:grid;gap:12px;background:var(--soft-background);padding:14px;border-radius:12px;align-items:end;min-width:0;}
+.footer-phone-row {grid-template-columns:minmax(0,1fr) auto;}
+.footer-location-row {grid-template-columns:repeat(3,minmax(0,1fr)) auto;}
+.footer-repeat-row label {display:flex;flex-direction:column;gap:6px;min-width:0;font-weight:600;font-size:.88rem;}
+.footer-repeat-row input {min-width:0;width:100%;}
+.footer-add-row,.footer-remove-row {border:1px solid var(--border-color);border-radius:10px;padding:10px 13px;cursor:pointer;color:var(--text-main);background:var(--soft-background);}
+.footer-add-row {margin-top:12px;font-weight:700;}
+.footer-remove-row {white-space:nowrap;}
+@media(max-width:800px){.footer-location-row {grid-template-columns:1fr 1fr;}.footer-location-row label:nth-child(3){grid-column:1/-1;}.footer-location-row .footer-remove-row{grid-column:1/-1;justify-self:end;}}
+@media(max-width:480px){.footer-location-row {grid-template-columns:1fr;}.footer-location-row label:nth-child(3){grid-column:auto;}.footer-location-row .footer-remove-row{grid-column:auto;}}

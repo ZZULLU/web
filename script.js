@@ -967,27 +967,37 @@ function applyPublicFooterConfig() {
   const cfg = getSiteFooterConfig();
   const name = cfg ? getTranslatedValue(cfg.nameGe,cfg.nameEn) : 'Georgian House';
   const location = cfg ? getTranslatedValue(cfg.locationGe,cfg.locationEn) : 'Tbilisi, Georgia';
-  const phone = cfg ? String(cfg.phone || '').trim() : '+995 555 123 456';
   const heroName = $('restaurantHeroName'), footerName = $('footerRestaurantName');
   if (heroName) heroName.textContent = name || 'Georgian House';
   if (footerName) footerName.textContent = name || 'Georgian House';
+  const subtitle = $('heroSubtitle');
+  if (subtitle) subtitle.textContent = (cfg && getTranslatedValue(cfg.subtitleGe,cfg.subtitleEn)) || translations[currentLanguage].heroSubtitle;
   document.title = (name || 'Georgian House') + ' — ' + (currentLanguage === 'ge' ? 'მენიუ' : 'Menu');
-  const phoneLink = $('footerPhone');
-  if (phoneLink) {
-    phoneLink.hidden = !phone;
-    if (phone) {
-      phoneLink.querySelector('span').textContent = phone;
-      phoneLink.href = 'tel:' + phone.replace(/[^+\d]/g, '');
+  const contacts = $('footerContacts');
+  if (contacts) {
+    contacts.replaceChildren();
+    const phones = Array.isArray(cfg?.phones) ? cfg.phones : (cfg?.phone ? [cfg.phone] : (cfg ? [] : ['+995 555 123 456']));
+    const locations = Array.isArray(cfg?.locations) ? cfg.locations : (cfg ? [{ge:cfg.locationGe||'',en:cfg.locationEn||'',mapUrl:cfg.mapUrl||''}] : [{ge:'Tbilisi, Georgia',en:'Tbilisi, Georgia',mapUrl:''}]);
+    for (const number of phones) {
+      if (typeof number !== 'string' || !number.trim()) continue;
+      const link = document.createElement('a');link.className='footer-contact-link';
+      link.href='tel:'+number.replace(/[^+\d]/g,'');
+      const ico=document.createElement('span');ico.className='footer-contact-icon';ico.textContent='☎';
+      const text=document.createElement('span');text.textContent=number.trim();
+      link.append(ico,text);contacts.append(link);
     }
-  }
-  const locationLink = $('footerLocation');
-  if (locationLink) {
-    locationLink.hidden = !location;
-    if (location) {
-      locationLink.querySelector('span').textContent = location;
-      const mapUrl = safeExternalLink(cfg?.mapUrl);
-      locationLink.href = mapUrl || 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(location);
+    for (const record of locations) {
+      if (!record || typeof record!=='object') continue;
+      const where=getTranslatedValue(record.ge||'',record.en||'');
+      if (!where) continue;
+      const link=document.createElement('a');link.className='footer-contact-link';
+      link.href=safeExternalLink(record.mapUrl)||'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(where);
+      link.target='_blank';link.rel='noopener noreferrer';
+      const ico=document.createElement('span');ico.className='footer-contact-icon';ico.textContent='⌖';
+      const text=document.createElement('span');text.textContent=where;
+      link.append(ico,text);contacts.append(link);
     }
+    contacts.hidden=!contacts.children.length;
   }
   const schedule = $('footerSchedule');
   if (schedule) {
