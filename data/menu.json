@@ -387,6 +387,12 @@
             "to": "16:00"
           }
         ]
+      },
+      "siteHero": {
+        "image": "images/uploads/52aaab40-2249-497f-991a-89f88d59cf8a.jpg",
+        "mobileImage": "images/uploads/3804a0df-bd2a-403c-b085-e4038c2d51ce.jpg",
+        "x": 50,
+        "y": 50
       }
     },
     {
@@ -539,6 +545,12 @@
             "to": "16:00"
           }
         ]
+      },
+      "siteHero": {
+        "image": "images/uploads/52aaab40-2249-497f-991a-89f88d59cf8a.jpg",
+        "mobileImage": "images/uploads/3804a0df-bd2a-403c-b085-e4038c2d51ce.jpg",
+        "x": 50,
+        "y": 50
       }
     }
   ],
